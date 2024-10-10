@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>notes</title>
+    <link rel="icon" href="https://nearpod.gq/static-assets/favicon-presets/docs.ico">
+    <style>
+        body {
+            background-color: #1c1c1c;
+        }
+        
+        button {
+            background-color: #3645e1;
+            color: white;
+            padding: 11px 23px; /* old padding 10px 23px */
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+      		margin: 3px 2px; /* old margin 2px */
+            font-size: 14px;
+            font-family: Verdana, sans-serif;
+            font-weight: bold;
+        }
+
+        .container {
+            position: relative;
+            display: inline-block;
+            margin-top: 0px
+        }
+
+        .hoverButton {
+            position: relative;
+            margin-top: 0px
+        }
+
+        button:hover {
+            background-color: #303ea9;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="overlay" class="overlay"></div>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">0.0.2<sub style="font-size: 14px">Γ</sub></h1>
+    
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 16px"></h1>
+    <button onclick="ramh()">rammerh</button>
+    <button onclick="prx1()">search</button>
+    <button onclick="searx()">searxng</button>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">---</h1>
+    <button onclick="ggtyler()">ggtyler</button>
+    <button onclick="inspect()">inspector</button>
+    <button onclick="snapdrop()">snapdrop</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 3px"></h1>
+    <button onclick="copilot()">copilot</button>
+    <button onclick="hugfc()">hugfc</button>
+    <button onclick="toolbaz()">toolbaz</button>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 3px"></h1>
+    <button style="background-color: #ff4141;" onclick="getInputUrl()">open</button>
+    <input style="height: 25px;padding:5px 5px;font-size: 15px" type="text" id="urlInput" placeholder="https://www.example.com"/>
+    
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">---</h1>
+    <button onclick="math()">mathway</button>
+    <button onclick="stlate()">simplytranslate</button>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">---</h1>
+    <button onclick="echo()">3kh0</button>
+    <button onclick="holyub()">holyUB</button>
+    <button onclick="cgames()">crazygames</button>
+    <button onclick="frogie()">frogie</button>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">---</h1>
+    <button onclick="cluster()">cluster rush</button>
+    <button onclick="ptrack()">polytrack</button>
+    <button onclick="webhop()">webhop</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+    <button onclick="quake()">quake</button>
+    <button onclick="quake2()">quake 2</button>
+    <button onclick="cubef()">cubefield</button>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 16px">GBA</h1>
+    <button onclick="openFile('file:///home/chronos/u-2757fca9c426ce96dd9e0060ca304b44c6994ba2/MyFiles/Downloads/a/emulation/Advance%20Wars.html')">advance wars</button>
+
+    <script>
+        // optimized iframe
+        function oframe(url) {
+            var win = window.open();
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.style.margin = '0';
+            iframe.src = url;
+            iframe.setAttribute("allowfullscreen", "true");
+            win.document.body.appendChild(iframe);
+        }
+
+        function getInputUrl() {
+            var url = document.getElementById('urlInput').value;
+            oframe(url);
+        }
+
+        function openFile(filePath) {
+            window.open(filePath, '_blank');
+        }
+        
+        // 
+        
+
+        // search
+        function ramh() {oframe("https://nearpod.gq");}
+        function prx1() {oframe("https://holyubofficial.net/~/hvtrs8%2F-wuw%2Cgmoelg.aoo%2F");}
+        function searx() {oframe("https://searx.kavin.rocks");}
+
+        // util
+        function ggtyler() {oframe("https://www.ggtyler.dev/other/frontends");}
+        function inspect() {oframe("https://codebeautify.org/source-code-viewer");}
+        function snapdrop() {oframe("https://snapdrop.net");}
+        function copilot() {oframe("https://bing.com/chat");}
+        function hugfc() {oframe("https://huggingface.co/chat");}
+        function toolbaz() {oframe("https://toolbaz.com/writer/chat-gpt-alternative");}
+
+        // other
+        function math() {oframe("https://holyubofficial.net/~/hvtrs8%2F-wuw%2Cmctjwcy%2Ccmm-");}
+        function stlate() {oframe("https://simplytranslate.org/");}
+
+        // game sites
+        function echo() {oframe("https://adfree3kh0.github.io/projects.html");}
+        function holyub() {oframe("https://holyubofficial.net");}
+        function cgames() {oframe("https://kazwire.com");}
+        function frogie() {oframe("https://big-brain.buzz/");}
+
+        // games
+        function cluster() {oframe("https://clusterrush.io/game/cluster-rush/");}
+        function ptrack() {oframe("https://html-classic.itch.zone/html/11183255/index.html");}
+        function webhop() {oframe("https://html-classic.itch.zone/html/11181990/webhop condensed/index.html");}
+        
+        function quake() {oframe("https://www.netquake.io");}
+        function quake2() {oframe("https://quake2.m-h.org.uk/");}
+        function cubef() {oframe("https://www.cubefield.org.uk/");}
+    </script>
+</body>
+</html>
