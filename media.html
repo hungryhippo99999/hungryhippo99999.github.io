@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Media</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4503/4503941.png">
+    <style>
+        body {
+            background-color: #1c1c1c;
+        }
+        
+        button {
+            background-color: #b041ff;
+            color: white;
+            padding: 11px 28px; /* old padding 10px 23px */
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+      		margin: 4px; /* old margin 2px */
+            font-size: 14px;
+            font-family: Verdana, sans-serif;
+            font-weight: bold;
+            box-shadow: inset 4px 4px #5f2686;
+        }
+
+        .container {
+            position: relative;
+            display: inline-block;
+            margin-top: 0px
+        }
+
+        .hoverButton {
+            position: relative;
+            margin-top: 0px
+        }
+
+        .infoBox {
+            display: none;
+            position: absolute; /* Position the infoBox absolutely relative to the button */
+            bottom: 115%; /* Position the bottom of the infoBox at the top of the button */
+            left: 50%; /* Start the infoBox halfway across the button */
+            transform: translateX(-50%); /* Center the infoBox over the button */
+            background-color: black;
+            padding: 10px;
+            border-radius: 3px;
+            white-space: nowrap; /* Prevent the text from wrapping */
+            opacity: 0.8;
+            font-family: Verdana, sans-serif;
+            color: white;
+        }
+
+        .hoverButton:hover + .infoBox {
+            display: block;
+        }
+        
+        button:hover {
+            background-color: #7930a9;
+            transform: scale(1.3);
+            box-shadow: inset 4px 4px #5f2686;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .overlay {
+         position: fixed; /* whole screen */
+         top: 0;
+         left: 0;
+         width: 1300px;
+         height: 100%;
+         background: url("https://labelsmerge.com/assets/images/guides/gdocs-modal-create-labels/1-blank-document.jpg") no-repeat center center; /* Set the background image */
+         display: none; /* default off = none, default on = visible*/
+        }
+    </style>
+</head>
+<body>
+    <div id="overlay" class="overlay"></div>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">Streamline<sub style="font-size: 14px">1.7.3</sub></h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">if a website doesnt work try a different option. do not open any links in a new tab - it will risk getting the websites blocked<h1></h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">YouTube</h1>
+    <button onclick="tube()">YouTube</button>
+    <button onclick="poke()">PokeTube</button>
+    <button onclick="invid()">Invidious</button>
+    <button onclick="invue()">Invuedious</button>
+    <button onclick="twineo()">Twineo (Twitch)</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+    <button onclick="pipe1()">Piped 1</button>
+    <button onclick="pipe2()">Piped 2</button>
+    <button onclick="pipe3()">Piped 3</button>
+    <button onclick="pipe4()">Piped 4</button>
+    <button onclick="pipe5()">Piped 5</button>
+    <button onclick="pipe6()">Piped 6</button>
+    <button onclick="pipe7()">Piped 7</button>
+    <button onclick="pipe8()">Piped 8</button>
+    <button onclick="pipe9()">Piped 9</button>
+    <button onclick="pipe10()">Piped 10</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Movies & TV</h1>
+    <button onclick="bingedPrv()">Binged</button>
+    <button onclick="binged2()">Binged 2</button>
+    <!-- <button onclick="bingedprx()">Binged Prx</button> -->
+    <button onclick="placeholder()">placeholder</button>
+    <button onclick="smashy()">Smashy</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Music</h1>
+    <button onclick="ytify()">Ytify</button>
+    <button onclick="musicale()">Musicale</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 18px">Other</h1>
+    <div class="container">
+        <button class="hoverButton" onclick="copilot()">Copilot</button>
+        <div class="infoBox">Best AI</div>
+    </div>
+    <div class="container">
+        <button class="hoverButton" onclick="llama3()">Llama 3</button>
+        <div class="infoBox">In all prompts, add "respond in English"</div>
+    </div>
+    <div class="container">
+        <button class="hoverButton" onclick="poe()">Poe</button>
+        <div class="infoBox">Multiple AI's (needs account)</div>
+    </div>
+    <div class="container">
+        <button class="hoverButton" onclick="deepai()">DeepAI (GPT-3)</button>
+        <div class="infoBox">Very inaccurate</div>
+    </div>
+    <button onclick="ramh()">Proxy</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+    <input style="height: 25px;padding:5px 5px;font-size: 15px" type="text" id="urlInput" placeholder="https://www.example.com"/>
+    <button onclick="getInputUrl()">Open</button>
+    <button onclick="snapdrop()">Snapdrop</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+
+    <script>
+        // overlay script
+        function toggleOverlay() {
+          var overlay = document.getElementById("overlay"); // Get the overlay element
+          if (overlay.style.display == "none") { // If it is hidden
+            overlay.style.display = "block"; // Show it
+          } else { // If it is shown
+            overlay.style.display = "none"; // Hide it
+          }
+        }
+        document.addEventListener("keypress", function(event) {
+          if (event.key == "o") {
+            toggleOverlay();
+          }
+        });
+        // optimized iframe
+        function oframe(url) {
+            var win = window.open();
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.style.margin = '0';
+            iframe.src = url;
+            iframe.setAttribute("allowfullscreen", "true");
+            win.document.body.appendChild(iframe);
+        }
+
+        function getInputUrl() {
+            var url = document.getElementById('urlInput').value;
+            oframe(url);
+        }
+        
+        // yt + alt
+        function tube() {oframe("https://totallyscience.co/service/hvtrs8%2F-wuw%2Cymuvu%60e%2Ccmm-%3Fel%3FUQ");}
+        function poke() {oframe("https://poketube.fun/discover");}
+        function invid() {oframe("https://artclass.site/service/hvtrs8%2F-it.egvynep.fet%2F");}
+        function invue() {oframe("https://bocchilorenzo.github.io/invuedious/");}
+        function twineo() {oframe("https://twineo.exozy.me/");}
+
+        // piped
+        function pipe1() {oframe("https://piped.kavin.rocks");}
+        function pipe2() {oframe("https://piped.video");}
+        function pipe3() {oframe("https://piped.mha.fi");}
+        function pipe4() {oframe("https://il.ax");}
+        function pipe5() {oframe("https://pipedapi.in.projectsegfau.lt");}
+        function pipe6() {oframe("https://cf.piped.video");}
+        function pipe7() {oframe("https://piped-api.lunar.icu");}
+        function pipe8() {oframe("https://az.piped.video");}
+        function pipe9() {oframe("https://fl.piped.video");}
+        function pipe10() {oframe("https://do.piped.video");}
+
+        // movie
+        function bingedPrv() {oframe("https://binged.in/");}
+        function binged2() {oframe("https://binged.live/");}
+        function bingedprx() {oframe("https://nearpod.gq/23a5f7c3b25344968b55a6763089c5e9/_rhsvoMC4://7eaedd.QxW4/");}
+        function placeholder() {oframe("https://nunflix.com/");}
+        function smashy() {oframe("https://smashystream.xyz/search");}
+
+
+        // music
+        function ytify() {oframe("https://ytify.netlify.app");}
+        function musicale() {oframe("https://musicale.tk/");}
+
+        // other
+        function copilot() {oframe("https://www.bing.com/search?q=Bing+AI&showconv=1&FORM=hpcodx");}    
+        function llama3() {oframe("https://llama3.dev");}
+        function poe() {oframe("https://poe.com");}
+        function deepai() {oframe("https://deepai.org/chat");}
+        function ramh() {oframe("https://nearpod.gq");}
+        function snapdrop() {oframe("https://snapdrop.net");}
+
+    </script>
+</body>
+</html>
