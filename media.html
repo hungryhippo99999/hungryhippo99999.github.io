@@ -58,21 +58,10 @@
             box-shadow: inset 4px 4px #5f2686;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
-        .overlay {
-         position: fixed; /* whole screen */
-         top: 0;
-         left: 0;
-         width: 1300px;
-         height: 100%;
-         background: url("https://labelsmerge.com/assets/images/guides/gdocs-modal-create-labels/1-blank-document.jpg") no-repeat center center; /* Set the background image */
-         display: none; /* default off = none, default on = visible*/
-        }
     </style>
 </head>
 <body>
-    <div id="overlay" class="overlay"></div>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">Streamline<sub style="font-size: 14px">1.7.3</sub></h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">Streamline<sub style="font-size: 14px">1.7.4</sub></h1>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">if a website doesnt work try a different option. do not open any links in a new tab - it will risk getting the websites blocked<h1></h1>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">YouTube</h1>
     <button onclick="tube()">YouTube</button>
@@ -91,12 +80,16 @@
     <button onclick="pipe8()">Piped 8</button>
     <button onclick="pipe9()">Piped 9</button>
     <button onclick="pipe10()">Piped 10</button>
+    
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Movies & TV</h1>
     <button onclick="bingedPrv()">Binged</button>
     <button onclick="binged2()">Binged 2</button>
     <!-- <button onclick="bingedprx()">Binged Prx</button> -->
     <button onclick="placeholder()">placeholder</button>
     <button onclick="smashy()">Smashy</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+    <button onclick="yuki()">YukiWatch</button>
+
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Music</h1>
     <button onclick="ytify()">Ytify</button>
     <button onclick="musicale()">Musicale</button>
@@ -125,20 +118,6 @@
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
 
     <script>
-        // overlay script
-        function toggleOverlay() {
-          var overlay = document.getElementById("overlay"); // Get the overlay element
-          if (overlay.style.display == "none") { // If it is hidden
-            overlay.style.display = "block"; // Show it
-          } else { // If it is shown
-            overlay.style.display = "none"; // Hide it
-          }
-        }
-        document.addEventListener("keypress", function(event) {
-          if (event.key == "o") {
-            toggleOverlay();
-          }
-        });
         // optimized iframe
         function oframe(url) {
             var win = window.open();
@@ -184,6 +163,9 @@
         function bingedprx() {oframe("https://nearpod.gq/23a5f7c3b25344968b55a6763089c5e9/_rhsvoMC4://7eaedd.QxW4/");}
         function placeholder() {oframe("https://nunflix.com/");}
         function smashy() {oframe("https://smashystream.xyz/search");}
+
+        //anime
+        function yuki() {oframe("https://yukiwatch.to");}
 
 
         // music
