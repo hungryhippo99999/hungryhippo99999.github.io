@@ -40,39 +40,48 @@
 </head>
 <body>
     <div id="overlay" class="overlay"></div>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">0.0.3<sub style="font-size: 14px">Γ</sub></h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">0.0.4<sub style="font-size: 14px">Γ</sub></h1>
     
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 16px"></h1>
     <button onclick="ramh()">rammerh</button>
     <button onclick="prx1()">search</button>
     <button onclick="searx()">searxng</button>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">---</h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">UTIL</h1>
     <button onclick="ggtyler()">ggtyler</button>
     <button onclick="inspect()">inspector</button>
     <button onclick="snapdrop()">snapdrop</button>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 3px"></h1>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 3px"></h1>
-    <button style="background-color: #ff4141;" onclick="getInputUrl()">open</button>
-    <input style="height: 25px;padding:5px 5px;font-size: 15px" type="text" id="urlInput" placeholder="https://www.example.com"/>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+    <button style="background-color: #ff4141;" onclick="getInputUrl()"></button>
+    <input style="height: 23px;padding:5px 5px;font-size: 14px" type="text" id="urlInput" placeholder="https://www.example.com"/>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">---</h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 3px"></h1>
+    <button style="background-color: #FF5700;" id="open-button"></button>
+    <input style="height: 23px;padding:5px 5px;font-size: 14px" type="text" id="url-input" placeholder="Enter a Reddit URL">
+    <select style="height: 30px;padding:5px 5px;font-size: 14px" id="domain-select">
+        <option value="nyc1.lr.ggtyler.dev">NYC1</option>
+        <option value="cal1.lr.ggtyler.dev">CAL1</option>
+        <option value="pol1.lr.ggtyler.dev">POL1</option>
+    </select>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">AI</h1>
     <button onclick="ai1()">freegpt</button>
     <button onclick="ai2()">gemini</button>
     <button onclick="toolbaz()">toolbaz</button>
     
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">---</h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">HW</h1>
     <button onclick="math()">mathway</button>
     <button onclick="stlate()">simplytranslate</button>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">---</h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">SITES</h1>
     <button onclick="echo()">3kh0</button>
     <button onclick="holyub()">holyUB</button>
     <button onclick="cgames()">crazygames</button>
     <button onclick="frogie()">frogie</button>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">---</h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">GAMES</h1>
     <button onclick="cluster()">cluster rush</button>
     <button onclick="ptrack()">polytrack</button>
     <button onclick="webhop()">webhop</button>
@@ -81,8 +90,8 @@
     <button onclick="quake2()">quake 2</button>
     <button onclick="cubef()">cubefield</button>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 16px">GBA</h1>
-    <button onclick="openFile('file:///home/chronos/u-2757fca9c426ce96dd9e0060ca304b44c6994ba2/MyFiles/Downloads/a/emulation/Advance%20Wars.html')">advance wars</button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">GBA</h1>
+    <button onclick="advwar()">advance wars</button>
 
     <script>
         // optimized iframe
@@ -108,10 +117,24 @@
         function openFile(filePath) {
             window.open(filePath, '_blank');
         }
+
+        function ourl(url) {
+            window.open(url, '_blank');
+        }
         
+        const replaceUrl = document.getElementById('url-input');
+        const domainSelect = document.getElementById('domain-select');
+        const openButton = document.getElementById('open-button');
+
+        openButton.addEventListener('click', () => {
+            const originalUrl = replaceUrl.value;
+            const selectedDomain = domainSelect.value;
+            const newUrl = originalUrl.replace('www.reddit.com', selectedDomain);
+            window.open(newUrl, '_blank');
+        });
+
         // 
         
-
         // search
         function ramh() {oframe("https://nearpod.gq");}
         function prx1() {oframe("https://holyubofficial.net/~/hvtrs8%2F-wuw%2Cgmoelg.aoo%2F");}
@@ -143,6 +166,7 @@
         function quake() {oframe("https://www.netquake.io");}
         function quake2() {oframe("https://quake2.m-h.org.uk/");}
         function cubef() {oframe("https://www.cubefield.org.uk/");}
+        function advwar() {ourl("file:///home/chronos/u-2757fca9c426ce96dd9e0060ca304b44c6994ba2/MyFiles/Downloads/a/emulation/Advance%20Wars.html");}
     </script>
 </body>
 </html>
