@@ -9,16 +9,35 @@
         }
         
         button {
-            background-color: #3645e1;
-            color: white;
-            padding: 11px 23px; /* old padding 10px 23px */
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-      		margin: 3px 2px; /* old margin 2px */
             font-size: 14px;
             font-family: Verdana, sans-serif;
             font-weight: bold;
+            display: inline-block;
+            outline: 0;
+            border: 0;
+            cursor: pointer;
+            will-change: box-shadow, transform;
+            background: radial-gradient(100% 100% at 100% 0%, #72d2ed 0%, #5468FF 100%);
+            box-shadow: 0px 0.01em 0.01em rgb(45 35 66 / 40%), 0px 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0px -0.01em 0px rgb(58 65 111 / 50%);
+
+            padding: 0 2em;
+            border-radius: 0.3em;
+            color: #fff;
+            height: 2.6em;
+            text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
+
+            transition: box-shadow 0.15s ease, transform 0.15s ease;
+            margin: 3px 2px; /* added margin to match original */
+        }
+
+        button:hover {
+            box-shadow: 0px 0.1em 0.2em rgb(45 35 66 / 40%), 0px 0.4em 0.7em -0.1em rgb(45 35 66 / 30%), inset 0px -0.1em 0px #3c4fe0;
+            transform: translateY(-0.1em);
+        }
+
+        button:active {
+            box-shadow: inset 0px 0.1em 0.6em #3c4fe0;
+            transform: translateY(0em);
         }
 
         .container {
@@ -31,20 +50,16 @@
             position: relative;
             margin-top: 0px
         }
-
-        button:hover {
-            background-color: #303ea9;
-        }
-
     </style>
 </head>
 <body>
     <div id="overlay" class="overlay"></div>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">0.0.4<sub style="font-size: 14px">Γ</sub></h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">0.0.5<sub style="font-size: 14px">Γ</sub></h1>
     
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 16px"></h1>
     <button onclick="ramh()">rammerh</button>
     <button onclick="prx1()">search</button>
+
     <button onclick="searx()">searxng</button>
 
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">UTIL</h1>
@@ -54,11 +69,11 @@
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 3px"></h1>
 
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
-    <button style="background-color: #ff4141;" onclick="getInputUrl()"></button>
+    <button style="background: radial-gradient(100% 100% at 100% 0%, #f77777 0%, #ed2b2b 100%); padding: 0.5em 2em; border-radius: 0.3em; height: 1.5em;" onclick="getInputUrl()"></button>
     <input style="height: 23px;padding:5px 5px;font-size: 14px" type="text" id="urlInput" placeholder="https://www.example.com"/>
 
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 3px"></h1>
-    <button style="background-color: #FF5700;" id="open-button"></button>
+    <button style="background: radial-gradient(100% 100% at 100% 0%, #faa87d 0%, #FF5700 100%); padding: 0.5em 2em; border-radius: 0.3em; height: 1.5em;" id="open-button"></button>
     <input style="height: 23px;padding:5px 5px;font-size: 14px" type="text" id="url-input" placeholder="Enter a Reddit URL">
     <select style="height: 30px;padding:5px 5px;font-size: 14px" id="domain-select">
         <option value="nyc1.lr.ggtyler.dev">NYC1</option>
@@ -79,6 +94,7 @@
     <button onclick="echo()">3kh0</button>
     <button onclick="holyub()">holyUB</button>
     <button onclick="cgames()">crazygames</button>
+
     <button onclick="frogie()">frogie</button>
 
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">GAMES</h1>
@@ -111,6 +127,7 @@
 
         function getInputUrl() {
             var url = document.getElementById('urlInput').value;
+
             oframe(url);
         }
 
