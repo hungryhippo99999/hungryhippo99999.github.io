@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI</title>
+    <link rel="icon" href="https://nearpod.gq/static-assets/favicon-presets/docs.ico">
+
+    <style>
+        body {
+            background-color: #1c1c1c;
+        }
+        
+        /* New Button Style */
+        button {
+            align-items: center;
+            background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+            border: 0;
+            border-radius: 8px;
+            box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+            box-sizing: border-box;
+            color: #ffffff;
+            display: inline-flex; /* Changed to inline-flex */
+            font-size: 15px;
+            font-family: Verdana, sans-serif;
+            font-weight: bold;
+            justify-content: center;
+            line-height: 1em;
+            max-width: 100%;
+            min-width: 140px;
+            padding: 3px;
+            text-decoration: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 7px 3px; /* added margin to match old button style */
+        }
+
+        button:active,
+        button:hover {
+            outline: 0;
+        }
+
+        button span {
+            background-color: rgb(5, 6, 45);
+            padding: 16px 24px;
+            border-radius: 6px;
+            width: 100%;
+            height: 100%;
+            transition: 300ms;
+        }
+
+        button:hover span {
+
+            background: none;
+        }
+
+        button:active {
+            transform: scale(0.9);
+        }
+
+        .container {
+            position: relative;
+            display: inline-block;
+            margin-top: 0px
+        }
+
+        .hoverButton {
+            position: relative;
+            margin-top: 0px
+        }
+      
+    </style>
+</head>
+<body>
+    <div id="overlay" class="overlay"></div>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">AI<sub style="font-size: 14px">0.0.2</sub></h1>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">1.8</h1>
+    <button onclick="wasm8()">
+      <span class="text">1.8</span>
+    </button>
+    <button onclick="astra()">
+      <span class="text">Astra v1.4</span>
+    </button>
+    <button onclick="astraof()">
+      <span class="text">Astra v1.5</span>
+    </button>
+    
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">1.12</h1>
+    <button onclick="wasm12()">
+      <span class="text">1.12</span>
+    </button>
+
+    <script>
+        // optimized iframe
+        function oframe(url) {
+            var win = window.open();
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.style.margin = '0';
+            iframe.src = url;
+            iframe.setAttribute("allowfullscreen", "true");
+            win.document.body.appendChild(iframe);
+        }
+        
+        function ourl(url) {
+            window.open(url, '_blank');
+        }
+        
+        // 1.8
+        function wasm8() {oframe("https://client.eaglercraft.win/eagler-files/wasm/1.8/Main/index.html");}
+	      function astra() {oframe("https://client.eaglercraft.win/eagler-files/wasm/1.8/AstraClient/index.html");}
+        function astraof() {oframe("https://astraclientorg.github.io/wasm/");}
+        function placehold() {oframe("https://www.example.com");}
+        function placehold() {oframe("https://www.example.com");}
+        
+        // 1.12
+        function wasm12() {oframe("https://client.eaglercraft.win/eagler-files/wasm/1.12/Main/index.html");}
+        function placehold() {oframe("https://www.example.com");}
+        function placehold() {oframe("https://www.example.com");}
+        
+    </script>
+</body>
+</html> 
