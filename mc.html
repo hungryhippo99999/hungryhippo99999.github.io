@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI</title>
+    <title>Minecraft</title>
     <link rel="icon" href="https://nearpod.gq/static-assets/favicon-presets/docs.ico">
 
     <style>
@@ -75,22 +75,36 @@
 </head>
 <body>
     <div id="overlay" class="overlay"></div>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">AI<sub style="font-size: 14px">0.0.2</sub></h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">Minecraft<sub style="font-size: 14px">0.0.1</sub></h1>
 
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">1.8</h1>
     <button onclick="wasm8()">
       <span class="text">1.8</span>
     </button>
     <button onclick="astra()">
-      <span class="text">Astra v1.4</span>
+      <span class="text">Astra v1.5</span>
     </button>
     <button onclick="astraof()">
-      <span class="text">Astra v1.5</span>
+      <span class="text">Astra v1.5 (2)</span>
+    </button>
+    <button onclick="astra14()">
+      <span class="text">Astra v1.4</span>
+    </button>
+    <button onclick="pixel()">
+      <span class="text">Pixel</span>
     </button>
     
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">1.12</h1>
     <button onclick="wasm12()">
       <span class="text">1.12</span>
+    </button>
+    <button onclick="pixel12()">
+      <span class="text">Pixel</span>
+    </button>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">Launcher</h1>
+    <button onclick="pixellauncher()">
+      <span class="text">Pixel Launcher</span>
     </button>
 
     <script>
@@ -115,15 +129,21 @@
         
         // 1.8
         function wasm8() {oframe("https://client.eaglercraft.win/eagler-files/wasm/1.8/Main/index.html");}
-	function astra() {oframe("https://client.eaglercraft.win/eagler-files/wasm/1.8/AstraClient/index.html");}
+	function astra() {oframe("https://zelz.kloven.gg/clients/astra152-wasm/index.html");}
         function astraof() {oframe("https://astraclientorg.github.io/wasm/");}
+	function astra14() {oframe("https://client.eaglercraft.win/eagler-files/wasm/1.8/AstraClient/index.html");}
+        function pixel() {oframe("https://devjakob.webs.vc/launcher/wasm/");}
         function placehold() {oframe("https://www.example.com");}
-        function placehold() {oframe("https://www.example.com");}
+	function placehold() {oframe("https://www.example.com");}
         
         // 1.12
         function wasm12() {oframe("https://client.eaglercraft.win/eagler-files/wasm/1.12/Main/index.html");}
-        function placehold() {oframe("https://www.example.com");}
-        function placehold() {oframe("https://www.example.com");}
+        function pixel12() {oframe("https://devjakob.webs.vc/launcher/wasm-1.12.2/");}
+	function placehold() {oframe("https://www.example.com");}
+	function placehold() {oframe("https://www.example.com");}
+
+	// launcher
+        function pixellaunch() {oframe("https://devjakob.webs.vc/launcher/");}
         
     </script>
 </body>
