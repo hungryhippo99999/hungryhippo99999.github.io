@@ -58,34 +58,16 @@
             box-shadow: inset 4px 4px #5f2686;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        footer {
-            background-color: #1c1c1c; /* Light gray background */
-            text-align: center;       /* Center the text */
-            padding: 2px;           /* Add some padding */
-            position: fixed;         /* Keep it at the bottom */
-            bottom: 0;
-            width: 100%;
-        }
-        
-        p {
-            font-family: 'Verdana', sans-serif; /* A different font for paragraphs */
-            font-weight: bold;
-            color: white;                   /* Paragraph text color (orange) */
-            font-size: 12px;                    /* Font size for paragraphs */
-            line-height: 1.5;                   /* Adjusts the space between lines */
-        }
     </style>
 </head>
 <body>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">Media<sub style="font-size: 14px">1.7.9</sub></h1>
+    <div style="display: flex; align-items: center; width: 100%;">
+      <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Media<sub style="font-size: 14px">1.7.9</sub></h1>
+      <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 13px; flex: 1; text-align: center;">Available Pages: ai, mc, media</h1>
+      <div style="flex: 1;"></div> <!-- This empty div helps with centering -->
+    </div>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">if a website doesnt work try a different option. do not open any links in a new tab - it will risk getting the websites blocked<h1></h1>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">YouTube</h1>
-    <button onclick="astro()">AstroTube</button>
-    <button onclick="poke()">PokeTube</button>
-    <button onclick="invue()">Invuedious</button>
-    <button onclick="twineo()">Twineo (Twitch)</button>
-    
+
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Movies & TV (recommend Val)</h1>
     <button onclick="valh()">Val</button>
     <button onclick="xprime()">XPrime</button>
@@ -94,8 +76,12 @@
     <button onclick="smashy()">Smashy</button>
     <button onclick="flix()">Nunflix</button>
     <button onclick="cine()">Cinemadeck</button>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
-    <button onclick="yuki()">YukiWatch</button>
+        
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">YouTube</h1>
+    <button onclick="astro()">AstroTube</button>
+    <button onclick="poke()">PokeTube</button>
+    <button onclick="invue()">Invuedious</button>
+    <button onclick="twineo()">Twineo (Twitch)</button>
 
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Music</h1>
     <button onclick="ytify()">Ytify</button>
@@ -115,8 +101,8 @@
     </div> -->
     <!-- <div class="container">
         <button class="hoverButton" onclick="deepai()">DeepAI (GPT-3)</button>
-        <div class="infoBox">Very inaccurate</div> !-->
-    </div>
+        <div class="infoBox">Very inaccurate</div> 
+    </div> !-->
     <button onclick="ramh()">Proxy</button>
     <button onclick="desmos()">Desmos</button>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
@@ -124,10 +110,6 @@
     <button onclick="getInputUrl()">Open</button>
     <button onclick="snapdrop()">Snapdrop</button>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
-
-    <footer>
-        <p>Available Pages: ai, mc, media</p>
-    </footer>
         
     <script>
         // optimized iframe
@@ -149,12 +131,6 @@
             var url = document.getElementById('urlInput').value;
             oframe(url);
         }
-        
-        // yt + alt
-        function astro() {oframe("https://www.ggtyler.dev/");}
-        function poke() {oframe("https://poketube.fun/discover");}
-        function invue() {oframe("https://bocchilorenzo.github.io/invuedious/");}
-        function twineo() {oframe("https://twineo.exozy.me/");}
 
         // movie
         function valh() {oframe("https://valhallastream.pages.dev/");}
@@ -166,8 +142,13 @@
         function cine() {oframe("https://cinemadeck.com/");}
 
         //anime
-        function yuki() {oframe("https://yukiwatch.su");}
-
+        function example() {oframe("https://www.example.com");}
+        
+        // yt + alt
+        function astro() {oframe("https://www.ggtyler.dev/");}
+        function poke() {oframe("https://poketube.fun/discover");}
+        function invue() {oframe("https://bocchilorenzo.github.io/invuedious/");}
+        function twineo() {oframe("https://twineo.exozy.me/");}
 
         // music
         function ytify() {oframe("https://ytify.netlify.app");}
