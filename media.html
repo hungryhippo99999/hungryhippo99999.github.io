@@ -69,12 +69,15 @@
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">goguardian cannot see these tabs<h1></h1>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">if a site doesnt work try a different option. do not open any links in a new tab - it will risk getting the sites blocked<h1></h1>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Movies & TV (recommend Val)</h1>
-    <button onclick="valh()">
-        <span class="text">Val</span>
-    </button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Movies & TV (recommend: XPrime)</h1>
     <button onclick="xprime()">
         <span class="text">XPrime</span>
+    </button>
+    <button onclick="fmovie()">
+        <span class="text">FMovies</span>
+    </button>
+    <button onclick="valh()">
+        <span class="text">Val</span>
     </button>
     <button onclick="rive()">
         <span class="text">Rive</span>
@@ -100,9 +103,6 @@
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">YouTube</h1>
     <button onclick="norep()">
         <span class="text">Norepted</span>
-    </button>
-    <button onclick="poke()">
-        <span class="text">PokeTube</span>
     </button>
         
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 18px">Proxy/Other</h1>
@@ -156,8 +156,9 @@
         }
 
         // movie
-        function valh() {oframe("https://valhallastream.pages.dev/");}
         function xprime() {oframe("https://xprime.tv/");}
+        function fmovie() {oframe("https://www.fmovies.gd/");}
+        function valh() {oframe("https://valhallastream.pages.dev/");}
         function rive() {oframe("https://rivestream.org/");}
         function freek() {oframe("https://freek.to/");}
         function smashy() {oframe("https://smashystream.xyz/search");}
@@ -170,7 +171,6 @@
         // yt + alt
         function norep() {oframe("https://gzhhqm.csb.app/");}
         function astro() {oframe("https://at.ggtyler.dev/");}
-        function poke() {oframe("https://poketube.fun/discover");}
 
         // other
         function inter() {oframe("https://gointerstellar.app/");}
