@@ -77,27 +77,38 @@
     <div id="overlay" class="overlay"></div>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">AI<sub style="font-size: 14px">0.0.2</sub></h1>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">Chatbots</h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">Multiple AI</h1>
     <button onclick="freegpt()">
       <span class="text">FreeGPT</span>
     </button>
     <button onclick="heck()">
       <span class="text">HeckAI</span>
     </button>
+	<button onclick="ish()">
+      <span class="text">ISH</span>
+    </button>
     <button onclick="lite()">
       <span class="text">Lite-GPT</span>
-    </button>
-    <button onclick="aiab()">
-      <span class="text">Assistant</span>
     </button>
     <button onclick="duck()">
       <span class="text">DuckDuckGo</span>
     </button>
-    <button onclick="lambda()">
-      <span class="text">Lambda</span>
-    </button>
     <button onclick="next()">
       <span class="text">NextChat</span>
+    </button>
+
+	<h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">Other AI</h1>
+	<button onclick="qwen()">
+      <span class="text">Qwen</span>
+    </button>
+	<button onclick="step()">
+      <span class="text">Stepfun</span>
+    </button>
+	<button onclick="kimi()">
+      <span class="text">Kimi</span>
+    </button>
+	<button onclick="solar()">
+      <span class="text">Solar</span>
     </button>
     
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">Images</h1>
@@ -150,15 +161,20 @@
             window.open(url, '_blank');
         }
         
-        // chatbots
+        // multi chatbots
         function freegpt() {oframe("https://freegpt.tech/");}
-	function heck() {oframe("https://heck.ai/");}
+		function heck() {oframe("https://heck.ai/");}
+		function ish() {oframe("https://ish.junioralive.in/");}
         function lite() {oframe("https://link.fuckicoding.com/#/");}
-        function aiab() {oframe("https://aiassistantbot.netlify.app/");}
         function duck() {ourl("https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1");}
-        function lambda() {oframe("https://lambda.chat/chatui/");}
         function next() {oframe("https://gpt35.chenjinshui.top/");}
-        
+
+		// alt ai
+		function qwen() {oframe("https://chat.qwen.ai/");}
+		function step() {oframe("https://stepfun.ai/chats/new");}
+		function kimi() {oframe("https://www.kimi.com/");}
+		function solar() {oframe("https://console.upstage.ai/playground/chat");}
+		
         // image gen
         function dezgo() {oframe("https://dezgo.com/");}
         function flux() {oframe("https://black-forest-labs-flux-1-schnell.hf.space");}
@@ -167,7 +183,7 @@
         function aigallery() {oframe("https://aigallery.app/");}
         
         // search
-	function wrtn() {oframe("https://wrtn.ai/");}
+		function wrtn() {oframe("https://wrtn.ai/");}
         function hyper() {oframe("https://play.hyper.space/");}
         function uncovr() {oframe("https://uncovr.app/");}
         
