@@ -62,7 +62,7 @@
 </head>
 <body>
     <div style="display: flex; align-items: center; width: 100%;">
-      <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Media<sub style="font-size: 14px">1.8.2</sub></h1>
+      <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Media<sub style="font-size: 14px">1.8.3</sub></h1>
       <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 13px; flex: 1; text-align: center;">Available Pages: ai, games, mc, media</h1>
       <div style="flex: 1;"></div> <!-- This empty div helps with centering -->
     </div>
@@ -104,15 +104,24 @@
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 14px">open a proxy and use this website in the proxy: https://inv.nadeko.net/feed/popular</h1>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">ㅤ</h1>
         
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 18px">Proxy/Other</h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 18px">Proxy</h1>
     <button onclick="ramh()">
-        <span class="text">Proxy</span>
+        <span class="text">RH</span>
     </button>
     <button onclick="ramh2()">
-        <span class="text">Proxy 2</span>
+        <span class="text">RH 2</span>
+    </button>
+    <button onclick="openRandomUrl('rammerheadUrls')">
+        <span class="text">RH Random</span>
+    </button>
+    <button onclick="inter()">
+        <span class="text">Interstellar</span>
+    </button>
+    <button onclick="inter2()">
+        <span class="text">Interstellar 2</span>
     </button>
         
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 18px">Other</h1>
     <button onclick="desmos()">
         <span class="text">Desmos</span>
     </button>
@@ -121,9 +130,6 @@
     <input style="height: 25px;padding:5px 5px;font-size: 15px" type="text" id="urlInput" placeholder="https://www.example.com"/>
     <button onclick="getInputUrl()">
         <span class="text">Open</span>
-    </button>
-    <button onclick="snapdrop()">
-        <span class="text">Snapdrop</span>
     </button>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
         
@@ -165,13 +171,60 @@
         function norep() {oframe("https://gzhhqm.csb.app/");}
         function astro() {oframe("https://at.ggtyler.dev/");}
 
-        // other
-        function inter() {oframe("https://gointerstellar.app/");}
-        function inter2() {oframe("https://my-learning-hall.jemix.sg/");}
+        // proxy
         function ramh() {oframe("https://nearpod.gq");}
         function ramh2() {oframe("https://rammerhead-10.swanndvr.net/");}
-        
+        function inter() {oframe("https://gointerstellar.app/");}
+        function inter2() {oframe("https://my-learning-hall.jemix.sg/");}
+
+        // other
         function desmos() {oframe("https://www.desmos.com/calculator");}
+
+        // randomize proxy (rammerhead links) https://sites.google.com/view/twigs-utilities/pr0x1es
+        const rammerheadUrls = [
+          "https://azumanga-daioh.custom-gaming.net/",
+          "https://discyoyan.kalbas.com.vn/",
+          "https://quizizz.the-schmidt-family.org/",
+          "https://ursmelly.smelly.cc/",
+          "https://tspmoicl.kutakutik.or.id/",
+          "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/",
+          "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/",
+          "https://mathfun.thehomeserver.net/",
+          "https://ohio.malam.or.id/",
+          "https://stopragebaiting.3cm.us/",
+          "https://schoolended.iiiii.info/",
+          "https://ghettolululemon.mynode.biz/",
+          "https://aidancomputers.1337.cx/",
+          "https://a-regist.anondns.net/"
+          // Add more URLs to the list as needed
+        ];
+
+        const otherUrls = [
+          "https://www.example.com",
+          "https://www.example.com"
+          // Add more "other" URLs here
+        ];
+
+        const urlLists = {
+          "rammerheadUrls": rammerheadUrls,
+          "otherUrls": otherUrls
+          // Add more mappings if you create new lists
+        };
+        
+        function openRandomUrl(listName) {
+          const selectedList = urlLists[listName];
+        
+          if (!selectedList || selectedList.length === 0) {
+            console.error(`List '${listName}' not found or is empty.`);
+            alert(`Sorry, the list '${listName}' is not available or empty.`);
+            return;
+          }
+        
+          const randomIndex = Math.floor(Math.random() * selectedList.length);
+          const randomUrl = selectedList[randomIndex];
+          console.log(`Opening random URL from ${listName}: ${randomUrl}`); // Optional: for debugging
+          oframe(randomUrl);
+        }
         
     </script>
 </body>
