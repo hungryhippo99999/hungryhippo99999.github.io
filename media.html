@@ -90,7 +90,7 @@
 </head>
 <body>
     <div style="display: flex; align-items: center; width: 100%;">
-      <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Media<sub style="font-size: 14px">1.8.3</sub></h1>
+      <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Media<sub style="font-size: 14px">1.9.0</sub></h1>
       <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 13px; flex: 1; text-align: center;">Available Pages: ai, games, mc, media</h1>
       <div style="flex: 1;"></div> <!-- This empty div helps with centering -->
     </div>
@@ -161,6 +161,14 @@
     </button>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
 
+    <button id="chatButton" onclick="aipage()" style="bottom: 250px">
+        <img src="https://ai.ls/assets/openai-logos/PNGs/openai-logomark.png" style="width: 36px; height: 36px" alt="AI">
+    </button>
+    <button id="chatButton" onclick="gamespage()" style="bottom: 172px">
+        <img src="https://www.svgrepo.com/show/326649/game-controller-outline.svg" style="width: 42px; height: 42px" alt="Games">
+    <button id="chatButton" onclick="chat()">
+    <button id="chatButton" onclick="mcpage()" style="bottom: 94px">
+        <img src="https://icons.veryicon.com/png/o/object/material-design-icons-1/minecraft-8.png" style="width: 38px; height: 38px" alt="MC">
     <button id="chatButton" onclick="chat()">
         <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="Chat">
     </button>
@@ -212,6 +220,33 @@
 
         // other
         function desmos() {oframe("https://www.desmos.com/calculator");}
+
+        // page selector (bottom right)
+        function openGithubPage(pageName) {
+          // open a new blank tab
+          const newWin = window.open('about:blank');
+        
+          // fetch the HTML from GitHub Pages (THIS CIRCUMVENTS GITHUB GETTING BLOCKED, WHICH WOULD MAKE IFRAMES USELESS)
+          fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
+            .then(res => {
+              if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
+              return res.text();
+            })
+            .then(html => {
+              // write HTML directly into the new tab
+              newWin.document.open();
+              newWin.document.write(html);
+              newWin.document.close();
+            })
+            .catch(err => {
+              newWin.document.body.innerHTML =
+                `<pre style="color:red;">Error loading ${pageName}: ${err.message}</pre>`;
+            });
+        }
+        
+        function aipage()   { openGithubPage('ai'); }
+        function gamespage(){ openGithubPage('games'); }
+        function mcpage()   { openGithubPage('mc'); }
         function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
 
         // randomize proxy (rammerhead links) https://sites.google.com/view/twigs-utilities/pr0x1es
