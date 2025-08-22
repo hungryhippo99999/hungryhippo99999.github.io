@@ -58,6 +58,34 @@
             transform: scale(0.9);
         }
 
+        #chatButton {
+            all: unset; /* wipe inherited button styles */
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(144deg, #FF4040, #F36642 50%, #FF7823);
+            border-radius: 50%;
+            box-shadow: rgba(255, 69, 30, 0.3) 0 6px 12px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        #chatButton:hover {
+            transform: scale(1.05);
+        }
+
+        #chatButton img {
+            width: 32px;
+            height: 32px;
+            pointer-events: none; /* so clicks go to the button */
+        }
+
     </style>
 </head>
 <body>
@@ -132,6 +160,11 @@
         <span class="text">Open</span>
     </button>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+
+    <button id="chatButton" onclick="chat()">
+        <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="Chat">
+    </button>
+
         
     <script>
         // optimized iframe
@@ -179,6 +212,7 @@
 
         // other
         function desmos() {oframe("https://www.desmos.com/calculator");}
+        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
 
         // randomize proxy (rammerhead links) https://sites.google.com/view/twigs-utilities/pr0x1es
         const rammerheadUrls = [
