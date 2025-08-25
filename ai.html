@@ -75,26 +75,23 @@
 </head>
 <body>
     <div id="overlay" class="overlay"></div>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">AI<sub style="font-size: 14px">0.0.2</sub></h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">AI<sub style="font-size: 14px">0.3</sub></h1>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">Multiple AI</h1>
-    <button onclick="freegpt()">
-      <span class="text">FreeGPT</span>
-    </button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">ChatGPT 5</h1>
     <button onclick="heck()">
       <span class="text">HeckAI</span>
     </button>
 	<button onclick="ish()">
       <span class="text">ISH</span>
     </button>
-    <button onclick="lite()">
-      <span class="text">Lite-GPT</span>
-    </button>
-    <button onclick="duck()">
+	<button onclick="duck()">
       <span class="text">DuckDuckGo</span>
     </button>
-    <button onclick="next()">
-      <span class="text">NextChat</span>
+	<button onclick="freegpt()">
+      <span class="text">FreeGPT</span>
+    </button>
+    <button onclick="lite()">
+      <span class="text">Lite-GPT</span>
     </button>
 
 	<h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">Other AI</h1>
@@ -162,12 +159,11 @@
         }
         
         // multi chatbots
-        function freegpt() {oframe("https://freegpt.tech/");}
 		function heck() {oframe("https://heck.ai/");}
 		function ish() {oframe("https://ish.junioralive.in/");}
+		function duck() {ourl("https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1");}
+        function freegpt() {oframe("https://freegpt.tech/");}
         function lite() {oframe("https://link.fuckicoding.com/#/");}
-        function duck() {ourl("https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1");}
-        function next() {oframe("https://gpt35.chenjinshui.top/");}
 
 		// alt ai
 		function qwen() {oframe("https://chat.qwen.ai/");}
