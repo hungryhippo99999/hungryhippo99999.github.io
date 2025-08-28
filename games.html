@@ -62,7 +62,7 @@
 </head>
 <body>
     <div style="display: flex; align-items: center; width: 100%;">
-    <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Games<sub style="font-size: 14px">0.4</sub></h1>
+    <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Games<sub style="font-size: 14px">0.5</sub></h1>
 
     </div>
 
@@ -77,6 +77,17 @@
     </button>
     <button onclick="sub()">
         <span class="text">Subway Surfers</span>
+    </button>
+    <button onclick="hk()">
+        <span class="text">Hollow Knight</span>
+    </button>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Game Sites</h1>
+    <button onclick="gn()">
+        <span class="text">GN-Math</span>
+    </button>
+  	<button onclick="truff()">
+        <span class="text">Truffled</span>
     </button>
 
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Emulator (need your own game files)</h1>
@@ -117,15 +128,45 @@
         // games
         function uno() {oframe("https://scuffeduno.online/");}
         function pg3d() {oframe("https://st1.8games.net/10/8g/igra-bit-gun-io/");}
-        function slope3() {oframe("https://ovo-game.github.io/o/slope-3/");}
+        function slope3() {oframe("https://slope-3-game.github.io/file/");}
         function sub() {oframe("https://szhong.4399.com/4399swf//upload_swf/ftp35/liuxinyu/20210324/jj01/index.html");}
 
+        // game sites
+      	function truff() {oframe("https://truffled.lol/g");}
+        
         // emulation
         function emu() {oframe("https://demo.emulatorjs.org/");}
         
         // proxy
         function ramh() {oframe("https://nearpod.gq");}
         function ramh2() {oframe("https://rammerhead-10.swanndvr.net/");}
+
+        // code embedder
+        function openGithubPage(pageName) {
+          // open a new blank tab
+          const newWin = window.open('about:blank');
+        
+          // fetch the HTML from GitHub Pages (THIS CIRCUMVENTS GITHUB GETTING BLOCKED, WHICH WOULD MAKE IFRAMES USELESS)
+          fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
+            .then(res => {
+              if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
+              return res.text();
+            })
+            .then(html => {
+              // write HTML directly into the new tab
+              newWin.document.open();
+              newWin.document.write(html);
+              newWin.document.close();
+            })
+            .catch(err => {
+              newWin.document.body.innerHTML =
+                `<pre style="color:red;">Error loading ${pageName}: ${err.message}</pre>`;
+            });
+        }
+        
+      	// newgames
+        function gn()   { openGithubPage('newgames/gnmath'); }
+      	function hk()   { openGithubPage('newgames/hollowknight'); }
         
     </script>
 </body>
