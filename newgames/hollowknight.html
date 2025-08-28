@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <base href="https://cdn.jsdelivr.net/gh/web-ports/hollow-knight@main/">
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Hollowa Knight</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #231F20;
+            color: white;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column; /* stack dropdown above game */
+            align-items: center;
+            justify-content: flex-start; /* start from top */
+        }
+
+        #resolution-bar {
+            margin: 10px 0;
+            z-index: 1000; /* stays on top of canvas */
+        }
+
+        #unity-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #unity-canvas {
+            background: black;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+    </style>
+
+    <body>
+      <div id="loading-text" style="font-size: 32px; margin: 10px;">LOADING...</div>
+
+      <!-- DROPDOWN IS NOW ALWAYS VISIBLE -->
+      <div id="resolution-bar">
+          <label for="resolutionSelect">Resolution: </label>
+          <select id="resolutionSelect">
+              <option value="1280x720" selected>720p</option>
+              <option value="960x540">540p</option>
+              <option value="640x360">360p</option>
+          </select>
+      </div>
+
+      <div hidden id="unity-container" class="unity-desktop">
+          <canvas id="unity-canvas" width="1280" height="720" style="width:1280px;height:720px;"></canvas>
+          <div id="unity-loading-bar">
+              <div id="unity-logo"></div>
+              <div id="unity-progress-bar-empty">
+                  <div id="unity-progress-bar-full"></div>
+              </div>
+          </div>
+          <div id="unity-mobile-warning"> WebGL builds are not supported on mobile devices. </div>
+      </div>
+    </body>
+
+
+    <script>
+        var loadingText = document.querySelector("#loading-text");
+        let totalBytes = 0;
+        let loadedBytes = 0;
+        
+        async function getSize(url) {
+            try {
+                const res = await fetch(url, { method: "HEAD" });
+                return parseInt(res.headers.get("Content-Length") || "0", 10);
+            } catch { return 0; }
+        }
+
+        async function fetchWithProgress(url) {
+            const response = await fetch(url);
+            const reader = response.body.getReader();
+            let chunks = [];
+            let received = 0;
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                received += value.length;
+                loadedBytes += value.length;
+                chunks.push(value);
+                let mbDone = (loadedBytes / (1024 * 1024)).toFixed(2);
+                let mbTotal = '909.17';
+                loadingText.textContent = `LOADING... ${mbDone} MB / ${mbTotal} MB`;
+            }
+            let fullBuffer = new Uint8Array(received);
+            let offset = 0;
+            for (let chunk of chunks) {
+                fullBuffer.set(chunk, offset);
+                offset += chunk.length;
+            }
+            return fullBuffer.buffer;
+        }
+
+        async function mergeFiles(fileParts) {
+            const buffers = await Promise.all(fileParts.map(part => fetchWithProgress(part)));
+            const mergedBlob = new Blob(buffers);
+            return URL.createObjectURL(mergedBlob);
+        }
+
+        function getParts(file, start, end) {
+            let parts = [];
+            for (let i = start; i <= end; i++) {
+                parts.push(file + ".part" + i);
+            }
+            return parts;
+        }
+
+        (async () => {
+            const allParts = [...getParts("Build/bog.data", 1, 44), ...getParts("Build/bog.wasm", 1, 2)];
+            const sizes = await Promise.all(allParts.map(getSize));
+            totalBytes = sizes.reduce((a, b) => a + b, 0);
+
+            const [dataUrl, wasmurl] = await Promise.all([
+                mergeFiles(getParts("Build/bog.data", 1, 44)),
+                mergeFiles(getParts("Build/bog.wasm", 1, 2)),
+            ]);
+
+            var buildUrl = "Build";
+            var loaderUrl = buildUrl + "/bog.loader.js";
+            var config = {
+                dataUrl: dataUrl,
+                frameworkUrl: buildUrl + "/bog.framework.js",
+                codeUrl: wasmurl,
+                streamingAssetsUrl: "StreamingAssets",
+                companyName: "Team Cherry & Truffled",
+                productName: "Hollow Knight",
+                productVersion: "1.0",
+                devicePixelRatio: 1
+            };
+
+            var container = document.querySelector("#unity-container");
+            container.hidden = false;
+            var canvas = document.querySelector("#unity-canvas");
+            var loadingBar = document.querySelector("#unity-loading-bar");
+            var progressBarFull = document.querySelector("#unity-progress-bar-full");
+            var mobileWarning = document.querySelector("#unity-mobile-warning");
+
+            // Initial resolution
+            function setResolution(w, h) {
+                canvas.width = w;
+                canvas.height = h;
+                canvas.style.width = w + "px";
+                canvas.style.height = h + "px";
+            }
+            setResolution(1280, 720);
+
+            // Dropdown listener
+            document.getElementById('resolutionSelect').addEventListener('change', function () {
+                const [w, h] = this.value.split('x').map(Number);
+                setResolution(w, h);
+            });
+
+            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                container.className = "unity-mobile";
+                mobileWarning.style.display = "block";
+                setTimeout(() => { mobileWarning.style.display = "none"; }, 5000);
+            }
+
+            loadingBar.style.display = "block";
+
+            var script = document.createElement("script");
+            script.src = loaderUrl;
+            script.onload = () => {
+                createUnityInstance(canvas, config, (progress) => {
+                    progressBarFull.style.width = (100 * progress) + "%";
+                }).then((unityInstance) => {
+                    loadingText.remove();
+                    loadingBar.style.display = "none";
+                    canvas.style.display = "block";
+                }).catch((message) => {
+                    alert(message);
+                });
+            };
+            document.body.appendChild(script);
+        })();
+    </script>
+</body>
+</html>
