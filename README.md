@@ -1,1 +1,1 @@
-personal site to host html files that open iframes in about:blank to circumvent blocking. used in combination with another html file that fetches the html code and displays it (to get around this website getting blocked)
+VERY basic personal site to host html files that open iframes in about:blank. used in combination with another html file that fetches the html code and displays it (to get around any github.io blocks)
