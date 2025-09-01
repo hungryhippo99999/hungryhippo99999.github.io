@@ -6,12 +6,81 @@
     <style>
         body {
             background-color: #1c1c1c;
+            font-family: Verdana, sans-serif;
+        }
+
+        h1 {
+            color: white;
+        }
+
+        /* Game Button Container */
+        .game-btn {
+            position: relative;
+            display: inline-block;
+            width: 155px;
+            height: 190px;
+            margin: 7px 5px;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            background-image: linear-gradient(30deg, #A2CB38, #57C785 40%, #2A7B9B);
+            padding: 3px; /* gradient border thickness */
+            transition: transform 0.3s;
+        }
+
+        /* Inner content wrapper */
+        .game-btn-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        /* Game image */
+        .game-btn img {
+            width: 100%;
+            height: 75%;
+            object-fit: cover;
+            display: block;
+            transition: filter 0.3s;
+        }
+
+        /* Title bar */
+        .game-btn span {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(19, 32, 25, 0.85);
+            color: #fff;
+            font-weight: bold;
+            font-size: 17px; /* was 14px */
+            text-align: center;
+            padding: 13px 0; /* was 6px 0 */
+            transition: background-color 0.3s;
+        }
+
+
+        /* Hover effects */
+        .game-btn:hover img {
+            filter: brightness(70%);
+        }
+
+        .game-btn:hover span {
+            background-color: rgba(19, 32, 25, 0);
+        }
+
+        .game-btn:active {
+            transform: scale(0.9);
         }
         
-        /* Updated Button Style to match Minecraft page */
-        button {
+        /* ORIGINAL TEXT BUTTONS */
+        /* Original text-only button style */
+        .text-btn {
             align-items: center;
-            background-image: linear-gradient(30deg, #C1ED53, #57C785 50%, #2A7B9B);
+            background-image: linear-gradient(30deg, #A2CB38, #57C785 50%, #2A7B9B);
             border: 0;
             border-radius: 8px;
             box-shadow: rgba(84, 167, 123, 0.15) 0 15px 30px -5px;
@@ -23,25 +92,16 @@
             font-weight: bold;
             justify-content: center;
             line-height: 1em;
-            max-width: 100%;
             min-width: 140px;
             padding: 3px;
             text-decoration: none;
             user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            white-space: nowrap;
             cursor: pointer;
             transition: all 0.3s;
             margin: 7px 3px;
         }
 
-        button:active,
-        button:hover {
-            outline: 0;
-        }
-
-        button span {
+        .text-btn span {
             background-color: rgb(19, 32, 25);
             padding: 16px 24px;
             border-radius: 6px;
@@ -50,69 +110,114 @@
             transition: 300ms;
         }
 
-        button:hover span {
+        .text-btn:hover span {
             background: none;
         }
 
-        button:active {
+        .text-btn:active {
             transform: scale(0.9);
         }
 
+        
     </style>
 </head>
 <body>
     <div style="display: flex; align-items: center; width: 100%;">
-    <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Games<sub style="font-size: 14px">0.5</sub></h1>
-
+        <h1 style="font-size: 25px; flex: 1;">Games<sub style="font-size: 14px">1.0</sub></h1>
     </div>
-
-    <button onclick="uno()">
-        <span class="text">Scuffed Uno</span>
-    </button>
-    <button onclick="pg3d()">
-        <span class="text">Pixel Gun 3D</span>
-    </button>
-    <button onclick="slope3()">
-        <span class="text">Slope 3</span>
-    </button>
-    <button onclick="sub()">
-        <span class="text">Subway Surfers</span>
-    </button>
-    <button onclick="hk()">
-        <span class="text">Hollow Knight</span>
-    </button>
-    <button onclick="bbr()">
-        <span class="text">Basket Random</span>
-    </button>
-    <button onclick="scr()">
-        <span class="text">Soccer Random</span>
-    </button>
-    <button onclick="vbr()">
-        <span class="text">Volley Random</span>
-    </button>
-    <button onclick="rl()">
-        <span class="text">Rocket League</span>
+    
+    <h1 style="font-size: 13px">only using these websites through the file will make sure it doesnt get blocked</h1>
+    
+    <!-- Games -->
+    <button class="game-btn" onclick="uno()">
+        <div class="game-btn-inner">
+            <img src="https://scuffeduno.online/favicon.png" alt="Scuffed Uno">
+            <span>Scuffed Uno</span>
+        </div>
     </button>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Game Sites</h1>
-    <button onclick="gn()">
-        <span class="text">GN-Math</span>
+    <button class="game-btn" onclick="slope3()">
+        <div class="game-btn-inner">
+            <img src="https://slope3online.io/data/image/game/slope-3-slope3online.png" alt="Slope 3">
+            <span>Slope 3</span>
+        </div>
     </button>
 
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Emulator (need your own game files)</h1>
-    <button onclick="emu()">
-        <span class="text">EmulatorJS</span>
+    <button class="game-btn" onclick="slope()">
+        <div class="game-btn-inner">
+            <img src="https://1games.io/data/image/game/slope/slope.jpg" alt="Slope Plus">
+            <span>Slope Plus</span>
+        </div>
+    </button>
+
+    <button class="game-btn" onclick="sub()">
+        <div class="game-btn-inner">
+            <img src="https://i.pinimg.com/564x/26/2e/a0/262ea058aba7b39950e4b1c5348be001.jpg" alt="Subway Surfers">
+            <span>Subway Surfers</span>
+        </div>
+    </button>
+
+    <button class="game-btn" onclick="hk()">
+        <div class="game-btn-inner">
+            <img src="https://images.squarespace-cdn.com/content/v1/606d159a953867291018f801/1619987722169-VV6ZASHHZNRBJW9X0PLK/Key_Art_02_layeredjpg.jpg" alt="Hollow Knight">
+            <span>Hollow Knight</span>
+        </div>
+    </button>
+
+    <button class="game-btn" onclick="bbr()">
+        <div class="game-btn-inner">
+            <img src="https://play-lh.googleusercontent.com/gP8T5Z1O-ngxIloiwcBZzrzyLPYDp0R_1BDNKUDZboIRPVImeyWI8-7aExvB9gAGNKc" alt="Basket Random">
+            <span>Basket Random</span>
+        </div>
+    </button>
+
+    <button class="game-btn" onclick="scr()">
+        <div class="game-btn-inner">
+            <img src="https://play-lh.googleusercontent.com/G1PIlb6HWKSaDre0XpUcmKGps9T4iamsSlwrogB3EJzYv4bz0M2am4D17MtGzndaOOU" alt="Soccer Random">
+            <span>Soccer Random</span>
+        </div>
+    </button>
+
+    <button class="game-btn" onclick="vbr()">
+        <div class="game-btn-inner">
+            <img src="https://play-lh.googleusercontent.com/VeKAevaOjPlcyCtOpFY1h6SjwEjnu4ryG3xQ_qw1Muuhrg8pqwhl1aPjWovMkjc0Rc4" alt="Volley Random">
+            <span>Volley Random</span>
+        </div>
+    </button>
+
+    <button class="game-btn" onclick="rl()">
+        <div class="game-btn-inner">
+            <img src="https://play-lh.googleusercontent.com/-TdFiFj3zQtiRUi5t_oxyulLrJwzmmAjV9cdcFmM2dxhKymHeXxErguaZyju0CjGlRM=w526-h296-rw" alt="Rocket League">
+            <span>Rocket League</span>
+        </div>
     </button>
     
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">Multiplayer Poker/Blackjack + More</h1>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 13px">Open a proxy below and paste this website: https://www.cardzmania.com/games</h1>
-    <button onclick="ramh()">
-        <span class="text">Proxy</span>
+    <button class="game-btn" onclick="pg3d()">
+        <div class="game-btn-inner">
+            <img src="https://play-lh.googleusercontent.com/vnyd1PyULjBt0oC8SsHfTckyHEYIRGVI84fB-qcR0B61kk4_tuLJfv8yCz9NNnHfit4" alt="Pixel Gun 3D">
+            <span>Pixel Gun 3D</span>
+        </div>
     </button>
-    <button onclick="ramh2()">
-        <span class="text">Proxy 2</span>
+
+    <h1 style="font-size: 17px">Game Sites</h1>
+    <button class="text-btn" onclick="gn()">
+        <span>GN-Math</span>
     </button>
-        
+
+    <h1 style="font-size: 17px">Emulator (need your own game files)</h1>
+    <button class="text-btn" onclick="emu()">
+        <span>EmulatorJS</span>
+    </button>
+    
+    <h1 style="font-size: 17px">Multiplayer Poker/Blackjack + More</h1>
+    <h1 style="font-size: 13px">Open a proxy below and paste this website: https://www.cardzmania.com/games</h1>
+    <button class="text-btn" onclick="ramh()">
+        <span>Proxy</span>
+    </button>
+    <button class="text-btn" onclick="ramh2()">
+        <span>Proxy 2</span>
+    </button>
+    
     <script>
         // optimized iframe
         function oframe(url) {
@@ -136,13 +241,14 @@
 
         // games
         function uno() {oframe("https://scuffeduno.online/");}
-        function pg3d() {oframe("https://st1.8games.net/10/8g/igra-bit-gun-io/");}
         function slope3() {oframe("https://slope-3-game.github.io/file/");}
+        function slope() {oframe("https://html-classic.itch.zone/html/14788017/SlopePlus1.3.1Web/index.html");}
         function sub() {oframe("https://szhong.4399.com/4399swf//upload_swf/ftp35/liuxinyu/20210324/jj01/index.html");}
         function bbr() {oframe("https://truffled.lol/games/basket-random/index.html");}
         function scr() {oframe("https://truffled.lol/games/volley-random/index.html");}
         function vbr() {oframe("https://truffled.lol/games/soccer-random/index.html");}
         function rl() {oframe("https://truffled.lol/games/Rocket-League/index.html");}
+        function pg3d() {oframe("https://st1.8games.net/10/8g/igra-bit-gun-io/");}
         
         // emulation
         function emu() {oframe("https://demo.emulatorjs.org/");}
