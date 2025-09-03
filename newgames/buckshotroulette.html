@@ -9,23 +9,70 @@
     <link rel="stylesheet" href="style.css">
     <link id="-gd-engine-icon" rel="icon" type="image/png" href="buckshot-roulette.icon.png" />
     <link rel="apple-touch-icon" href="buckshot-roulette.apple-touch-icon.png" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #231F20;
+            color: white;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column; /* dropdown above game */
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        #resolution-bar {
+            margin: 10px 0;
+            z-index: 1000;
+        }
+
+        #canvas {
+            background: black;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            display: block;
+        }
+
+        #status {
+            position: relative;
+        }
+    </style>
 </head>
 
 <body>
     <script src="main.js"></script>
-    <div id="loading-text" style="color: white; font-family: cursive; font-size: 48px; text-align: center; margin-top: 20px;">LOADING...</div>
-    <canvas id="canvas"> Your browser does not support the canvas tag. </canvas>
-    <noscript> Your browser does not support JavaScript. </noscript>
+
+    <div id="loading-text" style="font-size: 32px; margin: 10px;">LOADING...</div>
+
+    <!-- Resolution dropdown -->
+    <div id="resolution-bar">
+        <label for="resolutionSelect">Resolution: </label>
+        <select id="resolutionSelect">
+            <option value="1280x720" selected>720p</option>
+            <option value="960x540">540p</option>
+            <option value="640x360">360p</option>
+        </select>
+    </div>
+
+    <canvas id="canvas" width="1280" height="720" style="width:1280px;height:720px;">
+        Your browser does not support the canvas tag.
+    </canvas>
+
+    <noscript>Your browser does not support JavaScript.</noscript>
+
     <div id="status">
         <img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="buckshot-roulette.png" alt="">
         <progress id="status-progress"></progress>
         <div id="status-notice"></div>
     </div>
+
     <script src="buckshot-roulette.js"></script>
     <script>
         const GODOT_CONFIG = {
             "args": [],
-            "canvasResizePolicy": 2,
+            "canvasResizePolicy": 0, // disable auto-resize
             "ensureCrossOriginIsolationHeaders": false,
             "executable": "buckshot-roulette",
             "experimentalVK": false,
@@ -39,6 +86,29 @@
         const GODOT_THREADS_ENABLED = false;
         const engine = new Engine(GODOT_CONFIG);
 
+        // Resolution setter — updates both canvas and Godot viewport
+        function setResolution(w, h) {
+            const canvas = document.getElementById('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            canvas.style.width = w + "px";
+            canvas.style.height = h + "px";
+
+            // If engine is running, tell Godot to resize its internal viewport
+            if (engine && typeof engine.setCanvasSize === 'function') {
+                engine.setCanvasSize(w, h);
+            }
+        }
+
+        // Initial resolution
+        setResolution(1280, 720);
+
+        // Dropdown listener
+        document.getElementById('resolutionSelect').addEventListener('change', function () {
+            const [w, h] = this.value.split('x').map(Number);
+            setResolution(w, h);
+        });
+
         function run() {
             const loadingText = document.getElementById('loading-text');
             const statusOverlay = document.getElementById('status');
@@ -49,9 +119,7 @@
             let statusMode = '';
 
             function setStatusMode(mode) {
-                if (statusMode === mode || !initializing) {
-                    return;
-                }
+                if (statusMode === mode || !initializing) return;
                 if (mode === 'hidden') {
                     statusOverlay.remove();
                     initializing = false;
@@ -86,40 +154,11 @@
                 setStatusMode('notice');
                 initializing = false;
             }
-            const missing = Engine.getMissingFeatures({
-                threads: GODOT_THREADS_ENABLED,
-            });
+
+            const missing = Engine.getMissingFeatures({ threads: GODOT_THREADS_ENABLED });
             if (missing.length !== 0) {
-                if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
-                    let serviceWorkerRegistrationPromise;
-                    try {
-                        serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
-                    } catch (err) {
-                        serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
-                    }
-                    // There's a chance that installing the service worker would fix the issue
-                    Promise.race([
-                        serviceWorkerRegistrationPromise.then((registration) => {
-                            if (registration != null) {
-                                return Promise.reject(new Error('Service worker already exists.'));
-                            }
-                            return registration;
-                        }).then(() => engine.installServiceWorker()),
-                        // For some reason, `getRegistration()` can stall
-                        new Promise((resolve) => {
-                            setTimeout(() => resolve(), 2000);
-                        }),
-                    ]).then(() => {
-                        // Reload if there was no error.
-                        window.location.reload();
-                    }).catch((err) => {
-                        console.error('Error while registering service worker:', err);
-                    });
-                } else {
-                    // Display the message as usual
-                    const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
-                    displayFailureNotice(missingMsg + missing.join('\n'));
-                }
+                const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+                displayFailureNotice(missingMsg + missing.join('\n'));
             } else {
                 setStatusMode('progress');
                 engine.startGame({
@@ -140,5 +179,4 @@
         window.godotRunStart = run;
     </script>
 </body>
-
 </html>
