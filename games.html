@@ -41,7 +41,7 @@
         /* Game image */
         .game-btn img {
             width: 100%;
-            height: 75%;
+            height: 77%;
             object-fit: cover;
             display: block;
             transition: filter 0.3s;
@@ -56,7 +56,7 @@
             background-color: rgba(19, 32, 25, 0.85);
             color: #fff;
             font-weight: bold;
-            font-size: 17px; /* was 14px */
+            font-size: 15px; /* was 14px */
             text-align: center;
             padding: 13px 0; /* was 6px 0 */
             transition: background-color 0.3s;
@@ -156,6 +156,13 @@
         <div class="game-btn-inner">
             <img src="https://hungryhippo99999.github.io/images/subwaysurfers.jpg" alt="Subway Surfers">
             <span>Subway Surfers</span>
+        </div>
+    </button>
+
+    <button class="game-btn" onclick="bb()">
+        <div class="game-btn-inner">
+            <img src="https://hungryhippo99999.github.io/images/blockblast.jpg" alt="Block Blast">
+            <span>Block Blast</span>
         </div>
     </button>
 
@@ -300,6 +307,7 @@
         
       	// newgames
         function gn()   { openGithubPage('newgames/gnmath'); }
+        function bb()   { openGithubPage('newgames/blockblast'); }
       	function hk()   { openGithubPage('newgames/hollowknight'); }
         function br()   { openGithubPage('newgames/buckshotroulette'); }
         
