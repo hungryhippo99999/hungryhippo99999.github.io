@@ -195,9 +195,12 @@
         })();
 
         // ===== SAVE/LOAD SYSTEM =====
+
+        // Find the IndexedDB that backs Unity's /idbfs (FILE_DATA)
         async function getFileDataDB() {
             const dbs = await indexedDB.databases();
-            const target = dbs.find(db => db.name.includes('idbfs') || db.name.includes('FILE_DATA'));
+            // Heuristic: look for an idbfs/FILE_DATA database. You can hard-code the name if you know it.
+            const target = dbs.find(db => (db.name || '').toLowerCase().includes('idbfs') || (db.name || '').toLowerCase().includes('file_data'));
             if (!target) throw new Error('FILE_DATA DB not found');
             return new Promise((resolve, reject) => {
                 const req = indexedDB.open(target.name);
@@ -206,43 +209,89 @@
             });
         }
 
-        async function importUnitySave(file) {
-            const text = await file.text();
-            const data = JSON.parse(text);
-            const db = await getFileDataDB();
-            const tx = db.transaction(db.objectStoreNames, 'readwrite');
-
-            for (const storeName of db.objectStoreNames) {
-                const store = tx.objectStore(storeName);
-                store.clear();
-                (data[storeName] || []).forEach(item => store.put(item));
-            }
-
-            tx.oncomplete = () => {
-                console.log('Save data written to IndexedDB. Reloading into memory...');
+        // Export full FILE_DATA as JSON (flush in-memory FS first)
+        async function exportUnitySave() {
+            try {
                 if (typeof FS !== 'undefined' && FS.syncfs) {
-                    // Pull from IndexedDB into Unity's in-memory FS
-                    FS.syncfs(true, (err) => {
-                        if (err) {
-                            console.error('Error syncing FS:', err);
-                            alert('Failed to load save into memory.');
-                        } else {
-                            alert('Save loaded instantly! You may need to trigger an in-game load.');
-                        }
-                    });
-                } else {
-                    alert('FS API not available — cannot hot-load.');
+                    await new Promise(res => FS.syncfs(false, res)); // flush to IndexedDB
                 }
-            };
+                const db = await getFileDataDB();
+                const tx = db.transaction(db.objectStoreNames, 'readonly');
+                const allData = {};
+                let pending = db.objectStoreNames.length;
 
-            tx.onerror = e => {
-                console.error('Error importing save:', e);
-                alert('Failed to import save.');
-            };
+                if (!pending) throw new Error('No object stores found in FILE_DATA DB');
+
+                for (const storeName of db.objectStoreNames) {
+                    const store = tx.objectStore(storeName);
+                    const req = store.getAll();
+                    req.onsuccess = ev => {
+                        // Data can include binary Blobs; JSON.stringify will handle structured clones, but to be safest, map to serializable
+                        allData[storeName] = ev.target.result.map(entry => entry);
+                        if (--pending === 0) {
+                            const blob = new Blob([JSON.stringify(allData)], { type: 'application/json' });
+                            const a = document.createElement('a');
+                            a.href = URL.createObjectURL(blob);
+                            a.download = 'unity_FILE_DATA_backup.json';
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                        }
+                    };
+                    req.onerror = err => {
+                        console.error('Error reading store', storeName, err);
+                    };
+                }
+            } catch (e) {
+                console.error('Export failed:', e);
+                alert('Failed to export save. See console for details.');
+            }
         }
 
+        // Hot-load: write backup into IndexedDB, then pull it into memory via FS.syncfs(true)
+        async function importUnitySave(file) {
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+                const db = await getFileDataDB();
+
+                // Write all stores
+                const tx = db.transaction(db.objectStoreNames, 'readwrite');
+                for (const storeName of db.objectStoreNames) {
+                    const store = tx.objectStore(storeName);
+                    store.clear();
+                    const items = data[storeName] || [];
+                    for (const item of items) {
+                        store.put(item);
+                    }
+                }
+
+                tx.oncomplete = () => {
+                    console.log('Save data written to IndexedDB. Reloading into memory...');
+                    if (typeof FS !== 'undefined' && FS.syncfs) {
+                        // Populate in-memory FS from persistent storage
+                        FS.syncfs(true, (err) => {
+                            if (err) {
+                                console.error('Error syncing FS:', err);
+                                alert('Failed to load save into memory.');
+                            } else {
+                                alert('Save loaded instantly! Open the in-game load menu if needed.');
+                            }
+                        });
+                    } else {
+                        alert('FS API not available — cannot hot-load.');
+                    }
+                };
+
+                tx.onerror = e => {
+                    console.error('Error importing save:', e);
+                    alert('Failed to import save.');
+                };
+            } catch (e) {
+                console.error('Import failed:', e);
+                alert('Failed to import save. Is the file a valid backup?');
+            }
+        }
     </script>
 </body>
 </html>
-
-
