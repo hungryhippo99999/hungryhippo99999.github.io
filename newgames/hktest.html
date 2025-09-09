@@ -210,81 +210,166 @@
         }
 
         // Export full FILE_DATA as JSON (flush in-memory FS first)
-        async function exportUnitySave() {
+       async function exportUnitySave() {
+          try {
             if (typeof FS !== 'undefined' && FS.syncfs) {
-                await new Promise(res => FS.syncfs(false, res)); // flush to IndexedDB
+              await new Promise(res => FS.syncfs(false, res)); // flush to IndexedDB
             }
+        
             const db = await getFileDataDB();
             const tx = db.transaction(db.objectStoreNames, 'readonly');
             const allData = {};
             let pending = db.objectStoreNames.length;
         
+            if (!pending) throw new Error('No object stores found in FILE_DATA DB');
+        
+            // Helper to encode binary to base64
+            const toB64 = (buf) => {
+              let bin = '';
+              const bytes = new Uint8Array(buf);
+              for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+              return btoa(bin);
+            };
+        
             for (const storeName of db.objectStoreNames) {
-                const store = tx.objectStore(storeName);
-                const req = store.getAll();
-                const keyReq = store.getAllKeys();
-                Promise.all([
-                    new Promise(res => req.onsuccess = () => res(req.result)),
-                    new Promise(res => keyReq.onsuccess = () => res(keyReq.result))
-                ]).then(([values, keys]) => {
-                    allData[storeName] = keys.map((key, i) => {
-                        let val = values[i];
-                        if (val instanceof Blob) {
-                            return { key, blob: true, type: val.type, data: null };
-                        }
-                        if (val instanceof ArrayBuffer || ArrayBuffer.isView(val)) {
-                            return { key, buffer: true, data: btoa(String.fromCharCode(...new Uint8Array(val.buffer || val))) };
-                        }
-                        return { key, value: val };
-                    });
-                    if (--pending === 0) {
-                        const blob = new Blob([JSON.stringify(allData)], { type: 'application/json' });
-                        const a = document.createElement('a');
-                        a.href = URL.createObjectURL(blob);
-                        a.download = 'unity_FILE_DATA_backup.json';
-                        a.click();
-                    }
-                });
+              const store = tx.objectStore(storeName);
+        
+              // We need both keys and values
+              const valuesReq = store.getAll();
+              const keysReq = store.getAllKeys();
+        
+              Promise.all([
+                new Promise(res => valuesReq.onsuccess = () => res(valuesReq.result)),
+                new Promise(res => keysReq.onsuccess = () => res(keysReq.result))
+              ]).then(async ([values, keys]) => {
+                const out = [];
+                for (let i = 0; i < keys.length; i++) {
+                  let val = values[i];
+        
+                  // Normalize to a serializable form
+                  if (val instanceof Blob) {
+                    const ab = await val.arrayBuffer();
+                    out.push({ key: keys[i], kind: 'blob', mime: val.type || '', data: toB64(ab) });
+                  } else if (val instanceof ArrayBuffer) {
+                    out.push({ key: keys[i], kind: 'ab', data: toB64(val) });
+                  } else if (ArrayBuffer.isView(val)) {
+                    const ab = val.buffer.slice(val.byteOffset, val.byteOffset + val.byteLength);
+                    out.push({ key: keys[i], kind: 'typed', dtype: val.constructor.name, data: toB64(ab) });
+                  } else {
+                    // Structured-cloneable JSON-like value
+                    out.push({ key: keys[i], kind: 'json', value: val });
+                  }
+                }
+                allData[storeName] = out;
+        
+                if (--pending === 0) {
+                  const blob = new Blob([JSON.stringify(allData)], { type: 'application/json' });
+                  const a = document.createElement('a');
+                  a.href = URL.createObjectURL(blob);
+                  a.download = 'unity_FILE_DATA_backup.json';
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+                }
+              }).catch(err => {
+                console.error('Export read error for store', storeName, err);
+              });
             }
+          } catch (e) {
+            console.error('Export failed:', e);
+            alert('Failed to export save. See console for details.');
+          }
         }
+
         
         async function importUnitySave(file) {
+          try {
             const text = await file.text();
             const data = JSON.parse(text);
             const db = await getFileDataDB();
+        
+            // Helper to decode base64 to ArrayBuffer
+            const fromB64 = (b64) => {
+              const bin = atob(b64);
+              const bytes = new Uint8Array(bin.length);
+              for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+              return bytes.buffer;
+            };
+        
             const tx = db.transaction(db.objectStoreNames, 'readwrite');
         
             for (const storeName of db.objectStoreNames) {
-                const store = tx.objectStore(storeName);
-                store.clear();
-                (data[storeName] || []).forEach(entry => {
-                    if (entry.blob) {
-                        // You could re-fetch blob data if stored separately
-                        console.warn('Blob restore not implemented in this example');
-                    } else if (entry.buffer) {
-                        const bin = atob(entry.data);
-                        const arr = new Uint8Array(bin.length);
-                        for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-                        store.put(arr, entry.key);
-                    } else {
-                        store.put(entry.value, entry.key);
-                    }
+              const store = tx.objectStore(storeName);
+              await new Promise((resolve, reject) => {
+                const req = store.clear();
+                req.onsuccess = resolve;
+                req.onerror = reject;
+              });
+        
+              const entries = data[storeName] || [];
+              for (const entry of entries) {
+                let value;
+        
+                switch (entry.kind) {
+                  case 'blob': {
+                    const ab = fromB64(entry.data);
+                    value = new Blob([ab], { type: entry.mime || '' });
+                    break;
+                  }
+                  case 'ab': {
+                    value = fromB64(entry.data);
+                    break;
+                  }
+                  case 'typed': {
+                    const ab = fromB64(entry.data);
+                    const map = {
+                      Int8Array, Uint8Array, Uint8ClampedArray, Int16Array, Uint16Array,
+                      Int32Array, Uint32Array, Float32Array, Float64Array, BigInt64Array, BigUint64Array
+                    };
+                    const Ctor = map[entry.dtype];
+                    value = Ctor ? new Ctor(ab) : new Uint8Array(ab);
+                    break;
+                  }
+                  case 'json':
+                  default:
+                    value = entry.value;
+                    break;
+                }
+        
+                // IMPORTANT: put(value, key) for out-of-line, no-generator stores
+                await new Promise((resolve, reject) => {
+                  const req = store.put(value, entry.key);
+                  req.onsuccess = resolve;
+                  req.onerror = reject;
                 });
+              }
             }
         
             tx.oncomplete = () => {
-                if (typeof FS !== 'undefined' && FS.syncfs) {
-                    FS.syncfs(true, err => {
-                        if (err) {
-                            console.error('Error syncing FS:', err);
-                            alert('Failed to load save into memory.');
-                        } else {
-                            alert('Save loaded instantly!');
-                        }
-                    });
-                }
+              if (typeof FS !== 'undefined' && FS.syncfs) {
+                FS.syncfs(true, (err) => {
+                  if (err) {
+                    console.error('Error syncing FS:', err);
+                    alert('Save imported, but memory sync failed. Try reloading the page.');
+                  } else {
+                    alert('Save loaded instantly! Open the in-game load menu if needed.');
+                  }
+                });
+              } else {
+                alert('Save imported. FS API not available to hot-load; reload the page to apply.');
+              }
             };
+        
+            tx.onerror = (e) => {
+              console.error('Import transaction error:', e);
+              alert('Failed to import save. See console for details.');
+            };
+          } catch (e) {
+            console.error('Import failed:', e);
+            alert('Failed to import save. Is the file a valid backup?');
+          }
         }
+
 
     </script>
 </body>
