@@ -206,48 +206,41 @@
             });
         }
 
-        async function exportUnitySave() {
-            if (typeof FS !== 'undefined' && FS.syncfs) {
-                await new Promise(res => FS.syncfs(false, res));
-            }
+        async function importUnitySave(file) {
+            const text = await file.text();
+            const data = JSON.parse(text);
             const db = await getFileDataDB();
-            const tx = db.transaction(db.objectStoreNames, 'readonly');
-            const allData = {};
-            let pending = db.objectStoreNames.length;
+            const tx = db.transaction(db.objectStoreNames, 'readwrite');
 
             for (const storeName of db.objectStoreNames) {
                 const store = tx.objectStore(storeName);
-                store.getAll().onsuccess = ev => {
-                    allData[storeName] = ev.target.result;
-                    if (--pending === 0) {
-                        const blob = new Blob([JSON.stringify(allData)], { type: 'application/json' });
-                        const a = document.createElement('a');
-                        a.href = URL.createObjectURL(blob);
-                        a.download = 'unity_FILE_DATA_backup.json';
-                        a.click();
-                    }
-                };
+                store.clear();
+                (data[storeName] || []).forEach(item => store.put(item));
             }
-        }
-        async function importUnitySave(file) {
-                    const text = await file.text();
-                    const data = JSON.parse(text);
-                    const db = await getFileDataDB();
-                    const tx = db.transaction(db.objectStoreNames, 'readwrite');
-                    for (const storeName of db.objectStoreNames) {
-                        const store = tx.objectStore(storeName);
-                        store.clear();
-                        (data[storeName] || []).forEach(item => store.put(item));
-                    }
-                    tx.oncomplete = () => {
-                        alert('Save loaded! Reloading page...');
-                        location.reload();
-                    };
-                    tx.onerror = e => {
-                        console.error('Error importing save:', e);
-                        alert('Failed to import save.');
-                    };
+
+            tx.oncomplete = () => {
+                console.log('Save data written to IndexedDB. Reloading into memory...');
+                if (typeof FS !== 'undefined' && FS.syncfs) {
+                    // Pull from IndexedDB into Unity's in-memory FS
+                    FS.syncfs(true, (err) => {
+                        if (err) {
+                            console.error('Error syncing FS:', err);
+                            alert('Failed to load save into memory.');
+                        } else {
+                            alert('Save loaded instantly! You may need to trigger an in-game load.');
+                        }
+                    });
+                } else {
+                    alert('FS API not available — cannot hot-load.');
                 }
+            };
+
+            tx.onerror = e => {
+                console.error('Error importing save:', e);
+                alert('Failed to import save.');
+            };
+        }
+
     </script>
 </body>
 </html>
