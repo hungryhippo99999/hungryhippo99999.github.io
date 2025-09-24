@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Docs</title>
+  <link rel="icon" href="https://nearpod.gq/static-assets/favicon-presets/docs.ico">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Verdana', sans-serif;
+      background-color: #f8f9fa;
+      overflow: hidden;
+    }
+    #content-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      transition: top 0.3s ease-in-out;
+      overflow: hidden;
+    }
+    #content-display {
+      width: 100%;
+      height: 100%;
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+    #url-editor {
+      position: fixed;
+      top: -60px; /* start off-screen */
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background-color: #1c1c1c;
+      padding: 10px;
+      border-bottom: 1px solid #1c1c1c;
+      display: flex;
+      align-items: center;
+      transition: top 0.3s ease-in-out;
+      z-index: 10;
+    }
+    #url-editor input[type="text"] {
+      width: 90px;
+      height: 20px;
+      font-size: 16px;
+      font-family: Verdana, sans-serif;
+      padding: 5px;
+      margin-right: 10px;
+    }
+    #toggle-button {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 30px;
+      background-color: #f0f0f0;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      text-align: center;
+      line-height: 30px;
+      z-index: 11;
+    }
+    #toggle-button.show-url-editor {
+      transform: translateX(-50%) rotate(180deg);
+    }
+    .label {
+      color: white;
+      margin-right: 5px;
+      font-family: Verdana, sans-serif;
+    }
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-size: 18px;
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    #refresh-button {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      background-color: #f0f0f0;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      text-align: center;
+      line-height: 30px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #refresh-button svg {
+      width: 16px;
+      height: 16px;
+    }
+    #refresh-button:hover {
+      background-color: #e0e0e0;
+    }
+    #error-message {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 4px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="content-container">
+    <div id="error-message"></div>
+    <div id="content-display" class="loading">
+      Loading content...
+    </div>
+  </div>
+  <div id="url-editor">
+    <span class="label">Page:</span>
+    <input type="text" id="page-input" value="media" placeholder="page name">
+    <button id="update-url" style="width: 100px; height: 30px; font-family: Verdana, sans-serif">Switch Page</button>
+  </div>
+  <button id="toggle-button">&#x25BC;</button>
+  <button id="refresh-button" title="Refresh content">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21.5 2v6h-6"></path>
+      <path d="M2.5 12c0 5 4 9 9 9 2.4 0 4.6-1 6.2-2.6l3.8-3.9"></path>
+      <path d="M2.5 12c0-5 4-9 9-9 2.4 0 4.6 1 6.2 2.6l3.8 3.9"></path>
+    </svg>
+  </button>
+
+  <script>
+    const pageInput = document.getElementById('page-input');
+    const updateUrlButton = document.getElementById('update-url');
+    const contentContainer = document.getElementById('content-container');
+    const contentDisplay = document.getElementById('content-display');
+    const urlEditor = document.getElementById('url-editor');
+    const toggleButton = document.getElementById('toggle-button');
+    const refreshButton = document.getElementById('refresh-button');
+    const errorMessage = document.getElementById('error-message');
+    
+    const username = "hungryhippo99999"; // Hardcoded username
+    let currentPage = "media"; // Default page
+
+    // Function to fetch the raw GitHub content and render it
+    async function fetchAndRenderContent(page) {
+      contentDisplay.classList.add('loading');
+      contentDisplay.innerHTML = 'Loading content...';
+      errorMessage.style.display = 'none';
+      
+      try {
+        // URL to fetch raw content from GitHub Pages
+        const url = `https://${username}.github.io/${page}.html`;
+        
+        // Fetch the content
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch content (Status: ${response.status})`);
+        }
+        
+        // Get the raw HTML content
+        const htmlContent = await response.text();
+        
+        // Create a document container and render the content
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlContent, 'text/html');
+        
+        // Now we need to modify the fetched content to make it render correctly in our container
+        
+        // Create a new HTML document structure to hold the fetched content
+        const htmlDoc = document.implementation.createHTMLDocument('');
+        
+        // Set the content of the document
+        htmlDoc.documentElement.innerHTML = htmlContent;
+        
+        // Create and configure an iframe to display the content in isolation
+        const iframe = document.createElement('iframe');
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.style.margin = '0';
+        iframe.style.padding = '0';
+        
+        // Clear the display area and add the iframe
+        contentDisplay.innerHTML = '';
+        contentDisplay.classList.remove('loading');
+        contentDisplay.appendChild(iframe);
+        
+        // Write the content to the iframe
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write(htmlContent);
+        iframeDoc.close();
+        
+        // Store the current page for refresh functionality
+        currentPage = page;
+        
+      } catch (error) {
+        console.error('Error fetching content:', error);
+        errorMessage.textContent = `Error: ${error.message}`;
+        errorMessage.style.display = 'block';
+        contentDisplay.innerHTML = '';
+        contentDisplay.classList.remove('loading');
+      }
+    }
+
+    // Function to load content based on the page input
+    function loadContent() {
+      const page = pageInput.value;
+      fetchAndRenderContent(page);
+    }
+
+    // Function to refresh current content
+    function refreshContent() {
+      fetchAndRenderContent(currentPage);
+    }
+
+    // Toggle URL editor visibility
+    toggleButton.addEventListener('click', () => {
+      if (toggleButton.classList.contains('show-url-editor')) {
+        urlEditor.style.top = '-60px';
+        contentContainer.style.top = '0';
+        toggleButton.classList.remove('show-url-editor');
+      } else {
+        urlEditor.style.top = '0';
+        contentContainer.style.top = '60px';
+        toggleButton.classList.add('show-url-editor');
+      }
+    });
+
+    // Update content when button is clicked
+    updateUrlButton.addEventListener('click', loadContent);
+    
+    // Refresh content when refresh button is clicked
+    refreshButton.addEventListener('click', refreshContent);
+    
+    // Initial load
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchAndRenderContent(currentPage);
+    });
+  </script>
+</body>
+</html>
