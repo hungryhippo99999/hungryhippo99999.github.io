@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>notes2</title>
+    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png">
+    <style>
+        body {
+            background-color: #1c1c1c;
+        }
+        
+        button {
+            align-items: center;
+            background-image: linear-gradient(144deg, #435CAF, #86A8E7 50%, #5FCCFB);
+            border: 0;
+            border-radius: 8px;
+            box-shadow: rgba(67, 92, 175, 0.2) 0 15px 30px -5px;
+            box-sizing: border-box;
+            color: #ffffff;
+            display: inline-flex;
+            font-size: 15px;
+            font-family: Verdana, sans-serif;
+            font-weight: bold;
+            justify-content: center;
+            line-height: 1em;
+            max-width: 100%;
+            min-width: 140px;
+            padding: 3px;
+            text-decoration: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 7px 3px;
+        }
+
+        button:active,
+        button:hover {
+            outline: 0;
+        }
+
+        button span {
+            background-color: rgb(5, 6, 45);
+            padding: 16px 24px;
+            border-radius: 6px;
+            width: 100%;
+            height: 100%;
+            transition: 300ms;
+        }
+
+        button:hover span {
+            background: none;
+        }
+
+        button:active {
+            transform: scale(0.9);
+        }
+
+        #chatButton {
+            all: unset; /* wipe inherited button styles */
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(144deg, #FF4040, #F36642 50%, #FF7823);
+            border-radius: 50%;
+            box-shadow: rgba(255, 69, 30, 0.3) 0 6px 12px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        #chatButton:hover {
+            transform: scale(1.05);
+        }
+
+        #chatButton img {
+            width: 32px;
+            height: 32px;
+            pointer-events: none; /* so clicks go to the button */
+        }
+
+    </style>
+</head>
+<body>
+    <div style="display: flex; align-items: center; width: 100%;">
+      <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">1.0.0<sub style="font-size: 14px">Γ</sub></h1>
+      <div style="flex: 1;"></div> <!-- This empty div helps with centering -->
+    </div>
+
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px"></h1>
+    <button onclick="qwen()">
+        <span class="text">Qwen</span>
+    </button>
+    <button class="text-btn" onclick="emu()">
+        <span>EmulatorJS</span>
+    </button>
+    <button onclick="pkmss()">
+        <span class="text">Pokemon SS Wiki</span>
+    </button>
+    
+    <div style="display: flex; align-items: center; gap: 4px; margin: 10px 0;">
+      <!-- Input field -->
+      <input style="height: 25px;padding:5px 5px;font-size: 15px" type="text" id="url-input" placeholder="https://www.reddit.com"/>
+      <!-- Open button (now matches your other buttons) -->
+      <button id="open-button">
+        <span>Open</span>
+      </button>
+      <!-- Selector -->
+      <select style="height: 34px; padding: 5px 8px; font-size: 14px;" id="domain-select">
+        <option value="safereddit.com">1</option>
+        <option value="l.opnxng.com">2</option>
+        <option value="redlib.perennialte.ch">3</option>
+      </select>
+    </div>
+
+    
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+    <input style="height: 25px;padding:5px 5px;font-size: 15px" type="text" id="urlInput" placeholder="https://www.example.com"/>
+    <button onclick="getInputUrl()">
+        <span class="text">Open</span>
+    </button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px"></h1>
+    
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 18px">proxy</h1>
+    <button onclick="ramh()">
+        <span class="text">RH</span>
+    </button>
+    <button onclick="ramh2()">
+        <span class="text">RH 2</span>
+    </button>
+    <button onclick="openRandomUrl('rammerheadUrls')">
+        <span class="text">RH Random</span>
+    </button>
+    <button onclick="inter()">
+        <span class="text">Interstellar</span>
+    </button>
+    <button onclick="inter2()">
+        <span class="text">Interstellar 2</span>
+    </button>
+        
+	<h1 style="color:white;font-family: Verdana, sans-serif;font-size: 18px">websites</h1>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">https://inv.nadeko.net</h1>
+        
+    <script>
+        // optimized iframe
+        function oframe(url) {
+            var win = window.open();
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.style.margin = '0';
+            iframe.src = url;
+            iframe.setAttribute("allowfullscreen", "true");
+            win.document.body.appendChild(iframe);
+        }
+
+        function getInputUrl() {
+            var url = document.getElementById('urlInput').value;
+
+            oframe(url);
+        }
+
+        function openFile(filePath) {
+            window.open(filePath, '_blank');
+        }
+
+        function ourl(url) {
+            window.open(url, '_blank');
+        }
+        
+        const replaceUrl = document.getElementById('url-input');
+        const domainSelect = document.getElementById('domain-select');
+        const openButton = document.getElementById('open-button');
+
+        openButton.addEventListener('click', () => {
+            const originalUrl = replaceUrl.value;
+            const selectedDomain = domainSelect.value;
+            const newUrl = originalUrl.replace('www.reddit.com', selectedDomain);
+            window.open(newUrl, '_blank');
+        });
+
+        function qwen() {oframe("https://chat.qwen.ai/");}
+        function emu() {oframe("https://demo.emulatorjs.org/");}
+        function pkmss() {oframe("https://ddaretrogamer.github.io/sword-and-shield-ultimate-plus-wiki/");} 
+        
+        // proxies
+        function ramh() {oframe("https://nearpod.gq");}
+        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/");}
+        function inter() {oframe("https://gointerstellar.app/");}
+        function inter2() {oframe("https://my-learning-hall.jemix.sg/");}
+        
+
+        // randomize proxy (rammerhead links) https://sites.google.com/view/twigs-utilities/pr0x1es
+        const rammerheadUrls = [
+          "https://azumanga-daioh.custom-gaming.net/",
+          "https://discyoyan.kalbas.com.vn/",
+          "https://quizizz.the-schmidt-family.org/",
+          "https://ursmelly.smelly.cc/",
+          "https://tspmoicl.kutakutik.or.id/",
+          "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/",
+          "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/",
+          "https://mathfun.thehomeserver.net/",
+          "https://ohio.malam.or.id/",
+          "https://stopragebaiting.3cm.us/",
+          "https://schoolended.iiiii.info/",
+          "https://ghettolululemon.mynode.biz/",
+          "https://aidancomputers.1337.cx/",
+          "https://a-regist.anondns.net/"
+          // Add more URLs to the list as needed
+        ];
+
+        const otherUrls = [
+          "https://www.example.com",
+          "https://www.example.com"
+          // Add more "other" URLs here
+        ];
+
+        const urlLists = {
+          "rammerheadUrls": rammerheadUrls,
+          "otherUrls": otherUrls
+          // Add more mappings if you create new lists
+        };
+        
+        function openRandomUrl(listName) {
+          const selectedList = urlLists[listName];
+        
+          if (!selectedList || selectedList.length === 0) {
+            console.error(`List '${listName}' not found or is empty.`);
+            alert(`Sorry, the list '${listName}' is not available or empty.`);
+            return;
+          }
+        
+          const randomIndex = Math.floor(Math.random() * selectedList.length);
+          const randomUrl = selectedList[randomIndex];
+          console.log(`Opening random URL from ${listName}: ${randomUrl}`); // Optional: for debugging
+          oframe(randomUrl);
+        }
+        
+    </script>
+</body>
+</html>
