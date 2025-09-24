@@ -1,1 +1,1 @@
-VERY basic personal site to host html files that open iframes in about:blank. used in combination with another html file that fetches the html code and displays it (to get around any github.io blocks)
+VERY basic personal site to host html files that open iframes in about:blank. used in combination with another html file that fetches the html code from tis repo and displays it (to get around any github.io blocks) --> homework.html file
