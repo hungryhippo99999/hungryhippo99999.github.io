@@ -89,28 +89,34 @@
 </head>
 <body>
     <div style="display: flex; align-items: center; width: 100%;">
-      <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">1.0.0<sub style="font-size: 14px">Γ</sub></h1>
+      <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 25px">1.0.1<sub style="font-size: 14px">Γ</sub></h1>
       <div style="flex: 1;"></div> <!-- This empty div helps with centering -->
     </div>
 
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px"></h1>
-    <button onclick="ernie()">
+    <button onclick="kimi()">
+        <span class="text">Kimi</span>
+    </button>
+	<button onclick="ernie()">
         <span class="text">ERNIE</span>
     </button>
 	<button onclick="long()">
         <span class="text">LongCat</span>
     </button>
-	<button onclick="kimi()">
-        <span class="text">Kimi</span>
+	<button onclick="reka()">
+        <span class="text">Reka</span>
+    </button>
+	<button onclick="olmo()">
+        <span class="text">OLMo</span>
+    </button>
+	<button onclick="type()">
+        <span class="text">TypingMind</span>
     </button>
 	<button onclick="libre()">
         <span class="text">LibreChat</span>
     </button>
     <button class="text-btn" onclick="emu()">
-        <span>EmulatorJS</span>
-    </button>
-    <button onclick="pkmss()">
-        <span class="text">Pokemon SS Wiki</span>
+        <span>EmuJS</span>
     </button>
     
     <div style="display: flex; align-items: center; gap: 4px; margin: 10px 0;">
@@ -155,6 +161,9 @@
         
 	<h1 style="color:white;font-family: Verdana, sans-serif;font-size: 18px">websites</h1>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">https://inv.nadeko.net</h1>
+	<button onclick="pkmss()">
+        <span class="text">PkmSS</span>
+    </button>
         
     <script>
         // optimized iframe
@@ -197,9 +206,12 @@
             window.open(newUrl, '_blank');
         });
 
+		function kimi() {oframe("https://www.kimi.com/");}
         function ernie() {oframe("https://ernie.baidu.com/X1");}
 		function long() {oframe("https://longcat.chat/");}
-		function kimi() {oframe("https://www.kimi.com/");}
+		function reka() {oframe("https://app.reka.ai/chat ");}
+		function olmo() {oframe("https://playground.allenai.org/");}
+		function type() {oframe("https://www.typingmind.com/ ");}
 		function libre() {oframe("https://librechat-librechat.hf.space/c/");}
         function emu() {oframe("https://demo.emulatorjs.org/");}
         function pkmss() {oframe("https://ddaretrogamer.github.io/sword-and-shield-ultimate-plus-wiki/");} 
