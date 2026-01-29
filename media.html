@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media</title>
+    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png">
+    <style>
+        :root {
+            --bg-dark: #0f0f13;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent: #ff4040;
+            --accent-secondary: #ff7823;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --hover-glow: rgba(255, 64, 64, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 64, 64, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 120, 35, 0.1) 0%, transparent 50%);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+
+        /* Header Section */
+        header {
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 100%);
+            padding: 2rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #ff6b6b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .version {
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-weight: 600;
+            background: rgba(255, 64, 64, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 64, 64, 0.2);
+        }
+
+        .nav-info {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-align: center;
+            flex: 1;
+        }
+
+        .warning {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid #ffc107;
+            color: #ffc107;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 64, 64, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-secondary));
+            border-radius: 2px;
+        }
+
+        /* Button Grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+        }
+
+        button {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 64, 64, 0.1), rgba(243, 102, 66, 0.05));
+            border: 1px solid rgba(255, 64, 64, 0.2);
+            border-radius: 10px;
+            color: white;
+            padding: 0.9rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 64, 64, 0.3);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Special sections */
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .yt-alt {
+            margin-top: 0.8rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .yt-alt a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent);
+        }
+
+        /* Floating Action Buttons (Fixed) */
+        .fab-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
+        }
+
+        .fab img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .fab::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 70px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            color: white;
+        }
+
+        .fab:hover::after {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="brand">
+                <h1>Media</h1>
+                <span class="version">v2.0 (Δ)</span>
+            </div>
+            <div class="nav-info">Available Pages: ai, games, mc, media</div>
+            <div style="width: 100px;"></div>
+        </div>
+        <div class="warning">
+            ⚠️ GoGuardian cannot see about:blank tabs. If a site doesn't work, try a different option. Do not open links in new tabs—it risks getting sites blocked.
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Movies Section -->
+        <section class="card">
+            <h2>Movies & TV</h2>
+            <div class="button-grid">
+                <button onclick="cors()">CorsFlix</button>
+                <button onclick="yflix()">yFlix</button>
+                <button onclick="movie()">1Movies</button>
+                <button onclick="xprime()">XPrime</button>
+                <button onclick="vidora()">Vidora</button>
+                <button onclick="hexa()">Hexa</button>
+                <button onclick="fmovie()">FMovies</button>
+                <button onclick="valh()">Val</button>
+                <button onclick="smashy()">Smashy</button>
+                <button onclick="rive()">Rive</button>
+                <button onclick="cine()">Cinetaro</button>
+                <button onclick="cinezo()">Cinezo</button>
+                <button onclick="beech()">BEECH</button>
+                <button onclick="flyx()">FlyX</button>
+            </div>
+        </section>
+
+        <!-- YouTube Section -->
+        <section class="card">
+            <h2>YouTube</h2>
+            <button onclick="rftube()" style="width: 100%; margin-bottom: 0.8rem;">RFTube</button>
+            <div class="yt-alt">
+                Or use this in a proxy: <a href="https://inv.nadeko.net/feed/popular" target="_blank">inv.nadeko.net</a>
+            </div>
+        </section>
+
+        <!-- Live TV -->
+        <section class="card">
+            <h2>Live TV</h2>
+            <button onclick="tvg()" style="width: 100%;">TV Garden</button>
+        </section>
+
+        <!-- Proxy -->
+        <section class="card">
+            <h2>Proxy</h2>
+            <div class="button-grid">
+                <button onclick="ramh()">RH</button>
+                <button onclick="ramh2()">RH 2</button>
+                <!-- <button onclick="openRandomUrl('rammerheadUrls')">RH Random</button> -->
+                <button onclick="inter()">Interstellar</button>
+                <button onclick="inter2()">Interstellar 2</button>
+            </div>
+        </section>
+
+        <!-- Other -->
+        <section class="card">
+            <h2>Other</h2>
+            <button onclick="desmos()" style="width: 100%;">Desmos Calculator</button>
+        </section>
+
+    </div>
+
+    <!-- Fixed Floating Buttons -->
+    <div class="fab-container">
+        <button class="fab" onclick="aipage()" data-label="AI Chat" style="background: linear-gradient(135deg, #10a37f, #0d8c6d);">
+            <img src="https://ai.ls/assets/openai-logos/PNGs/openai-logomark.png" alt="AI">
+        </button>
+        <button class="fab" onclick="gamespage()" data-label="Games" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+            <img src="https://www.svgrepo.com/show/326649/game-controller-outline.svg" alt="Games">
+        </button>
+        <button class="fab" onclick="mcpage()" data-label="Minecraft" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+            <img src="https://icons.veryicon.com/png/o/object/material-design-icons-1/minecraft-8.png" alt="MC">
+        </button>
+        <button class="fab" onclick="chat()" data-label="Chat" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+            <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="Chat">
+        </button>
+    </div>
+
+    <script>
+        // abut:blank opener
+        function oframe(url) {
+            var win = window.open();
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.style.margin = '0';
+            iframe.src = url;
+            iframe.setAttribute("allowfullscreen", "true");
+            win.document.body.appendChild(iframe);
+        }
+
+        function getInputUrl() {
+            var url = document.getElementById('urlInput').value;
+            oframe(url);
+        }
+
+        // movies
+        function cors() {oframe("https://watch.corsflix.net/");}
+        function yflix() {oframe("https://yflix.to/home");}
+        function movie() {oframe("https://1movies.bz/home");}
+        function xprime() {oframe("https://xprime.today/");}
+        function vidora() {oframe("https://watch.vidora.su/");}
+        function hexa() {oframe("https://hexa.su/");}
+        function fmovie() {oframe("https://www.fmovies.gd/");}
+        function valh() {oframe("https://valhallastream.pages.dev/");}
+        function smashy() {oframe("https://flix.smashystream.xyz/");}
+        function rive() {oframe("https://rivestream.org/");}
+        function cine() {oframe("https://cinetaro.buzz/");}
+        function cinezo() {oframe("https://www.cinezo.net/");}
+        function beech() {oframe("https://www.beech.watch/");}
+        function flyx() {oframe("https://tv.vynx.cc/");}
+        function norep() {oframe("https://gzhhqm.csb.app/");}
+        function astro() {oframe("https://at.ggtyler.dev/");}
+
+        // proxy
+        function ramh() {oframe("https://nearpod.gq");}
+        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/");}
+        function inter() {oframe("https://gointerstellar.app/");}
+        function inter2() {oframe("https://my-learning-hall.jemix.sg/");}
+
+        // other
+        function tvg() {oframe("https://tv.garden");}
+        function desmos() {oframe("https://www.desmos.com/calculator");}
+
+        function openGithubPage(pageName) {
+            const newWin = window.open('about:blank');
+            fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
+                    return res.text();
+                })
+                .then(html => {
+                    newWin.document.open();
+                    newWin.document.write(html);
+                    newWin.document.close();
+                })
+                .catch(err => {
+                    newWin.document.body.innerHTML = `<pre style="color:red;">Error loading ${pageName}: ${err.message}</pre>`;
+                });
+        }
+
+        // other pages
+        function rftube() { openGithubPage('rftube'); }
+        function aipage() { openGithubPage('ai'); }
+        function gamespage() { openGithubPage('games'); }
+        function mcpage() { openGithubPage('mc'); }
+        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
+
+        const rammerheadUrls = [
+            "https://azumanga-daioh.custom-gaming.net/",
+            "https://discyoyan.kalbas.com.vn/",
+            "https://quizizz.the-schmidt-family.org/",
+            "https://ursmelly.smelly.cc/",
+            "https://tspmoicl.kutakutik.or.id/",
+            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/",
+            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/",
+            "https://mathfun.thehomeserver.net/",
+            "https://ohio.malam.or.id/",
+            "https://stopragebaiting.3cm.us/",
+            "https://schoolended.iiiii.info/",
+            "https://ghettolululemon.mynode.biz/",
+            "https://aidancomputers.1337.cx/",
+            "https://a-regist.anondns.net/"
+        ];
+
+        const otherUrls = ["https://www.example.com", "https://www.example.com"];
+        const urlLists = {"rammerheadUrls": rammerheadUrls, "otherUrls": otherUrls};
+        
+        function openRandomUrl(listName) {
+            const selectedList = urlLists[listName];
+            if (!selectedList || selectedList.length === 0) {
+                alert(`Sorry, the list '${listName}' is not available or empty.`);
+                return;
+            }
+            const randomUrl = selectedList[Math.floor(Math.random() * selectedList.length)];
+            oframe(randomUrl);
+        }
+    </script>
+</body>
+</html>
