@@ -44,7 +44,7 @@
         }
 
         .header-content {
-            max-width: 1200px;
+            max-width: 1400px;  /* Wider container */
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -86,7 +86,7 @@
         }
 
         .warning {
-            max-width: 1200px;
+            max-width: 1400px;  /* Match header */
             margin: 0 auto;
             padding: 0.8rem 1.5rem;
             background: rgba(255, 193, 7, 0.1);
@@ -97,13 +97,14 @@
             border-radius: 4px;
         }
 
-        /* Main Container */
+        /* Main Container - Updated for 2-column masonry layout */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;  /* Increased from 1200px for wider cards */
             margin: 0 auto;
             padding: 0 1.5rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+            grid-auto-rows: minmax(180px, auto);   /* Minimum row height */
             gap: 2rem;
         }
 
@@ -115,12 +116,30 @@
             border-radius: 16px;
             padding: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%; /* Fill grid cell height when spanning */
         }
 
         .card:hover {
             transform: translateY(-2px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border-color: rgba(255, 64, 64, 0.2);
+        }
+
+        /* Movies card spans 2 rows on the left */
+        .movies-card {
+            grid-row: span 2;
+        }
+
+        /* Stacking container for half-height cards */
+        .stack-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem; /* Same as container gap for consistency */
+        }
+
+        /* Ensure cards inside stack fill height equally if needed */
+        .stack-column .card {
+            flex: 1;
         }
 
         .card h2 {
@@ -189,11 +208,6 @@
 
         button:active {
             transform: translateY(0) scale(0.98);
-        }
-
-        /* Special sections */
-        .full-width {
-            grid-column: 1 / -1;
         }
 
         .yt-alt {
@@ -271,19 +285,24 @@
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 968px) {
             .container {
-                grid-template-columns: 1fr;
-                padding: 0 1rem;
+                grid-template-columns: 1fr; /* Single column on smaller screens */
             }
             
-            .button-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .movies-card {
+                grid-row: span 1; /* Don't span when stacked vertically */
             }
             
             .header-content {
                 flex-direction: column;
                 text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -306,8 +325,8 @@
 
     <div class="container">
         
-        <!-- Movies Section -->
-        <section class="card">
+        <!-- Movies Section - Spans both rows on left -->
+        <section class="card movies-card">
             <h2>Movies & TV</h2>
             <div class="button-grid">
                 <button onclick="cors()">CorsFlix</button>
@@ -327,38 +346,44 @@
             </div>
         </section>
 
-        <!-- YouTube Section -->
-        <section class="card">
-            <h2>YouTube</h2>
-            <button onclick="rftube()" style="width: 100%; margin-bottom: 0.8rem;">RFTube</button>
-            <div class="yt-alt">
-                Or use this in a proxy: <a href="https://inv.nadeko.net/feed/popular" target="_blank">inv.nadeko.net</a>
-            </div>
-        </section>
+        <!-- Right Column Top: YouTube + Live TV Stacked -->
+        <div class="stack-column">
+            <section class="card">
+                <h2>YouTube</h2>
+                <button onclick="rftube()" style="width: 100%; margin-bottom: 0.8rem;">RFTube</button>
+                <!-- Alt
+                <div class="yt-alt">
+                    Or use this in a proxy: <a href="https://inv.nadeko.net/feed/popular" target="_blank">inv.nadeko.net</a>
+                </div>
+                -->
+                <div class="yt-alt">
+                    Or use this in a proxy: https://inv.nadeko.net/feed/popular</a>
+                </div>
+            </section>
 
-        <!-- Live TV -->
-        <section class="card">
-            <h2>Live TV</h2>
-            <button onclick="tvg()" style="width: 100%;">TV Garden</button>
-        </section>
+            <section class="card">
+                <h2>Live TV</h2>
+                <button onclick="tvg()" style="width: 100%;">TV Garden</button>
+            </section>
+        </div>
 
-        <!-- Proxy -->
-        <section class="card">
-            <h2>Proxy</h2>
-            <div class="button-grid">
-                <button onclick="ramh()">RH</button>
-                <button onclick="ramh2()">RH 2</button>
-                <!-- <button onclick="openRandomUrl('rammerheadUrls')">RH Random</button> -->
-                <button onclick="inter()">Interstellar</button>
-                <button onclick="inter2()">Interstellar 2</button>
-            </div>
-        </section>
+        <!-- Right Column Bottom: Proxy + Other Stacked -->
+        <div class="stack-column">
+            <section class="card">
+                <h2>Proxy</h2>
+                <div class="button-grid">
+                    <button onclick="ramh()">RH</button>
+                    <button onclick="ramh2()">RH 2</button>
+                    <button onclick="inter()">Interstellar</button>
+                    <button onclick="inter2()">Interstellar 2</button>
+                </div>
+            </section>
 
-        <!-- Other -->
-        <section class="card">
-            <h2>Other</h2>
-            <button onclick="desmos()" style="width: 100%;">Desmos Calculator</button>
-        </section>
+            <section class="card">
+                <h2>Other</h2>
+                <button onclick="desmos()" style="width: 100%;">Desmos Calculator</button>
+            </section>
+        </div>
 
     </div>
 
@@ -400,36 +425,36 @@
         }
 
         // movies
-        function cors() {oframe("https://watch.corsflix.net/");}
-        function yflix() {oframe("https://yflix.to/home");}
-        function movie() {oframe("https://1movies.bz/home");}
-        function xprime() {oframe("https://xprime.today/");}
-        function vidora() {oframe("https://watch.vidora.su/");}
-        function hexa() {oframe("https://hexa.su/");}
-        function fmovie() {oframe("https://www.fmovies.gd/");}
-        function valh() {oframe("https://valhallastream.pages.dev/");}
-        function smashy() {oframe("https://flix.smashystream.xyz/");}
-        function rive() {oframe("https://rivestream.org/");}
-        function cine() {oframe("https://cinetaro.buzz/");}
-        function cinezo() {oframe("https://www.cinezo.net/");}
-        function beech() {oframe("https://www.beech.watch/");}
-        function flyx() {oframe("https://tv.vynx.cc/");}
-        function norep() {oframe("https://gzhhqm.csb.app/");}
-        function astro() {oframe("https://at.ggtyler.dev/");}
+        function cors() {oframe("https://watch.corsflix.net/ ");}
+        function yflix() {oframe("https://yflix.to/home ");}
+        function movie() {oframe("https://1movies.bz/home ");}
+        function xprime() {oframe("https://xprime.today/ ");}
+        function vidora() {oframe("https://watch.vidora.su/ ");}
+        function hexa() {oframe("https://hexa.su/ ");}
+        function fmovie() {oframe("https://www.fmovies.gd/ ");}
+        function valh() {oframe("https://valhallastream.pages.dev/ ");}
+        function smashy() {oframe("https://flix.smashystream.xyz/ ");}
+        function rive() {oframe("https://rivestream.org/ ");}
+        function cine() {oframe("https://cinetaro.buzz/ ");}
+        function cinezo() {oframe("https://www.cinezo.net/ ");}
+        function beech() {oframe("https://www.beech.watch/ ");}
+        function flyx() {oframe("https://tv.vynx.cc/ ");}
+        function norep() {oframe("https://gzhhqm.csb.app/ ");}
+        function astro() {oframe("https://at.ggtyler.dev/ ");}
 
         // proxy
-        function ramh() {oframe("https://nearpod.gq");}
-        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/");}
-        function inter() {oframe("https://gointerstellar.app/");}
-        function inter2() {oframe("https://my-learning-hall.jemix.sg/");}
+        function ramh() {oframe("https://nearpod.gq ");}
+        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/ ");}
+        function inter() {oframe("https://gointerstellar.app/ ");}
+        function inter2() {oframe("https://my-learning-hall.jemix.sg/ ");}
 
         // other
-        function tvg() {oframe("https://tv.garden");}
-        function desmos() {oframe("https://www.desmos.com/calculator");}
+        function tvg() {oframe("https://tv.garden ");}
+        function desmos() {oframe("https://www.desmos.com/calculator ");}
 
         function openGithubPage(pageName) {
             const newWin = window.open('about:blank');
-            fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
+            fetch(`https://hungryhippo99999.github.io/ ${pageName}.html`)
                 .then(res => {
                     if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
                     return res.text();
@@ -449,26 +474,26 @@
         function aipage() { openGithubPage('ai'); }
         function gamespage() { openGithubPage('games'); }
         function mcpage() { openGithubPage('mc'); }
-        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
+        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688 ");}
 
         const rammerheadUrls = [
-            "https://azumanga-daioh.custom-gaming.net/",
-            "https://discyoyan.kalbas.com.vn/",
-            "https://quizizz.the-schmidt-family.org/",
-            "https://ursmelly.smelly.cc/",
-            "https://tspmoicl.kutakutik.or.id/",
-            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/",
-            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/",
-            "https://mathfun.thehomeserver.net/",
-            "https://ohio.malam.or.id/",
-            "https://stopragebaiting.3cm.us/",
-            "https://schoolended.iiiii.info/",
-            "https://ghettolululemon.mynode.biz/",
-            "https://aidancomputers.1337.cx/",
-            "https://a-regist.anondns.net/"
+            "https://azumanga-daioh.custom-gaming.net/ ",
+            "https://discyoyan.kalbas.com.vn/ ",
+            "https://quizizz.the-schmidt-family.org/ ",
+            "https://ursmelly.smelly.cc/ ",
+            "https://tspmoicl.kutakutik.or.id/ ",
+            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/ ",
+            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/ ",
+            "https://mathfun.thehomeserver.net/ ",
+            "https://ohio.malam.or.id/ ",
+            "https://stopragebaiting.3cm.us/ ",
+            "https://schoolended.iiiii.info/ ",
+            "https://ghettolululemon.mynode.biz/ ",
+            "https://aidancomputers.1337.cx/ ",
+            "https://a-regist.anondns.net/ "
         ];
 
-        const otherUrls = ["https://www.example.com", "https://www.example.com"];
+        const otherUrls = ["https://www.example.com ", "https://www.example.com "];
         const urlLists = {"rammerheadUrls": rammerheadUrls, "otherUrls": otherUrls};
         
         function openRandomUrl(listName) {
