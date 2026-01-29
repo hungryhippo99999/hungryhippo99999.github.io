@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFTube</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #f1f1f1;
+            line-height: 1.5;
+        }
+        
+        /* Popup Modal */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .popup-content {
+            background: #1a1a1a;
+            border: 2px solid #ff0000;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+        }
+        
+        .popup-content h2 {
+            color: #ff0000;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .popup-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #f1f1f1;
+            margin-bottom: 20px;
+        }
+        
+        .popup-content .hint {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #0f0f0f;
+            border-bottom: 1px solid #303030;
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ff0000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .search-box {
+            flex: 1;
+            max-width: 640px;
+            display: flex;
+            margin: 0 auto;
+        }
+        
+        .search-input {
+            flex: 1;
+            background: #121212;
+            border: 1px solid #303030;
+            border-radius: 20px 0 0 20px;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .search-input:focus { border-color: #1c62b9; }
+        
+        .search-btn {
+            background: #222;
+            border: 1px solid #303030;
+            border-left: none;
+            border-radius: 0 20px 20px 0;
+            padding: 0 24px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .search-btn:hover { background: #303030; }
+        
+        .nav-tabs {
+            position: fixed;
+            top: 56px;
+            width: 100%;
+            background: #0f0f0f;
+            border-bottom: 1px solid #303030;
+            display: flex;
+            gap: 12px;
+            padding: 12px 24px;
+            z-index: 99;
+            overflow-x: auto;
+        }
+        
+        .tab {
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: #272727;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            transition: 0.2s;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+        }
+        
+        .tab:hover { background: #3f3f3f; }
+        .tab.active { background: #f1f1f1; color: #0f0f0f; }
+        
+        .content {
+            margin-top: 120px;
+            padding: 24px;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        @media (min-width: 1400px) {
+            .video-grid { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+        }
+        
+        .video-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+            border-radius: 12px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .video-card:hover { transform: scale(1.02); }
+        
+        .thumbnail {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #272727;
+            overflow: hidden;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.9);
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #fff;
+        }
+        
+        .info {
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #666;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .meta { flex: 1; min-width: 0; }
+        
+        .meta h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+            color: #f1f1f1;
+        }
+        
+        .meta p {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #ff6b6b;
+            background: #1a1a1a;
+            border-radius: 12px;
+            margin: 20px;
+        }
+        
+        .retry-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        
+        .instance-selector {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .instance-selector select {
+            background: #272727;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="popup" class="popup-overlay">
+        <div class="popup-content">
+            <h2>⚠️ Warning</h2>
+            <p>Rewatching a video will pop up as being blocked.</p>
+            <p>Restarting your Chromebook will unblock it.</p>
+            <div class="hint">Click anywhere to continue</div>
+        </div>
+    </div>
+
+    <header class="header">
+        <a href="#" class="logo" onclick="loadTrending(); return false;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="#ff0000" style="margin-right: 8px;">
+                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+            </svg>
+            RFTube
+        </a>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search videos..." 
+                   onkeypress="if(event.key === 'Enter') performSearch()">
+            <button class="search-btn" onclick="performSearch()">Search</button>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="tab active" onclick="loadTrending()">Trending</button>
+    </nav>
+
+    <main class="content">
+        <div id="loading" class="loading">Loading videos...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="videoGrid" class="video-grid"></div>
+    </main>
+
+    <div class="instance-selector">
+        Instance:
+        <select id="instanceSelect" onchange="changeInstance()">
+            <option value="https://iv.nboeck.de">iv.nboeck.de (DE)</option>
+            <option value="https://iv.datura.network">iv.datura.network (DE)</option>
+            <option value="https://yt.artemislena.eu">yt.artemislena.eu (DE)</option>
+            <option value="https://inv.nadeko.net">inv.nadeko.net (US)</option>
+            <option value="https://iv.melmac.space">iv.melmac.space (CA)</option>
+            <option value="https://iv.nboeck.de">iv.nboeck.de (FI)</option>
+        </select>
+    </div>
+
+    <script>
+        // FIXED: Removed trailing spaces from instance URLs
+        const instances = {
+            'https://iv.nboeck.de': 'Germany',
+            'https://iv.datura.network': 'Germany',
+            'https://yt.artemislena.eu': 'Germany', 
+            'https://inv.nadeko.net': 'US',
+            'https://iv.melmac.space': 'Canada',
+            'https://iv.nboeck.de': 'Finland'
+        };
+        
+        let currentInstance = localStorage.getItem('invidious_instance') || 'https://iv.nboeck.de';
+        document.getElementById('instanceSelect').value = currentInstance;
+        
+        const formatDuration = (seconds) => {
+            if (!seconds) return '0:00';
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            if (hrs > 0) return `${hrs}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        };
+        
+        // FIXED: Added formatNumber to avoid "views subscribers" issue
+        const formatNumber = (count) => {
+            if (!count) return '0';
+            if (count >= 1000000) return `${(count/1000000).toFixed(1)}M`;
+            if (count >= 1000) return `${(count/1000).toFixed(1)}K`;
+            return `${count}`;
+        };
+        
+        const formatViews = (count) => {
+            return `${formatNumber(count)} views`;
+        };
+        
+        const timeAgo = (dateInput) => {
+            if (!dateInput) return 'Unknown';
+            
+            const timestamp = Number(dateInput);
+            
+            let date;
+            if (timestamp < 100000000000) {
+                date = new Date(timestamp * 1000);
+            } else {
+                date = new Date(dateInput);
+            }
+            
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            if (isNaN(seconds) || seconds < 0) return 'Recently';
+            
+            const intervals = [
+                { label: 'year', seconds: 31536000 },
+                { label: 'month', seconds: 2592000 },
+                { label: 'day', seconds: 86400 },
+                { label: 'hour', seconds: 3600 },
+                { label: 'minute', seconds: 60 }
+            ];
+            
+            for (let i = 0; i < intervals.length; i++) {
+                const interval = seconds / intervals[i].seconds;
+                if (interval >= 1) {
+                    const count = Math.floor(interval);
+                    return `${count} ${intervals[i].label}${count !== 1 ? 's' : ''} ago`;
+                }
+            }
+            
+            return "Just now";
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTrending();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const search = urlParams.get('search');
+            if (search) {
+                document.getElementById('searchInput').value = search;
+                performSearch();
+            }
+        });
+
+        document.getElementById('popup').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.opacity = '0';
+            this.style.transition = 'opacity 0.3s';
+            setTimeout(() => {
+                this.style.display = 'none';
+            }, 300);
+        });
+
+        async function fetchWithFallback(endpoint) {
+            const instanceList = Object.keys(instances);
+            
+            try {
+                const response = await fetch(`${currentInstance}${endpoint}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) return await response.json();
+            } catch (e) {
+                console.warn(`Failed to fetch from ${currentInstance}, trying fallback...`);
+            }
+            
+            for (const instance of instanceList) {
+                if (instance === currentInstance) continue;
+                try {
+                    const response = await fetch(`${instance}${endpoint}`, {
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (response.ok) {
+                        console.log(`Switched to working instance: ${instance}`);
+                        return await response.json();
+                    }
+                } catch (e) {
+                    continue;
+                }
+            }
+            
+            throw new Error('All Invidious instances failed. Please try again later.');
+        }
+
+        async function loadTrending() {
+            showLoading();
+            try {
+                const data = await fetchWithFallback('/api/v1/trending');
+                renderVideos(data, 'trending');
+            } catch (error) {
+                showError('Failed to load trending videos: ' + error.message);
+            }
+        }
+
+        async function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+            
+            showLoading();
+            
+            try {
+                const data = await fetchWithFallback(`/api/v1/search?q=${encodeURIComponent(query)}&type=all`);
+                renderVideos(data, 'search');
+                window.history.replaceState({}, '', `?search=${encodeURIComponent(query)}`);
+            } catch (error) {
+                showError('Search failed: ' + error.message);
+            }
+        }
+
+        function renderVideos(items, type) {
+            const grid = document.getElementById('videoGrid');
+            const loading = document.getElementById('loading');
+            loading.style.display = 'none';
+            
+            if (!items || items.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #666; grid-column: 1/-1;">No videos found</div>';
+                return;
+            }
+
+            grid.innerHTML = items.map(item => {
+                if (item.type === 'channel') {
+                    // FIXED: Better thumbnail logic for channels
+                    let thumbUrl = '';
+                    
+                    // Try authorThumbnails first (most common for channels)
+                    if (item.authorThumbnails && item.authorThumbnails.length > 0) {
+                        // Use the highest quality available (usually the last one)
+                        thumbUrl = item.authorThumbnails[item.authorThumbnails.length - 1].url;
+                    } 
+                    // Try thumbnails array as fallback
+                    else if (item.thumbnails && item.thumbnails.length > 0) {
+                        thumbUrl = item.thumbnails[item.thumbnails.length - 1].url;
+                    }
+                    
+                    // If we still don't have a URL, use generated avatar
+                    if (!thumbUrl) {
+                        thumbUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(item.author)}&background=ff0000&color=fff&size=150`;
+                    }
+                    
+                    // FIXED: Use formatNumber instead of formatViews to avoid "views subscribers"
+                    const subCount = formatNumber(item.subCount);
+                    
+                    return `
+                        <div class="video-card" onclick="openChannel('${item.authorId}')" style="background: #1a1a1a; text-align: center;">
+                            <div style="padding: 40px 0; background: #272727; display: flex; justify-content: center; align-items: center;">
+                                <img src="${thumbUrl}" 
+                                     style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #ff0000; background: #333;"
+                                     onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.author)}&background=ff0000&color=fff&size=150';">
+                            </div>
+                            <div class="info" style="justify-content: center;">
+                                <div class="meta">
+                                    <h3 style="color: #fff;">📺 ${item.author} ${item.authorVerified ? '✓' : ''}</h3>
+                                    <p style="color: #aaa;">${subCount} subscribers</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                const videoId = item.videoId;
+                const title = item.title;
+                const author = item.author;
+                const views = formatViews(item.viewCount);
+                const published = timeAgo(item.published);
+                const duration = formatDuration(item.lengthSeconds);
+                // FIXED: Removed space in template literal
+                const thumbnail = item.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
+                const authorThumb = item.authorThumbnails?.[0]?.url || '';
+                
+                return `
+                    <div class="video-card" onclick="openInProxy('${videoId}', '${title.replace(/'/g, "\\'")}')">
+                        <div class="thumbnail">
+                            <img src="${thumbnail}" alt="${title}" loading="lazy" 
+                                 onerror="this.src='https://via.placeholder.com/640x360/272727/666?text=No+Thumbnail'">
+                            ${duration !== '0:00' ? `<div class="duration">${duration}</div>` : ''}
+                        </div>
+                        <div class="info">
+                            <div class="avatar">
+                                <img src="${authorThumb}" onerror="this.style.display='none'">
+                            </div>
+                            <div class="meta">
+                                <h3>${title}</h3>
+                                <p>${author} ${item.authorVerified ? '✓' : ''} • ${views} • ${published}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function openChannel(channelId) {
+            showLoading();
+            try {
+                const data = await fetchWithFallback(`/api/v1/channels/${channelId}/videos`);
+                renderVideos(data.videos, 'channel');
+            } catch (error) {
+                showError('Failed to load channel: ' + error.message);
+            }
+        }
+
+        function openInProxy(videoId, title) {
+            // FIXED: Removed space in URL construction
+            const proxyUrl = `https://yout-ube.com/watch?v=${videoId}`;
+            const newTab = window.open('about:blank', '_blank');
+            
+            if (!newTab) {
+                alert('Please allow popups for this site to open videos.');
+                return;
+            }
+
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${title} - yout-ube.com</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { 
+                            background: #000; 
+                            width: 100vw;
+                            height: 100vh;
+                            overflow: hidden;
+                        }
+                        iframe { 
+                            width: 100%; 
+                            height: 100%; 
+                            border: none;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <iframe 
+                        src="${proxyUrl}" 
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        sandbox="allow-same-origin allow-scripts allow-popups allow-presentation"
+                    ></iframe>
+                    <script>
+                        document.documentElement.requestFullscreen().catch(e => {
+                            document.addEventListener('click', () => {
+                                if (!document.fullscreenElement) {
+                                    document.documentElement.requestFullscreen();
+                                }
+                            });
+                        });
+                        
+                        document.addEventListener('keydown', (e) => {
+                            if (e.key === 'Escape' && document.fullscreenElement) {
+                                document.exitFullscreen();
+                            }
+                        });
+                    <\/script>
+                </body>
+                </html>
+            `;
+
+            newTab.document.open();
+            newTab.document.write(htmlContent);
+            newTab.document.close();
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('videoGrid').innerHTML = '';
+        }
+
+        function showError(msg) {
+            document.getElementById('loading').style.display = 'none';
+            const errorDiv = document.getElementById('error');
+            errorDiv.innerHTML = `
+                <div style="font-size: 18px; margin-bottom: 10px;">⚠️ ${msg}</div>
+                <button class="retry-btn" onclick="location.reload()">Retry</button>
+            `;
+            errorDiv.style.display = 'block';
+        }
+
+        function changeInstance() {
+            const select = document.getElementById('instanceSelect');
+            currentInstance = select.value;
+            localStorage.setItem('invidious_instance', currentInstance);
+            loadTrending();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement.id !== 'searchInput') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('searchInput').blur();
+            }
+        });
+    </script>
+</body>
+</html>
