@@ -90,7 +90,7 @@
 </head>
 <body>
     <div style="display: flex; align-items: center; width: 100%;">
-      <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Media<sub style="font-size: 14px">1.9.1</sub></h1>
+      <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 25px; flex: 1;">Media<sub style="font-size: 14px">1.9.2</sub></h1>
       <h1 style="color:white; font-family: Verdana, sans-serif; font-size: 13px; flex: 1; text-align: center;">Available Pages: ai, games, mc, media</h1>
       <div style="flex: 1;"></div> <!-- This empty div helps with centering -->
     </div>
@@ -147,7 +147,10 @@
     </button>
         
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 17px">YouTube</h1>
-    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 14px">open a proxy and use this website in the proxy: https://inv.nadeko.net/feed/popular</h1>
+    <button onclick="rftube()">
+        <span class="text">RFTube</span>
+    </button>
+    <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 14px">or open a proxy and use this website in the proxy: https://inv.nadeko.net/feed/popular</h1>
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 12px">ㅤ</h1>
         
     <h1 style="color:white;font-family: Verdana, sans-serif;font-size: 18px">Proxy</h1>
@@ -269,6 +272,8 @@
                 `<pre style="color:red;">Error loading ${pageName}: ${err.message}</pre>`;
             });
         }
+
+        function rftube()   { openGithubPage('rftube'); }
         
         function aipage()   { openGithubPage('ai'); }
         function gamespage(){ openGithubPage('games'); }
