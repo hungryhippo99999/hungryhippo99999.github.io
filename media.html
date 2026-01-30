@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Media</title>
-    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png">
+    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png  ">
     <style>
         :root {
             --bg-dark: #0f0f13;
@@ -44,7 +44,7 @@
         }
 
         .header-content {
-            max-width: 1400px;  /* Wider container */
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -86,7 +86,7 @@
         }
 
         .warning {
-            max-width: 1400px;  /* Match header */
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0.8rem 1.5rem;
             background: rgba(255, 193, 7, 0.1);
@@ -97,14 +97,14 @@
             border-radius: 4px;
         }
 
-        /* Main Container - Updated for 2-column masonry layout */
+        /* Main Container - Updated for 3-column masonry layout */
         .container {
-            max-width: 1400px;  /* Increased from 1200px for wider cards */
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 1.5rem;
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Two equal columns */
-            grid-auto-rows: minmax(180px, auto);   /* Minimum row height */
+            grid-template-columns: repeat(3, 1fr); /* Three columns */
+            grid-auto-rows: minmax(180px, auto);
             gap: 2rem;
         }
 
@@ -116,7 +116,7 @@
             border-radius: 16px;
             padding: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%; /* Fill grid cell height when spanning */
+            height: 100%;
         }
 
         .card:hover {
@@ -134,10 +134,11 @@
         .stack-column {
             display: flex;
             flex-direction: column;
-            gap: 2rem; /* Same as container gap for consistency */
+            gap: 2rem;
+            grid-row: span 2; /* Match movies card height */
         }
 
-        /* Ensure cards inside stack fill height equally if needed */
+        /* Ensure cards inside stack fill height equally */
         .stack-column .card {
             flex: 1;
         }
@@ -285,13 +286,30 @@
         }
 
         /* Responsive */
-        @media (max-width: 968px) {
+        @media (max-width: 1100px) {
             .container {
-                grid-template-columns: 1fr; /* Single column on smaller screens */
+                grid-template-columns: repeat(2, 1fr); /* Back to 2 columns on smaller desktops */
+            }
+            
+            .stack-column:nth-of-type(2) {
+                grid-column: 2;
+                grid-row: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr; /* Single column on mobile */
             }
             
             .movies-card {
                 grid-row: span 1; /* Don't span when stacked vertically */
+                grid-column: 1;
+            }
+            
+            .stack-column {
+                grid-row: span 1;
+                gap: 1.5rem;
             }
             
             .header-content {
@@ -313,7 +331,7 @@
         <div class="header-content">
             <div class="brand">
                 <h1>Media</h1>
-                <span class="version">v2.0.0 (Δ)</span>
+                <span class="version">v2.0.1 (Δ)</span>
             </div>
             <div class="nav-info">Available Pages: ai, games, mc, media</div>
             <div style="width: 100px;"></div>
@@ -325,17 +343,21 @@
 
     <div class="container">
         
-        <!-- Movies Section - Spans both rows on left -->
+        <!-- Column 1: Movies (Spans 2 rows to be longest) -->
         <section class="card movies-card">
             <h2>Movies & TV</h2>
             <div class="button-grid">
+            	<button onclick="fmovie()">FMovies</button>
+                <button onclick="prim()">Prime</button>
+                <button onclick="netf()">Netflex</button>
+                <button onclick="voidflix()">Voidflix</button>  <!-- CHANGED: void() to voidflix() -->
+                <button onclick="flix()">Flixzy</button>
                 <button onclick="cors()">CorsFlix</button>
                 <button onclick="yflix()">yFlix</button>
                 <button onclick="movie()">1Movies</button>
                 <button onclick="xprime()">XPrime</button>
                 <button onclick="vidora()">Vidora</button>
                 <button onclick="hexa()">Hexa</button>
-                <button onclick="fmovie()">FMovies</button>
                 <button onclick="valh()">Val</button>
                 <button onclick="smashy()">Smashy</button>
                 <button onclick="rive()">Rive</button>
@@ -346,18 +368,13 @@
             </div>
         </section>
 
-        <!-- Right Column Top: YouTube + Live TV Stacked -->
+        <!-- Column 2: YouTube + Live TV Stacked -->
         <div class="stack-column">
             <section class="card">
                 <h2>YouTube</h2>
                 <button onclick="rftube()" style="width: 100%; margin-bottom: 0.8rem;">RFTube</button>
-                <!-- Alt
                 <div class="yt-alt">
-                    Or use this in a proxy: <a href="https://inv.nadeko.net/feed/popular" target="_blank">inv.nadeko.net</a>
-                </div>
-                -->
-                <div class="yt-alt">
-                    Or use this in a proxy: https://inv.nadeko.net/feed/popular</a>
+                    Or use this in a proxy: https://inv.nadeko.net/feed/popular 
                 </div>
             </section>
 
@@ -367,7 +384,7 @@
             </section>
         </div>
 
-        <!-- Right Column Bottom: Proxy + Other Stacked -->
+        <!-- Column 3: Proxy + Other Stacked -->
         <div class="stack-column">
             <section class="card">
                 <h2>Proxy</h2>
@@ -390,16 +407,16 @@
     <!-- Fixed Floating Buttons -->
     <div class="fab-container">
         <button class="fab" onclick="aipage()" data-label="AI Chat" style="background: linear-gradient(135deg, #10a37f, #0d8c6d);">
-            <img src="https://ai.ls/assets/openai-logos/PNGs/openai-logomark.png" alt="AI">
+            <img src="https://ai.ls/assets/openai-logos/PNGs/openai-logomark.png  " alt="AI">
         </button>
         <button class="fab" onclick="gamespage()" data-label="Games" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
-            <img src="https://www.svgrepo.com/show/326649/game-controller-outline.svg" alt="Games">
+            <img src="https://www.svgrepo.com/show/326649/game-controller-outline.svg  " alt="Games">
         </button>
         <button class="fab" onclick="mcpage()" data-label="Minecraft" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
-            <img src="https://icons.veryicon.com/png/o/object/material-design-icons-1/minecraft-8.png" alt="MC">
+            <img src="https://icons.veryicon.com/png/o/object/material-design-icons-1/minecraft-8.png  " alt="MC">
         </button>
         <button class="fab" onclick="chat()" data-label="Chat" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
-            <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="Chat">
+            <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png  " alt="Chat">
         </button>
     </div>
 
@@ -425,35 +442,40 @@
         }
 
         // movies
-        function cors() {oframe("https://watch.corsflix.net/");}
-        function yflix() {oframe("https://yflix.to/home");}
-        function movie() {oframe("https://1movies.bz/home");}
-        function xprime() {oframe("https://xprime.today/");}
-        function vidora() {oframe("https://watch.vidora.su/");}
-        function hexa() {oframe("https://hexa.su/");}
-        function fmovie() {oframe("https://www.fmovies.gd/");}
-        function valh() {oframe("https://valhallastream.pages.dev/");}
-        function smashy() {oframe("https://flix.smashystream.xyz/");}
-        function rive() {oframe("https://rivestream.org/");}
-        function cine() {oframe("https://cinetaro.buzz/");}
-        function cinezo() {oframe("https://www.cinezo.net/");}
-        function beech() {oframe("https://www.beech.watch/");}
-        function flyx() {oframe("https://tv.vynx.cc/");}
-        function norep() {oframe("https://gzhhqm.csb.app/");}
-        function astro() {oframe("https://at.ggtyler.dev/");}
+        function fmovie() {oframe("https://www.fmovies.gd/ ");}
+        function prim() {oframe("https://www.primeshows.uk/ ");}
+        function netf() {oframe("https://netflex.uk/ ");}
+        function voidflix() {oframe("https://voidflix.pages.dev/ ");}  // CHANGED: function name from void() to voidflix()
+        function flix() {oframe("https://flixzy.pages.dev/ ");}
+        function cors() {oframe("https://watch.corsflix.net/ ");}
+        function yflix() {oframe("https://yflix.to/home ");}
+        function movie() {oframe("https://1movies.bz/home ");}
+        function xprime() {oframe("https://xprime.today/ ");}
+        function vidora() {oframe("https://watch.vidora.su/ ");}
+        function hexa() {oframe("https://hexa.su/ ");}
+        function valh() {oframe("https://valhallastream.pages.dev/ ");}
+        function smashy() {oframe("https://flix.smashystream.xyz/ ");}
+        function rive() {oframe("https://rivestream.org/ ");}
+        function cine() {oframe("https://cinetaro.buzz/ ");}
+        function cinezo() {oframe("https://www.cinezo.net/ ");}
+        function beech() {oframe("https://www.beech.watch/ ");}
+        function flyx() {oframe("https://tv.vynx.cc/ ");}
+        function norep() {oframe("https://gzhhqm.csb.app/ ");}
+        function astro() {oframe("https://at.ggtyler.dev/ ");}
 
         // proxy
-        function ramh() {oframe("https://nearpod.gq");}
-        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/");}
-        function inter() {oframe("https://gointerstellar.app/");}
-        function inter2() {oframe("https://my-learning-hall.jemix.sg/");}
+        function ramh() {oframe("https://nearpod.gq  ");}
+        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/  ");}
+        function inter() {oframe("https://gointerstellar.app/  ");}
+        function inter2() {oframe("https://my-learning-hall.jemix.sg/  ");}
 
         // other
-        function tvg() {oframe("https://tv.garden");}
-        function desmos() {oframe("https://www.desmos.com/calculator");}
+        function tvg() {oframe("https://tv.garden  ");}
+        function desmos() {oframe("https://www.desmos.com/calculator  ");}
 
         function openGithubPage(pageName) {
             const newWin = window.open('about:blank');
+            // FIXED: Removed space after github.io/
             fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
                 .then(res => {
                     if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
@@ -474,26 +496,26 @@
         function aipage() { openGithubPage('ai'); }
         function gamespage() { openGithubPage('games'); }
         function mcpage() { openGithubPage('mc'); }
-        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
+        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688  ");}
 
         const rammerheadUrls = [
-            "https://azumanga-daioh.custom-gaming.net/",
-            "https://discyoyan.kalbas.com.vn/",
-            "https://quizizz.the-schmidt-family.org/",
-            "https://ursmelly.smelly.cc/",
-            "https://tspmoicl.kutakutik.or.id/",
-            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/",
-            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/",
-            "https://mathfun.thehomeserver.net/",
-            "https://ohio.malam.or.id/",
-            "https://stopragebaiting.3cm.us/",
-            "https://schoolended.iiiii.info/",
-            "https://ghettolululemon.mynode.biz/",
-            "https://aidancomputers.1337.cx/",
-            "https://a-regist.anondns.net/"
+            "https://azumanga-daioh.custom-gaming.net/  ",
+            "https://discyoyan.kalbas.com.vn/  ",
+            "https://quizizz.the-schmidt-family.org/  ",
+            "https://ursmelly.smelly.cc/  ",
+            "https://tspmoicl.kutakutik.or.id/  ",
+            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/  ",
+            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/  ",
+            "https://mathfun.thehomeserver.net/  ",
+            "https://ohio.malam.or.id/  ",
+            "https://stopragebaiting.3cm.us/  ",
+            "https://schoolended.iiiii.info/  ",
+            "https://ghettolululemon.mynode.biz/  ",
+            "https://aidancomputers.1337.cx/  ",
+            "https://a-regist.anondns.net/  "
         ];
 
-        const otherUrls = ["https://www.example.com", "https://www.example.com"];
+        const otherUrls = ["https://www.example.com  ", "https://www.example.com  "];
         const urlLists = {"rammerheadUrls": rammerheadUrls, "otherUrls": otherUrls};
         
         function openRandomUrl(listName) {
