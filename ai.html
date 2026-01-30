@@ -77,6 +77,18 @@
             border-radius: 20px;
             border: 1px solid rgba(175, 64, 255, 0.2);
         }
+        
+        .warning {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid #ffc107;
+            color: #ffc107;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+        }
 
         /* Main Container - Single Column */
         .container {
@@ -273,33 +285,27 @@
         <div class="header-content">
             <div class="brand">
                 <h1>AI</h1>
-                <span class="version">v1.0</span>
+                <span class="version">v1.0 (Δ)</span>
             </div>
             <div style="flex: 1; text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
                 Available Pages: media, games, mc, ai
             </div>
             <div style="width: 100px;"></div>
         </div>
+        <div class="warning">
+            ⚠️ If an AI responds in a different language, tell it to respond in English.
+        </div>
     </header>
 
     <div class="container">
-        
-        <!-- ChatGPT 5 -->
-        <section class="card">
-            <h2>ChatGPT</h2>
-            <div class="button-grid">
-                <button onclick="heck()">HeckAI</button>
-                <button onclick="ish()">ISH</button>
-                <button onclick="freegpt()">FreeGPT</button>
-                <button onclick="lite()">Lite-GPT</button>
-            </div>
-        </section>
         
         <!-- AI Search Engines -->
         <section class="card">
             <h2>Copilot Alternatives (will show up on GoGuardian)</h2>
             <div class="button-grid">
+                <button onclick="qwen()">Qwen</button>
                 <button onclick="duck()">DuckAI</button>
+                <button onclick="zai()">Z.ai</button>
             </div>
         </section>
 
@@ -308,30 +314,41 @@
         <section class="card">
             <h2>Other AI</h2>
             <div class="button-grid">
+                <button onclick="solar()">Solar</button>
                 <button onclick="long()">LongCat</button>
                 <button onclick="kimi()">Kimi</button>
-                <button onclick="solar()">Solar</button>
+            </div>
+        </section>
+        
+        <!-- ChatGPT 5 -->
+        <section class="card">
+            <h2>Free ChatGPT</h2>
+            <div class="button-grid">
+                <button onclick="heck()">HeckAI</button>
+                <button onclick="ish()">ISH</button>
+                <button onclick="freegpt()">FreeGPT</button>
+                <button onclick="lite()">Lite-GPT</button>
             </div>
         </section>
 
-        <!-- Images -->
+        <!-- Images 
         <section class="card">
             <h2>Images</h2>
             <div class="button-grid">
                 <button onclick="dezgo()">Dezgo</button>
                 <button onclick="flux()">Flux</button>
-                <button onclick="pixart()">Pixart</button>
                 <button onclick="prodia()">Prodia</button>
                 <button onclick="aigallery()">AI Gallery</button>
             </div>
         </section>
+-->
 
         <!-- API -->
         <section class="card">
             <h2>Need your own API</h2>
             <button onclick="libre()" class="single-button">LibreChat</button>
             <div class="card-note">
-                Host your own instance with custom API keys
+                Use AI with free API keys
             </div>
         </section>
 
@@ -373,25 +390,25 @@
             window.open(url, '_blank');
         }
         
+        // unhidden ai
+        function qwen() {ourl("https://chat.qwen.ai/");}
+        function duck() {ourl("https://duck.ai/chat");}
+        function zai() {ourl("https://chat.z.ai/");}
+
+        // alt ai
+        function solar() {oframe("https://console.upstage.ai/playground/chat");}
+        function long() {oframe("https://longcat.chat/");}
+        function kimi() {oframe("https://www.kimi.com/");}
+        
         // multi chatbots
         function heck() {oframe("https://heck.ai/");}
         function ish() {oframe("https://ish.junioralive.in/");}
-        
         function freegpt() {oframe("https://freegpt.tech/");}
         function lite() {oframe("https://link.fuckicoding.com/#/");}
-        
-        // unhidden ai
-        function duck() {ourl("https://duck.ai/chat?q=DuckDuckGo+AI+Chat&duckai=1");}
-
-        // alt ai
-        function long() {oframe("https://longcat.chat/");}
-        function kimi() {oframe("https://www.kimi.com/");}
-        function solar() {oframe("https://console.upstage.ai/playground/chat");}
         
         // image gen
         function dezgo() {oframe("https://dezgo.com/");}
         function flux() {oframe("https://black-forest-labs-flux-1-schnell.hf.space");}
-        function pixart() {oframe("https://pixart-alpha-pixart-alpha.hf.space/");}
         function prodia() {oframe("https://app.prodia.com/");}
         function aigallery() {oframe("https://aigallery.app/");}
         
