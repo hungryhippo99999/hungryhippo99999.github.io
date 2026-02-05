@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>notes2</title>
+    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent: #435CAF;
+            --accent-secondary: #86A8E7;
+            --accent-tertiary: #5FCCFB;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(67, 92, 175, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(95, 204, 251, 0.1) 0%, transparent 50%);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 120px;
+        }
+
+        /* Header Section */
+        header {
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 100%);
+            padding: 2rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #5FCCFB 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS        }
+
+        .version {
+            font-size: 0.9rem;
+            color: var(--accent-tertiary);
+            font-weight: 600;
+            background: rgba(67, 92, 175, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            border: 1px solid rgba(67, 92, 175, 0.2);
+        }
+
+        /* Main Container - Full width */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(67, 92, 175, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-tertiary));
+            border-radius: 2px;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Button Grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.8rem;
+        }
+
+        button {
+            position: relative;
+            background: linear-gradient(135deg, rgba(67, 92, 175, 0.1), rgba(134, 168, 231, 0.05));
+            border: 1px solid rgba(67, 92, 175, 0.2);
+            border-radius: 10px;
+            color: white;
+            padding: 0.9rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 92, 175, 0.3);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Input Styling */
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+
+        input[type="text"] {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            padding: 0.9rem 1rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]::placeholder {
+            color: var(--text-secondary);
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(67, 92, 175, 0.1);
+        }
+
+        select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            padding: 0.9rem 1rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        select option {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        .input-note {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        /* Compact button for inputs */
+        .btn-compact {
+            width: auto !important;
+            min-width: 100px;
+            padding: 0.9rem 1.5rem !important;
+        }
+
+        /* Chat Button (FAB style) */
+        #chatButton {
+            all: unset;
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff4040, #ff7823);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 69, 30, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        #chatButton:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(255, 69, 30, 0.4);
+        }
+
+        #chatButton img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        #chatButton::after {
+            content: 'Chat';
+            position: absolute;
+            right: 70px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            color: white;
+        }
+
+        #chatButton:hover::after {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn-compact {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="brand">
+                <h1>Δ</h1>
+                <span class="version">v2.0</span>
+            </div>
+            <div style="flex: 1; text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                Utilities & Proxies
+            </div>
+            <div style="width: 100px;"></div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- AI Tools -->
+        <section class="card">
+            <h2>Tools</h2>
+            <div class="button-grid">
+                <button onclick="fmhy()">FMHY</button>
+                <button onclick="kimi()">Kimi</button>
+                <button onclick="toge()">Together</button>
+                <button onclick="long()">LongCat</button>
+                <button onclick="reka()">Reka</button>
+                <button onclick="olmo()">OLMo</button>
+                <button onclick="tymi()">TypingMind</button>
+                <button onclick="libre()">LibreChat</button>
+                <button onclick="emu()">EmuJS</button>
+            </div>
+        </section>
+
+        <!-- URL Tools - Side by Side -->
+        <div class="two-column">
+              
+            <!-- Direct URL -->
+            <section class="card">
+                <h2>Direct URL</h2>
+                <div class="input-group">
+                    <input type="text" id="urlInput" placeholder="https://www.example.com"/>
+                    <button onclick="getInputUrl()" class="btn-compact">Open</button>
+                </div>
+            </section>
+
+            <!-- Reddit Viewer -->
+            <section class="card">
+                <h2>Viewer</h2>
+                <div class="input-group">
+                    <input type="text" id="url-input" placeholder="https://www.reddit.com/..."/>
+                    <button id="open-button" class="btn-compact">Open</button>
+                    <select id="domain-select">
+                        <option value="safereddit.com">1</option>
+                        <option value="l.opnxng.com">2</option>
+                        <option value="redlib.perennialte.ch">3</option>
+                    </select>
+                </div>
+            </section>
+        </div>
+
+        <!-- Proxies -->
+        <section class="card">
+            <h2>Proxy Services</h2>
+            <div class="button-grid">
+                <button onclick="ramh()">RH</button>
+                <button onclick="ramh2()">RH 2</button>
+                <button onclick="openRandomUrl('rammerheadUrls')">RH Random</button>
+                <button onclick="inter()">Interstellar</button>
+                <button onclick="inter2()">Interstellar 2</button>
+            </div>
+        </section>
+
+        <!-- Websites -->
+        <section class="card">
+            <h2>Websites</h2>
+            <p class="input-note" style="margin-bottom: 1rem;">https://inv.nadeko.net</p>
+            <div class="button-grid">
+                <button onclick="fmhy2()">FMHY 2</button>
+                <button onclick="pkmss()">PkmSS</button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Chat Button -->
+    <button id="chatButton">
+        <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="Chat">
+    </button>
+
+    <script>
+        // optimized iframe
+        function oframe(url) {
+            var win = window.open();
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width ="100%";
+            iframe.style.height ="100%";
+            iframe.style.border ="none";
+            iframe.style.margin = '0';
+            iframe.src = url;
+            iframe.setAttribute("allowfullscreen","true");
+            win.document.body.appendChild(iframe);
+        }
+
+        function getInputUrl() {
+            var url = document.getElementById('urlInput').value;
+            oframe(url);
+        }
+
+        function openFile(filePath) {
+            window.open(filePath, '_blank');
+        }
+
+        function ourl(url) {
+            window.open(url, '_blank');
+        }
+        
+        const replaceUrl = document.getElementById('url-input');
+        const domainSelect = document.getElementById('domain-select');
+        const openButton = document.getElementById('open-button');
+
+        openButton.addEventListener('click', () => {
+            const originalUrl = replaceUrl.value;
+            const selectedDomain = domainSelect.value;
+            const newUrl = originalUrl.replace('www.reddit.com', selectedDomain);
+            window.open(newUrl, '_blank');
+        });
+
+        function fmhy() {oframe("https://fmhy.bid/");}
+        function kimi() {oframe("https://www.kimi.com/");}
+        function toge() {oframe("https://chat.together.ai/");}
+        function long() {oframe("https://longcat.chat/");}
+        function reka() {oframe("https://app.reka.ai/chat");}
+        function olmo() {oframe("https://playground.allenai.org/");}
+        function tymi() {oframe("https://www.typingmind.com/");}
+        function libre() {oframe("https://librechat-librechat.hf.space/c/");}
+        function emu() {oframe("https://demo.emulatorjs.org/");}
+
+        function fmhy2() {oframe("https://ffmhy.pages.dev/archive");}
+        function pkmss() {oframe("https://ddaretrogamer.github.io/sword-and-shield-ultimate-plus-wiki/");} 
+        
+        // proxies
+        function ramh() {oframe("https://nearpod.gq");}
+        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/");}
+        function inter() {oframe("https://gointerstellar.app/");}
+        function inter2() {oframe("https://my-learning-hall.jemix.sg/");}
+        
+        // randomize proxy
+        const rammerheadUrls = [
+         "https://azumanga-daioh.custom-gaming.net/",
+         "https://discyoyan.kalbas.com.vn/"
+        ];
+
+        const otherUrls = [
+         "https://www.example.com",
+         "https://www.example.com"
+        ];
+
+        const urlLists = {
+         "rammerheadUrls": rammerheadUrls,
+         "otherUrls": otherUrls
+        };
+        
+        function openRandomUrl(listName) {
+          const selectedList = urlLists[listName];
+        
+          if (!selectedList || selectedList.length === 0) {
+            console.error(`List '${listName}' not found or is empty.`);
+            alert(`Sorry, the list '${listName}' is not available or empty.`);
+            return;
+          }
+        
+          const randomIndex = Math.floor(Math.random() * selectedList.length);
+          const randomUrl = selectedList[randomIndex];
+          console.log(`Opening random URL from ${listName}: ${randomUrl}`);
+          oframe(randomUrl);
+        }
+    </script>
+</body>
+</html>
