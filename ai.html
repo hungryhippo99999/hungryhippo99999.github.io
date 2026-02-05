@@ -285,7 +285,7 @@
         <div class="header-content">
             <div class="brand">
                 <h1>AI</h1>
-                <span class="version">v1.0 (Δ)</span>
+                <span class="version">v1.0.1 (Δ)</span>
             </div>
             <div style="flex: 1; text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
                 Available Pages: media, games, mc, ai
@@ -293,7 +293,7 @@
             <div style="width: 100px;"></div>
         </div>
         <div class="warning">
-            ⚠️ If an AI responds in a different language, tell it to respond in English.
+            ⚠️ To get the best answers from AI, make sure Reasoning/Thinking and Web Search is enabled.
         </div>
     </header>
 
@@ -314,8 +314,11 @@
         <section class="card">
             <h2>Other AI</h2>
             <div class="button-grid">
-                <button onclick="solar()">Solar</button>
+                <button onclick="together()">Together.ai</button>
                 <button onclick="long()">LongCat</button>
+                <button onclick="solar()">Solar</button>
+                <button onclick="reka()">Reka</button>
+                <button onclick="olmo()">Olmo</button>
                 <button onclick="kimi()">Kimi</button>
             </div>
         </section>
@@ -396,8 +399,11 @@
         function zai() {ourl("https://chat.z.ai/");}
 
         // alt ai
-        function solar() {oframe("https://console.upstage.ai/playground/chat");}
+        function together() {oframe("https://chat.together.ai/");}
         function long() {oframe("https://longcat.chat/");}
+        function solar() {oframe("https://console.upstage.ai/playground/chat");}
+        function reka() {oframe("https://app.reka.ai/chat");}
+        function olmo() {oframe("https://playground.allenai.org/");}
         function kimi() {oframe("https://www.kimi.com/");}
         
         // multi chatbots
