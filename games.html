@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games</title>
+    <link rel="icon" href="https://hungryhippo99999.github.io/images/controller.png">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent: #A2CB38;
+            --accent-secondary: #57C785;
+            --accent-tertiary: #2A7B9B;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(162, 203, 56, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(42, 123, 155, 0.1) 0%, transparent 50%);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 120px;
+        }
+
+        /* Header Section */
+        header {
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 100%);
+            padding: 2rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .version {
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-weight: 600;
+            background: rgba(162, 203, 56, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            border: 1px solid rgba(162, 203, 56, 0.2);
+        }
+        
+        .warning {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0.8rem 1.5rem;
+            background: rgba(162, 203, 56, 0.1);
+            border-left: 3px solid var(--accent);
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+        }
+
+        /* Main Container - Single Column */
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(162, 203, 56, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-tertiary));
+            border-radius: 2px;
+        }
+
+        /* Game Button Grid */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Game Button */
+        .game-btn {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            background: linear-gradient(135deg, rgba(162, 203, 56, 0.1), rgba(87, 199, 133, 0.05));
+            border: 1px solid rgba(162, 203, 56, 0.2);
+            padding: 3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 190px;
+        }
+
+        .game-btn-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--bg-dark);
+        }
+
+        .game-btn img {
+            width: 100%;
+            height: 77%;
+            object-fit: cover;
+            display: block;
+            transition: all 0.3s;
+        }
+
+        .game-btn span {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.9);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 12px 0;
+            transition: all 0.3s;
+            border-top: 1px solid rgba(162, 203, 56, 0.1);
+        }
+
+        .game-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(162, 203, 56, 0.2);
+            border-color: rgba(162, 203, 56, 0.4);
+        }
+
+        .game-btn:hover img {
+            filter: brightness(1.1);
+        }
+
+        .game-btn:hover span {
+            background: linear-gradient(180deg, rgba(162, 203, 56, 0.2), rgba(10, 10, 15, 0.95));
+            color: var(--accent);
+        }
+
+        .game-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Text Button Grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.8rem;
+        }
+
+        button.text-btn {
+            position: relative;
+            background: linear-gradient(135deg, rgba(162, 203, 56, 0.1), rgba(87, 199, 133, 0.05));
+            border: 1px solid rgba(162, 203, 56, 0.2);
+            border-radius: 10px;
+            color: white;
+            padding: 0.9rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        button.text-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button.text-btn:hover {
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(162, 203, 56, 0.3);
+        }
+
+        button.text-btn:hover::before {
+            left: 100%;
+        }
+
+        button.text-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Card note */
+        .card-note {
+            margin-top: 0.8rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Floating Action Buttons */
+        .fab-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .fab img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .fab::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 70px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            color: white;
+        }
+
+        .fab:hover::after {
+            opacity: 1;
+        }
+
+        .fab-media { background: linear-gradient(135deg, #ff4040, #ff7823); }
+        .fab-ai { background: linear-gradient(135deg, #10a37f, #0d8c6d); }
+        .fab-mc { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .fab-chat { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .game-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="brand">
+                <h1>Games</h1>
+                <span class="version">v2.0 (Δ)</span>
+            </div>
+            <div style="flex: 1; text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                Available Pages: media, games, mc, ai
+            </div>
+            <div style="width: 100px;"></div>
+        </div>
+        <div class="warning">
+            ⚡ Only using these websites through this file will make sure they don't get blocked
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Main Games -->
+        <section class="card">
+            <h2>Games</h2>
+            <div class="game-grid">
+                <button class="game-btn" onclick="uno()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/scuffeduno.png" alt="Scuffed Uno">
+                        <span>Scuffed Uno</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="slope3()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/slope3.png" alt="Slope 3">
+                        <span>Slope 3</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="slope()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/slope.jpg" alt="Slope Plus">
+                        <span>Slope Plus</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="sub()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/subwaysurfers.jpg" alt="Subway Surfers">
+                        <span>Subway Surfers</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="bb()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/blockblast.jpg" alt="Block Blast">
+                        <span>Block Blast</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="cc()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/cookieclicker.webp" alt="Cookie Clicker">
+                        <span>Cookie Clicker</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="hk()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/hollowknight.webp" alt="Hollow Knight">
+                        <span>Hollow Knight</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="br()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/buckshotroulette.jpg" alt="Buckshot Roulette">
+                        <span>Buckshot Roulette</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="bbr()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/basketrandom.png" alt="Basket Random">
+                        <span>Basket Random</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="scr()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/soccerrandom.png" alt="Soccer Random">
+                        <span>Soccer Random</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="vbr()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/volleyrandom.png" alt="Volley Random">
+                        <span>Volley Random</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="rl()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/soccerderby.webp" alt="Rocket League">
+                        <span>Rocket League</span>
+                    </div>
+                </button>
+                
+                <button class="game-btn" onclick="pg3d()">
+                    <div class="game-btn-inner">
+                        <img src="https://hungryhippo99999.github.io/images/pixelgun3d.png" alt="Pixel Gun 3D">
+                        <span>Pixel Gun 3D</span>
+                    </div>
+                </button>
+
+                <button class="game-btn" onclick="fnae()">
+                    <div class="game-btn-inner">
+                        <img src="https://cdn.jsdelivr.net/gh/gn-math/covers@main/710.png" alt="Five Nights at Epsteins">
+                        <span>Five Nights at Epstein's</span>
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Game Sites -->
+        <section class="card">
+            <h2>Game Sites</h2>
+            <div class="button-grid">
+                <button class="text-btn" onclick="gn()">GN-Math</button>
+            </div>
+        </section>
+
+        <!-- Emulator -->
+        <section class="card">
+            <h2>Emulator</h2>
+            <button class="text-btn" onclick="emu()" style="width: 100%;">EmulatorJS</button>
+            <div class="card-note">
+                Need your own game files to use the emulator
+            </div>
+        </section>
+
+        <!-- Multiplayer -->
+        <section class="card">
+            <h2>Multiplayer Poker/Blackjack + More</h2>
+            <div class="card-note" style="margin-bottom: 1rem;">
+                Open a proxy below and paste this website: https://www.cardzmania.com/games
+            </div>
+            <div class="button-grid">
+                <button class="text-btn" onclick="ramh()">Proxy</button>
+                <button class="text-btn" onclick="ramh2()">Proxy 2</button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Floating Navigation Buttons -->
+    <div class="fab-container">
+        <button class="fab fab-media" onclick="mediaPage()" data-label="Media">
+            <img src="https://cdn-icons-png.flaticon.com/512/565/565290.png" alt="Media">
+        </button>
+        <button class="fab fab-ai" onclick="aiPage()" data-label="AI">
+            <img src="https://ai.ls/assets/openai-logos/PNGs/openai-logomark.png" alt="AI">
+        </button>
+        <button class="fab fab-mc" onclick="mcPage()" data-label="Minecraft">
+            <img src="https://icons.veryicon.com/png/o/object/material-design-icons-1/minecraft-8.png" alt="MC">
+        </button>
+        <button class="fab fab-chat" onclick="chat()" data-label="Chat">
+            <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="Chat">
+        </button>
+    </div>
+
+    <script>
+        // optimized iframe
+        function oframe(url) {
+            var win = window.open();
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.style.margin = '0';
+            iframe.src = url;
+            iframe.setAttribute("allowfullscreen", "true");
+            win.document.body.appendChild(iframe);
+        }
+
+        // games
+        function uno() {oframe("https://scuffeduno.online/ ");}
+        function slope3() {oframe("https://slope-3-game.github.io/file/ ");}
+        function slope() {oframe("https://html-classic.itch.zone/html/14788017/SlopePlus1.3.1Web/index.html ");}
+        function sub() {oframe("https://szhong.4399.com/4399swf//upload_swf/ftp35/liuxinyu/20210324/jj01/index.html ");}
+        function cc() {oframe("https://cookieclicker.eu/cookieclicker/ ");}
+        function bbr() {oframe("https://truffled.lol/games/basket-random/index.html ");}
+        function scr() {oframe("https://truffled.lol/games/volley-random/index.html ");}
+        function vbr() {oframe("https://truffled.lol/games/soccer-random/index.html ");}
+        function rl() {oframe("https://truffled.lol/games/Rocket-League/index.html ");}
+        function pg3d() {oframe("https://st1.8games.net/10/8g/igra-bit-gun-io/ ");}
+        
+        // emulation
+        function emu() {oframe("https://demo.emulatorjs.org/ ");}
+        
+        // proxy
+        function ramh() {oframe("https://nearpod.gq ");}
+        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/ ");}
+
+        // code embedder
+        function openGithubPage(pageName) {
+            const newWin = window.open('about:blank');
+            fetch(`https://hungryhippo99999.github.io/ ${pageName}.html`)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
+                    return res.text();
+                })
+                .then(html => {
+                    newWin.document.open();
+                    newWin.document.write(html);
+                    newWin.document.close();
+                })
+                .catch(err => {
+                    newWin.document.body.innerHTML = `<pre style="color:red;">Error loading ${pageName}: ${err.message}</pre>`;
+                });
+        }
+        
+        // newgames
+        function gn()   { openGithubPage('newgames/gnmath'); }
+        function bb()   { openGithubPage('newgames/blockblast'); }
+        function hk()   { openGithubPage('newgames/hollowknight'); }
+        function br()   { openGithubPage('newgames/buckshotroulette'); }
+        function fnae()   { openGithubPage('newgames/fnae'); }
+
+        // Navigation to other pages
+        function aiPage() { openGithubPage('ai'); }
+        function mediaPage() { openGithubPage('media'); }
+        function mcPage() { openGithubPage('mc'); }
+        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688 ");}
+    </script>
+</body>
+</html>
