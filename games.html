@@ -560,7 +560,7 @@
         // code embedder
         function openGithubPage(pageName) {
             const newWin = window.open('about:blank');
-            fetch(`https://hungryhippo99999.github.io/ ${pageName}.html`)
+            fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
                 .then(res => {
                     if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
                     return res.text();
