@@ -343,11 +343,21 @@
 
     <div class="container">
         
-        <!-- AI Tools -->
+        <!--Tools -->
         <section class="card">
             <h2>Tools</h2>
             <div class="button-grid">
                 <button onclick="fmhy()">FMHY</button>
+                <button onclick="fars()">Farside</button>
+                <button onclick="goth()">GotHub</button>
+                <button onclick="emu()">EmuJS</button>
+            </div>
+        </section>
+        
+        <!-- AI Tools -->
+        <section class="card">
+            <h2>AI</h2>
+            <div class="button-grid">
                 <button onclick="kimi()">Kimi</button>
                 <button onclick="toge()">Together</button>
                 <button onclick="long()">LongCat</button>
@@ -355,8 +365,6 @@
                 <button onclick="olmo()">OLMo</button>
                 <button onclick="tymi()">TypingMind</button>
                 <button onclick="libre()">LibreChat</button>
-                <button onclick="now()">nowgg</button>
-                <button onclick="emu()">EmuJS</button>
             </div>
         </section>
 
@@ -456,7 +464,13 @@
             window.open(newUrl, '_blank');
         });
 
+        // tools
         function fmhy() {oframe("https://fmhy.bid/");}
+        function fars() {oframe("https://farside.link/");}
+        function goth() {ourl("https://farside.link/gothub");}
+        function emu() {oframe("https://demo.emulatorjs.org/");}
+
+        // ai
         function kimi() {oframe("https://www.kimi.com/");}
         function toge() {oframe("https://chat.together.ai/");}
         function long() {oframe("https://longcat.chat/");}
@@ -464,8 +478,6 @@
         function olmo() {oframe("https://playground.allenai.org/");}
         function tymi() {oframe("https://www.typingmind.com/");}
         function libre() {oframe("https://librechat-librechat.hf.space/c/");}
-        function now() {oframe("https://nowgg.fun/");}
-        function emu() {oframe("https://demo.emulatorjs.org/");}
 
         function fmhy2() {oframe("https://ffmhy.pages.dev/archive");}
         function pkmss() {oframe("https://ddaretrogamer.github.io/sword-and-shield-ultimate-plus-wiki/");} 
