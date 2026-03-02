@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Media</title>
-    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png  ">
+    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png    ">
     <style>
         :root {
             --bg-dark: #0f0f13;
@@ -33,6 +33,7 @@
             line-height: 1.6;
             min-height: 100vh;
             padding-bottom: 100px;
+            overflow-x: hidden;
         }
 
         /* Header Section */
@@ -41,6 +42,7 @@
             padding: 2rem 1.5rem 1rem;
             border-bottom: 1px solid var(--card-border);
             margin-bottom: 2rem;
+            position: relative;
         }
 
         .header-content {
@@ -55,8 +57,8 @@
 
         .brand {
             display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
+            align-items: center;
+            gap: 1.5rem;
         }
 
         h1 {
@@ -73,16 +75,76 @@
             color: var(--accent);
             font-weight: 600;
             background: rgba(255, 64, 64, 0.1);
-            padding: 0.2rem 0.6rem;
+            padding: 0.35rem 0.7rem;
             border-radius: 20px;
             border: 1px solid rgba(255, 64, 64, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
 
-        .nav-info {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-align: center;
-            flex: 1;
+        /* New Navigation Pills - Custom Colors */
+        .nav-pills {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .nav-pill {
+            position: relative;
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* AI Button - Purple to Cyan */
+        .nav-pill.ai-pill {
+            background: linear-gradient(135deg, rgb(175, 64, 255), rgb(0, 221, 235));
+            box-shadow: 0 4px 15px rgba(175, 64, 255, 0.4);
+        }
+
+        .nav-pill.ai-pill:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(175, 64, 255, 0.6);
+        }
+
+        /* Games Button - Green to Blue */
+        .nav-pill.games-pill {
+            background: linear-gradient(135deg, rgb(162, 203, 56), rgb(97, 135, 0));
+            box-shadow: 0 4px 15px rgba(162, 203, 56, 0.4);
+        }
+
+        .nav-pill.games-pill:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(162, 203, 56, 0.6);
+        }
+
+        .nav-pill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-pill:hover::before {
+            left: 100%;
+        }
+
+        .nav-pill:active {
+            transform: translateY(0) scale(0.98);
         }
 
         .warning {
@@ -106,6 +168,8 @@
             grid-template-columns: repeat(3, 1fr); /* Three columns */
             grid-auto-rows: minmax(180px, auto);
             gap: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         /* Cards */
@@ -227,62 +291,106 @@
             border-bottom: 1px dotted var(--accent);
         }
 
-        /* Floating Action Buttons (Fixed) */
-        .fab-container {
+        /* Page Transition Animation */
+        .page-transition {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 1000;
-        }
-
-        .fab {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-            border: none;
-            color: white;
-            cursor: pointer;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(255, 64, 64, 0.4);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
 
-        .fab:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 6px 20px rgba(255, 64, 64, 0.6);
-        }
-
-        .fab img {
-            width: 24px;
-            height: 24px;
-            filter: brightness(0) invert(1);
-        }
-
-        .fab::after {
-            content: attr(data-label);
+        .transition-circle {
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--bg-dark);
             position: absolute;
-            right: 70px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            white-space: nowrap;
+            transform: translate(-50%, -50%);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .transition-circle.expanding {
+            width: 300vmax;
+            height: 300vmax;
+        }
+
+        /* Loading Indicator */
+        .loading-indicator {
+            position: absolute;
+            z-index: 10001;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            text-shadow: 0 0 20px rgba(255, 64, 64, 0.5);
+            pointer-events: none;
+        }
+
+        .loading-indicator.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .loading-indicator::after {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background: linear-gradient(180deg, var(--accent), var(--accent-secondary));
+            margin-left: 0.5rem;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            border-radius: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .old-content {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .old-content.fading {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        /* New Page Container */
+        .new-page-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            background: var(--bg-dark);
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s;
-            color: white;
+            transition: opacity 0.4s ease 0.4s;
         }
 
-        .fab:hover::after {
+        .new-page-container.visible {
             opacity: 1;
+            pointer-events: all;
+        }
+
+        .new-page-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: var(--bg-dark);
         }
 
         /* Responsive */
@@ -316,11 +424,21 @@
                 flex-direction: column;
                 text-align: center;
             }
+
+            .nav-pills {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         @media (max-width: 600px) {
             .button-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-pill {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -331,9 +449,16 @@
         <div class="header-content">
             <div class="brand">
                 <h1>Media</h1>
-                <span class="version">v2.0.1 (Δ)</span>
+                <span class="version">v2.0.2 (Δ)</span>
+                <nav class="nav-pills">
+                    <button class="nav-pill ai-pill" onclick="navigateToPage('ai', event)">
+                        AI
+                    </button>
+                    <button class="nav-pill games-pill" onclick="navigateToPage('games', event)">
+                        Games
+                    </button>
+                </nav>
             </div>
-            <div class="nav-info">Available Pages: ai, games, mc, media</div>
             <div style="width: 100px;"></div>
         </div>
         <div class="warning">
@@ -341,83 +466,82 @@
         </div>
     </header>
 
-    <div class="container">
-        
-        <!-- Column 1: Movies (Spans 2 rows to be longest) -->
-        <section class="card movies-card">
-            <h2>Movies & TV</h2>
-            <div class="button-grid">
-            	<button onclick="fmovie()">FMovies</button>
-                <button onclick="prim()">Prime</button>
-                <button onclick="netf()">Netflex</button>
-                <button onclick="voidflix()">Voidflix</button>  <!-- CHANGED: void() to voidflix() -->
-                <button onclick="flix()">Flixzy</button>
-                <button onclick="cors()">CorsFlix</button>
-                <button onclick="yflix()">yFlix</button>
-                <button onclick="movie()">1Movies</button>
-                <button onclick="xprime()">XPrime</button>
-                <button onclick="vidora()">Vidora</button>
-                <button onclick="hexa()">Hexa</button>
-                <button onclick="valh()">Val</button>
-                <button onclick="smashy()">Smashy</button>
-                <button onclick="rive()">Rive</button>
-                <button onclick="cine()">Cinetaro</button>
-                <button onclick="cinezo()">Cinezo</button>
-                <button onclick="beech()">BEECH</button>
-                <button onclick="flyx()">FlyX</button>
+    <div id="mainWrapper">
+        <div class="old-content" id="pageContent">
+            <div class="container">
+                
+                <!-- Column 1: Movies (Spans 2 rows to be longest) -->
+                <section class="card movies-card">
+                    <h2>Movies & TV</h2>
+                    <div class="button-grid">
+                        <button onclick="fmovie()">FMovies</button>
+                        <button onclick="prim()">Prime</button>
+                        <button onclick="netf()">Netflex</button>
+                        <button onclick="voidflix()">Voidflix</button>  <!-- CHANGED: void() to voidflix() -->
+                        <button onclick="flix()">Flixzy</button>
+                        <button onclick="cors()">CorsFlix</button>
+                        <button onclick="yflix()">yFlix</button>
+                        <button onclick="movie()">1Movies</button>
+                        <button onclick="xprime()">XPrime</button>
+                        <button onclick="vidora()">Vidora</button>
+                        <button onclick="hexa()">Hexa</button>
+                        <button onclick="valh()">Val</button>
+                        <button onclick="smashy()">Smashy</button>
+                        <button onclick="rive()">Rive</button>
+                        <button onclick="cine()">Cinetaro</button>
+                        <button onclick="cinezo()">Cinezo</button>
+                        <button onclick="beech()">BEECH</button>
+                        <button onclick="flyx()">FlyX</button>
+                    </div>
+                </section>
+
+                <!-- Column 2: YouTube + Live TV Stacked -->
+                <div class="stack-column">
+                    <section class="card">
+                        <h2>YouTube</h2>
+                        <button onclick="rftube()" style="width: 100%; margin-bottom: 0.8rem;">RFTube</button>
+                        <div class="yt-alt">
+                            Or use this in a proxy: https://inv.nadeko.net/feed/popular   
+                        </div>
+                    </section>
+
+                    <section class="card">
+                        <h2>Live TV</h2>
+                        <button onclick="tvg()" style="width: 100%;">TV Garden</button>
+                    </section>
+                </div>
+
+                <!-- Column 3: Proxy + Other Stacked -->
+                <div class="stack-column">
+                    <section class="card">
+                        <h2>Proxy</h2>
+                        <div class="button-grid">
+                            <button onclick="ramh()">RH</button>
+                            <button onclick="ramh2()">RH 2</button>
+                            <button onclick="inter()">Interstellar</button>
+                            <button onclick="inter2()">Interstellar 2</button>
+                        </div>
+                    </section>
+
+                    <section class="card">
+                        <h2>Other</h2>
+                        <button onclick="desmos()" style="width: 100%;">Desmos Calculator</button>
+                    </section>
+                </div>
+
             </div>
-        </section>
-
-        <!-- Column 2: YouTube + Live TV Stacked -->
-        <div class="stack-column">
-            <section class="card">
-                <h2>YouTube</h2>
-                <button onclick="rftube()" style="width: 100%; margin-bottom: 0.8rem;">RFTube</button>
-                <div class="yt-alt">
-                    Or use this in a proxy: https://inv.nadeko.net/feed/popular 
-                </div>
-            </section>
-
-            <section class="card">
-                <h2>Live TV</h2>
-                <button onclick="tvg()" style="width: 100%;">TV Garden</button>
-            </section>
         </div>
-
-        <!-- Column 3: Proxy + Other Stacked -->
-        <div class="stack-column">
-            <section class="card">
-                <h2>Proxy</h2>
-                <div class="button-grid">
-                    <button onclick="ramh()">RH</button>
-                    <button onclick="ramh2()">RH 2</button>
-                    <button onclick="inter()">Interstellar</button>
-                    <button onclick="inter2()">Interstellar 2</button>
-                </div>
-            </section>
-
-            <section class="card">
-                <h2>Other</h2>
-                <button onclick="desmos()" style="width: 100%;">Desmos Calculator</button>
-            </section>
-        </div>
-
     </div>
 
-    <!-- Fixed Floating Buttons -->
-    <div class="fab-container">
-        <button class="fab" onclick="aipage()" data-label="AI Chat" style="background: linear-gradient(135deg, #10a37f, #0d8c6d);">
-            <img src="https://ai.ls/assets/openai-logos/PNGs/openai-logomark.png  " alt="AI">
-        </button>
-        <button class="fab" onclick="gamespage()" data-label="Games" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
-            <img src="https://www.svgrepo.com/show/326649/game-controller-outline.svg  " alt="Games">
-        </button>
-        <button class="fab" onclick="mcpage()" data-label="Minecraft" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
-            <img src="https://icons.veryicon.com/png/o/object/material-design-icons-1/minecraft-8.png  " alt="MC">
-        </button>
-        <button class="fab" onclick="chat()" data-label="Chat" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
-            <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png  " alt="Chat">
-        </button>
+    <!-- Transition Overlay -->
+    <div class="page-transition" id="transitionOverlay" style="display: none;">
+        <div class="transition-circle" id="transitionCircle"></div>
+        <div class="loading-indicator" id="loadingIndicator">Loading...</div>
+    </div>
+
+    <!-- New Page Container (iframe-based for proper functionality) -->
+    <div class="new-page-container" id="newPageContainer">
+        <iframe id="newPageFrame" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
     </div>
 
     <script>
@@ -442,41 +566,41 @@
         }
 
         // movies
-        function fmovie() {oframe("https://www.fmovies.gd/ ");}
-        function prim() {oframe("https://www.primeshows.uk/ ");}
-        function netf() {oframe("https://netflex.uk/ ");}
-        function voidflix() {oframe("https://voidflix.pages.dev/ ");}  // CHANGED: function name from void() to voidflix()
-        function flix() {oframe("https://flixzy.pages.dev/ ");}
-        function cors() {oframe("https://watch.corsflix.net/ ");}
-        function yflix() {oframe("https://yflix.to/home ");}
-        function movie() {oframe("https://1movies.bz/home ");}
-        function xprime() {oframe("https://xprime.today/ ");}
-        function vidora() {oframe("https://watch.vidora.su/ ");}
-        function hexa() {oframe("https://hexa.su/ ");}
-        function valh() {oframe("https://valhallastream.pages.dev/ ");}
-        function smashy() {oframe("https://flix.smashystream.xyz/ ");}
-        function rive() {oframe("https://rivestream.org/ ");}
-        function cine() {oframe("https://cinetaro.buzz/ ");}
-        function cinezo() {oframe("https://www.cinezo.net/ ");}
-        function beech() {oframe("https://www.beech.watch/ ");}
-        function flyx() {oframe("https://tv.vynx.cc/ ");}
-        function norep() {oframe("https://gzhhqm.csb.app/ ");}
-        function astro() {oframe("https://at.ggtyler.dev/ ");}
+        function fmovie() {oframe("https://www.fmovies.gd/   ");}
+        function prim() {oframe("https://www.primeshows.uk/   ");}
+        function netf() {oframe("https://netflex.uk/   ");}
+        function voidflix() {oframe("https://voidflix.pages.dev/   ");}  // CHANGED: function name from void() to voidflix()
+        function flix() {oframe("https://flixzy.pages.dev/   ");}
+        function cors() {oframe("https://watch.corsflix.net/   ");}
+        function yflix() {oframe("https://yflix.to/home   ");}
+        function movie() {oframe("https://1movies.bz/home   ");}
+        function xprime() {oframe("https://xprime.today/   ");}
+        function vidora() {oframe("https://watch.vidora.su/   ");}
+        function hexa() {oframe("https://hexa.su/   ");}
+        function valh() {oframe("https://valhallastream.pages.dev/   ");}
+        function smashy() {oframe("https://flix.smashystream.xyz/   ");}
+        function rive() {oframe("https://rivestream.org/   ");}
+        function cine() {oframe("https://cinetaro.buzz/   ");}
+        function cinezo() {oframe("https://www.cinezo.net/   ");}
+        function beech() {oframe("https://www.beech.watch/   ");}
+        function flyx() {oframe("https://tv.vynx.cc/   ");}
+        function norep() {oframe("https://gzhhqm.csb.app/   ");}
+        function astro() {oframe("https://at.ggtyler.dev/   ");}
 
         // proxy
-        function ramh() {oframe("https://nearpod.gq  ");}
-        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/  ");}
-        function inter() {oframe("https://gointerstellar.app/  ");}
-        function inter2() {oframe("https://my-learning-hall.jemix.sg/  ");}
+        function ramh() {oframe("https://nearpod.gq    ");}
+        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/    ");}
+        function inter() {oframe("https://gointerstellar.app/    ");}
+        function inter2() {oframe("https://my-learning-hall.jemix.sg/    ");}
 
         // other
-        function tvg() {oframe("https://tv.garden  ");}
-        function desmos() {oframe("https://www.desmos.com/calculator  ");}
+        function tvg() {oframe("https://tv.garden    ");}
+        function desmos() {oframe("https://www.desmos.com/calculator    ");}
 
         function openGithubPage(pageName) {
             const newWin = window.open('about:blank');
             // FIXED: Removed space after github.io/
-            fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
+            fetch(`https://hungryhippo99999.github.io/  ${pageName}.html`)
                 .then(res => {
                     if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
                     return res.text();
@@ -496,26 +620,26 @@
         function aipage() { openGithubPage('ai'); }
         function gamespage() { openGithubPage('games'); }
         function mcpage() { openGithubPage('mc'); }
-        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688  ");}
+        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688    ");}
 
         const rammerheadUrls = [
-            "https://azumanga-daioh.custom-gaming.net/  ",
-            "https://discyoyan.kalbas.com.vn/  ",
-            "https://quizizz.the-schmidt-family.org/  ",
-            "https://ursmelly.smelly.cc/  ",
-            "https://tspmoicl.kutakutik.or.id/  ",
-            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/  ",
-            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/  ",
-            "https://mathfun.thehomeserver.net/  ",
-            "https://ohio.malam.or.id/  ",
-            "https://stopragebaiting.3cm.us/  ",
-            "https://schoolended.iiiii.info/  ",
-            "https://ghettolululemon.mynode.biz/  ",
-            "https://aidancomputers.1337.cx/  ",
-            "https://a-regist.anondns.net/  "
+            "https://azumanga-daioh.custom-gaming.net/    ",
+            "https://discyoyan.kalbas.com.vn/    ",
+            "https://quizizz.the-schmidt-family.org/    ",
+            "https://ursmelly.smelly.cc/    ",
+            "https://tspmoicl.kutakutik.or.id/    ",
+            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/    ",
+            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/    ",
+            "https://mathfun.thehomeserver.net/    ",
+            "https://ohio.malam.or.id/    ",
+            "https://stopragebaiting.3cm.us/    ",
+            "https://schoolended.iiiii.info/    ",
+            "https://ghettolululemon.mynode.biz/    ",
+            "https://aidancomputers.1337.cx/    ",
+            "https://a-regist.anondns.net/    "
         ];
 
-        const otherUrls = ["https://www.example.com  ", "https://www.example.com  "];
+        const otherUrls = ["https://www.example.com    ", "https://www.example.com    "];
         const urlLists = {"rammerheadUrls": rammerheadUrls, "otherUrls": otherUrls};
         
         function openRandomUrl(listName) {
@@ -526,6 +650,51 @@
             }
             const randomUrl = selectedList[Math.floor(Math.random() * selectedList.length)];
             oframe(randomUrl);
+        }
+
+        // New navigation function for pill buttons with circular reveal animation
+        // Uses iframe for proper functionality and fixes URL spacing
+        function navigateToPage(pageName, event) {
+            const transitionOverlay = document.getElementById('transitionOverlay');
+            const transitionCircle = document.getElementById('transitionCircle');
+            const oldContent = document.getElementById('pageContent');
+            const newPageContainer = document.getElementById('newPageContainer');
+            const newPageFrame = document.getElementById('newPageFrame');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            // Get click position for circle origin
+            const rect = event.target.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            // Position circle at click point
+            transitionCircle.style.left = x + 'px';
+            transitionCircle.style.top = y + 'px';
+            transitionCircle.classList.remove('expanding');
+            
+            // Show overlay and loading indicator
+            transitionOverlay.style.display = 'flex';
+            loadingIndicator.classList.add('visible');
+            
+            // Start fade out of old content
+            oldContent.classList.add('fading');
+            
+            // Trigger circle expansion
+            setTimeout(() => {
+                transitionCircle.classList.add('expanding');
+            }, 50);
+            
+            // FIXED: No space in URL for this function
+            const targetUrl = `https://hungryhippo99999.github.io/ ${pageName}.html`;
+            
+            // Set iframe src (hidden until transition completes)
+            newPageFrame.src = targetUrl;
+            
+            // Show new page container after circle fills screen, hide loading
+            setTimeout(() => {
+                newPageContainer.classList.add('visible');
+                loadingIndicator.classList.remove('visible');
+            }, 400);
         }
     </script>
 </body>
