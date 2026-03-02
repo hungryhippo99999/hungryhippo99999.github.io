@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Media</title>
-    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png    ">
+    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png">
     <style>
         :root {
             --bg-dark: #0f0f13;
@@ -104,6 +104,7 @@
             overflow: hidden;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-family: inherit;
         }
 
         /* AI Button - Purple to Cyan */
@@ -247,6 +248,7 @@
             overflow: hidden;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-family: inherit;
         }
 
         button::before {
@@ -443,7 +445,7 @@
         <div class="header-content">
             <div class="brand">
                 <h1>Media</h1>
-                <span class="version">v2.0.4 (Δ)</span>
+                <span class="version">v2.0.5 (Δ)</span>
                 <nav class="nav-pills">
                     <button class="nav-pill ai-pill" onclick="navigateToPage('ai', event)">
                         AI
@@ -471,7 +473,7 @@
                         <button onclick="fmovie()">FMovies</button>
                         <button onclick="prim()">Prime</button>
                         <button onclick="netf()">Netflex</button>
-                        <button onclick="voidflix()">Voidflix</button>  <!-- CHANGED: void() to voidflix() -->
+                        <button onclick="voidflix()">Voidflix</button>
                         <button onclick="flix()">Flixzy</button>
                         <button onclick="cors()">CorsFlix</button>
                         <button onclick="yflix()">yFlix</button>
@@ -495,7 +497,7 @@
                         <h2>YouTube</h2>
                         <button onclick="rftube()" style="width: 100%; margin-bottom: 0.8rem;">RFTube</button>
                         <div class="yt-alt">
-                            Or use this in a proxy: https://inv.nadeko.net/feed/popular   
+                            Or use this in a proxy: https://inv.nadeko.net/feed/popular
                         </div>
                     </section>
 
@@ -558,40 +560,39 @@
         }
 
         // movies
-        function fmovie() {oframe("https://www.fmovies.gd/ ");}
-        function prim() {oframe("https://www.primeshows.uk/ ");}
-        function netf() {oframe("https://netflex.uk/ ");}
-        function voidflix() {oframe("https://voidflix.pages.dev/ ");}  // CHANGED: function name from void() to voidflix()
-        function flix() {oframe("https://flixzy.pages.dev/ ");}
-        function cors() {oframe("https://watch.corsflix.net/ ");}
-        function yflix() {oframe("https://yflix.to/home ");}
-        function movie() {oframe("https://1movies.bz/home ");}
-        function xprime() {oframe("https://xprime.today/ ");}
-        function vidora() {oframe("https://watch.vidora.su/ ");}
-        function hexa() {oframe("https://hexa.su/ ");}
-        function valh() {oframe("https://valhallastream.pages.dev/ ");}
-        function smashy() {oframe("https://flix.smashystream.xyz/ ");}
-        function rive() {oframe("https://rivestream.org/ ");}
-        function cine() {oframe("https://cinetaro.buzz/ ");}
-        function cinezo() {oframe("https://www.cinezo.net/ ");}
-        function beech() {oframe("https://www.beech.watch/ ");}
-        function flyx() {oframe("https://tv.vynx.cc/ ");}
-        function norep() {oframe("https://gzhhqm.csb.app/ ");}
-        function astro() {oframe("https://at.ggtyler.dev/ ");}
+        function fmovie() {oframe("https://www.fmovies.gd/");}
+        function prim() {oframe("https://www.primeshows.uk/");}
+        function netf() {oframe("https://netflex.uk/");}
+        function voidflix() {oframe("https://voidflix.pages.dev/");}
+        function flix() {oframe("https://flixzy.pages.dev/");}
+        function cors() {oframe("https://watch.corsflix.net/");}
+        function yflix() {oframe("https://yflix.to/home");}
+        function movie() {oframe("https://1movies.bz/home");}
+        function xprime() {oframe("https://xprime.today/");}
+        function vidora() {oframe("https://watch.vidora.su/");}
+        function hexa() {oframe("https://hexa.su/");}
+        function valh() {oframe("https://valhallastream.pages.dev/");}
+        function smashy() {oframe("https://flix.smashystream.xyz/");}
+        function rive() {oframe("https://rivestream.org/");}
+        function cine() {oframe("https://cinetaro.buzz/");}
+        function cinezo() {oframe("https://www.cinezo.net/");}
+        function beech() {oframe("https://www.beech.watch/");}
+        function flyx() {oframe("https://tv.vynx.cc/");}
+        function norep() {oframe("https://gzhhqm.csb.app/");}
+        function astro() {oframe("https://at.ggtyler.dev/");}
 
         // proxy
-        function ramh() {oframe("https://nearpod.gq ");}
-        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/ ");}
-        function inter() {oframe("https://gointerstellar.app/ ");}
-        function inter2() {oframe("https://my-learning-hall.jemix.sg/ ");}
+        function ramh() {oframe("https://nearpod.gq");}
+        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/");}
+        function inter() {oframe("https://gointerstellar.app/");}
+        function inter2() {oframe("https://my-learning-hall.jemix.sg/");}
 
         // other
-        function tvg() {oframe("https://tv.garden ");}
-        function desmos() {oframe("https://www.desmos.com/calculator ");}
+        function tvg() {oframe("https://tv.garden");}
+        function desmos() {oframe("https://www.desmos.com/calculator");}
 
         function openGithubPage(pageName) {
             const newWin = window.open('about:blank');
-            // FIXED: Removed space after github.io/
             fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
                 .then(res => {
                     if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
@@ -612,26 +613,26 @@
         function aipage() { openGithubPage('ai'); }
         function gamespage() { openGithubPage('games'); }
         function mcpage() { openGithubPage('mc'); }
-        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688    ");}
+        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
 
         const rammerheadUrls = [
-            "https://azumanga-daioh.custom-gaming.net/    ",
-            "https://discyoyan.kalbas.com.vn/    ",
-            "https://quizizz.the-schmidt-family.org/    ",
-            "https://ursmelly.smelly.cc/    ",
-            "https://tspmoicl.kutakutik.or.id/    ",
-            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/    ",
-            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/    ",
-            "https://mathfun.thehomeserver.net/    ",
-            "https://ohio.malam.or.id/    ",
-            "https://stopragebaiting.3cm.us/    ",
-            "https://schoolended.iiiii.info/    ",
-            "https://ghettolululemon.mynode.biz/    ",
-            "https://aidancomputers.1337.cx/    ",
-            "https://a-regist.anondns.net/    "
+            "https://azumanga-daioh.custom-gaming.net/",
+            "https://discyoyan.kalbas.com.vn/",
+            "https://quizizz.the-schmidt-family.org/",
+            "https://ursmelly.smelly.cc/",
+            "https://tspmoicl.kutakutik.or.id/",
+            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/",
+            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/",
+            "https://mathfun.thehomeserver.net/",
+            "https://ohio.malam.or.id/",
+            "https://stopragebaiting.3cm.us/",
+            "https://schoolended.iiiii.info/",
+            "https://ghettolululemon.mynode.biz/",
+            "https://aidancomputers.1337.cx/",
+            "https://a-regist.anondns.net/"
         ];
 
-        const otherUrls = ["https://www.example.com    ", "https://www.example.com    "];
+        const otherUrls = ["https://www.example.com", "https://www.example.com"];
         const urlLists = {"rammerheadUrls": rammerheadUrls, "otherUrls": otherUrls};
         
         function openRandomUrl(listName) {
@@ -644,58 +645,62 @@
             oframe(randomUrl);
         }
 
-        // Helper function to execute scripts in the injected HTML
-        function executeScripts(container) {
-            // Find all script tags in the container
-            const scripts = container.querySelectorAll('script');
-            scripts.forEach(oldScript => {
-                const newScript = document.createElement('script');
-                
-                // Copy attributes
-                Array.from(oldScript.attributes).forEach(attr => {
-                    newScript.setAttribute(attr.name, attr.value);
-                });
-                
-                // Copy content
-                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                
-                // Replace old script with new one to execute it
-                oldScript.parentNode.replaceChild(newScript, oldScript);
-            });
-        }
+        // Global transition state to prevent multiple simultaneous transitions
+        let isTransitioning = false;
 
-        // New navigation function for pill buttons with circular reveal animation
-        // Fetches content like openGithubPage but displays in current page with animation
+        // Navigation function for pill buttons with circular reveal animation
         function navigateToPage(pageName, event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Prevent multiple clicks during transition
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            // Get the transition elements from the TOP LEVEL document only
             const transitionOverlay = document.getElementById('transitionOverlay');
             const transitionCircle = document.getElementById('transitionCircle');
-            const oldContent = document.getElementById('pageContent');
-            const newPageContainer = document.getElementById('newPageContainer');
             const loadingIndicator = document.getElementById('loadingIndicator');
+            const newPageContainer = document.getElementById('newPageContainer');
+            const originalPageContent = document.getElementById('pageContent');
             
-            // Get click position for circle origin
-            const rect = event.target.getBoundingClientRect();
+            if (!transitionOverlay || !transitionCircle || !newPageContainer) {
+                console.error('Transition elements not found');
+                isTransitioning = false;
+                return;
+            }
+            
+            // Find the currently visible content to fade out
+            const isNewPageVisible = newPageContainer.classList.contains('visible');
+            let currentContent = isNewPageVisible ? newPageContainer : originalPageContent;
+            
+            // Get click position from the button
+            const button = event.currentTarget;
+            const rect = button.getBoundingClientRect();
             const x = rect.left + rect.width / 2;
             const y = rect.top + rect.height / 2;
             
-            // Position circle at click point
+            // Reset circle state
             transitionCircle.style.left = x + 'px';
             transitionCircle.style.top = y + 'px';
             transitionCircle.classList.remove('expanding');
             
-            // Show overlay and loading indicator
+            // Show overlay
             transitionOverlay.style.display = 'flex';
+            
+            // Start fade out of current content
+            if (currentContent) {
+                currentContent.classList.add('fading');
+            }
+            
+            // Show loading indicator
             loadingIndicator.classList.add('visible');
             
-            // Start fade out of old content
-            oldContent.classList.add('fading');
-            
             // Trigger circle expansion
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 transitionCircle.classList.add('expanding');
-            }, 50);
+            });
             
-            // FIXED: No space in URL for this function
             const targetUrl = `https://hungryhippo99999.github.io/${pageName}.html`;
             
             // Fetch the content
@@ -705,16 +710,44 @@
                     return res.text();
                 })
                 .then(html => {
-                    // Wait for transition to complete then show content
                     setTimeout(() => {
-                        // Set HTML content
-                        newPageContainer.innerHTML = html;
+                        // Clear previous content in newPageContainer
+                        newPageContainer.innerHTML = '';
                         
-                        // Execute any scripts in the loaded content
-                        executeScripts(newPageContainer);
+                        // Create an iframe to isolate the injected content completely
+                        // This preserves all styles and prevents ID conflicts
+                        const iframe = document.createElement('iframe');
+                        iframe.style.width = '100%';
+                        iframe.style.height = '100%';
+                        iframe.style.border = 'none';
+                        iframe.style.background = 'var(--bg-dark)';
+                        iframe.id = 'pageFrame';
                         
+                        newPageContainer.appendChild(iframe);
+                        
+                        // Write the HTML to the iframe
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        iframeDoc.open();
+                        iframeDoc.write(html);
+                        iframeDoc.close();
+                        
+                        // Hide the original page content completely
+                        if (originalPageContent) {
+                            originalPageContent.style.display = 'none';
+                            originalPageContent.classList.remove('fading');
+                        }
+                        
+                        // Remove fading class from new container and show it
+                        newPageContainer.classList.remove('fading');
                         newPageContainer.classList.add('visible');
+                        
+                        // Hide loading indicator
                         loadingIndicator.classList.remove('visible');
+                        
+                        // Reset transition state after animation completes
+                        setTimeout(() => {
+                            isTransitioning = false;
+                        }, 800);
                     }, 400);
                 })
                 .catch(err => {
@@ -726,8 +759,13 @@
                                 <button onclick="location.reload()" style="margin-top:1rem;padding:0.6rem 1.2rem;background:rgba(255,64,64,0.2);border:1px solid rgba(255,64,64,0.3);border-radius:50px;color:white;cursor:pointer;font-family:inherit;">Go Back</button>
                             </div>
                         `;
+                        
+                        if (originalPageContent) {
+                            originalPageContent.style.display = 'none';
+                        }
                         newPageContainer.classList.add('visible');
                         loadingIndicator.classList.remove('visible');
+                        isTransitioning = false;
                     }, 400);
                 });
         }
