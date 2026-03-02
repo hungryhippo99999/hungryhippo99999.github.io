@@ -367,7 +367,7 @@
             pointer-events: none;
         }
 
-        /* New Page Container */
+        /* New Page Container - For fetched content */
         .new-page-container {
             position: fixed;
             top: 0;
@@ -379,18 +379,12 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease 0.4s;
+            overflow: auto;
         }
 
         .new-page-container.visible {
             opacity: 1;
             pointer-events: all;
-        }
-
-        .new-page-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: var(--bg-dark);
         }
 
         /* Responsive */
@@ -449,7 +443,7 @@
         <div class="header-content">
             <div class="brand">
                 <h1>Media</h1>
-                <span class="version">v2.0.2 (Δ)</span>
+                <span class="version">v2.0.1 (Δ)</span>
                 <nav class="nav-pills">
                     <button class="nav-pill ai-pill" onclick="navigateToPage('ai', event)">
                         AI
@@ -539,10 +533,8 @@
         <div class="loading-indicator" id="loadingIndicator">Loading...</div>
     </div>
 
-    <!-- New Page Container (iframe-based for proper functionality) -->
-    <div class="new-page-container" id="newPageContainer">
-        <iframe id="newPageFrame" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
-    </div>
+    <!-- New Page Container (for fetched content) -->
+    <div class="new-page-container" id="newPageContainer"></div>
 
     <script>
         // abut:blank opener
@@ -653,13 +645,12 @@
         }
 
         // New navigation function for pill buttons with circular reveal animation
-        // Uses iframe for proper functionality and fixes URL spacing
+        // Fetches content like openGithubPage but displays in current page with animation
         function navigateToPage(pageName, event) {
             const transitionOverlay = document.getElementById('transitionOverlay');
             const transitionCircle = document.getElementById('transitionCircle');
             const oldContent = document.getElementById('pageContent');
             const newPageContainer = document.getElementById('newPageContainer');
-            const newPageFrame = document.getElementById('newPageFrame');
             const loadingIndicator = document.getElementById('loadingIndicator');
             
             // Get click position for circle origin
@@ -687,14 +678,33 @@
             // FIXED: No space in URL for this function
             const targetUrl = `https://hungryhippo99999.github.io/${pageName}.html`;
             
-            // Set iframe src (hidden until transition completes)
-            newPageFrame.src = targetUrl;
-            
-            // Show new page container after circle fills screen, hide loading
-            setTimeout(() => {
-                newPageContainer.classList.add('visible');
-                loadingIndicator.classList.remove('visible');
-            }, 400);
+            // Fetch the content
+            fetch(targetUrl)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
+                    return res.text();
+                })
+                .then(html => {
+                    // Wait for transition to complete then show content
+                    setTimeout(() => {
+                        newPageContainer.innerHTML = html;
+                        newPageContainer.classList.add('visible');
+                        loadingIndicator.classList.remove('visible');
+                    }, 400);
+                })
+                .catch(err => {
+                    setTimeout(() => {
+                        newPageContainer.innerHTML = `
+                            <div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;color:#ff4040;padding:2rem;">
+                                <h2>Error loading ${pageName}</h2>
+                                <p>${err.message}</p>
+                                <button onclick="location.reload()" style="margin-top:1rem;padding:0.6rem 1.2rem;background:rgba(255,64,64,0.2);border:1px solid rgba(255,64,64,0.3);border-radius:50px;color:white;cursor:pointer;font-family:inherit;">Go Back</button>
+                            </div>
+                        `;
+                        newPageContainer.classList.add('visible');
+                        loadingIndicator.classList.remove('visible');
+                    }, 400);
+                });
         }
     </script>
 </body>
