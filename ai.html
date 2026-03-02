@@ -33,6 +33,7 @@
             line-height: 1.6;
             min-height: 100vh;
             padding-bottom: 120px;
+            overflow-x: hidden;
         }
 
         /* Header Section */
@@ -55,8 +56,8 @@
 
         .brand {
             display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
+            align-items: center;
+            gap: 1.5rem;
         }
 
         h1 {
@@ -88,6 +89,70 @@
             font-size: 0.85rem;
             margin-top: 1rem;
             border-radius: 4px;
+        }
+
+        /* Navigation Pills - Custom Colors */
+        .nav-pills {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .nav-pill {
+            position: relative;
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: inherit;
+        }
+
+        /* Media Button - Red to Orange */
+        .nav-pill.media-pill {
+            background: linear-gradient(135deg, rgb(255, 54, 54), rgb(255, 120, 35));
+            box-shadow: 0 4px 15px rgba(255, 54, 54, 0.4);
+        }
+
+        .nav-pill.media-pill:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 54, 54, 0.6);
+        }
+
+        /* Games Button - Green to Blue */
+        .nav-pill.games-pill {
+            background: linear-gradient(135deg, rgb(162, 203, 56), rgb(97, 135, 0));
+            box-shadow: 0 4px 15px rgba(162, 203, 56, 0.4);
+        }
+
+        .nav-pill.games-pill:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(162, 203, 56, 0.6);
+        }
+
+        .nav-pill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-pill:hover::before {
+            left: 100%;
+        }
+
+        .nav-pill:active {
+            transform: translateY(0) scale(0.98);
         }
 
         /* Main Container - Single Column */
@@ -203,74 +268,117 @@
             color: var(--text-secondary);
         }
 
-        /* Floating Action Buttons - Matching Media Page Design */
-        .fab-container {
+        /* Page Transition Animation */
+        .page-transition {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 1000;
-        }
-
-        .fab {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            cursor: pointer;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
 
-        .fab:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
-
-        .fab img {
-            width: 24px;
-            height: 24px;
-            filter: brightness(0) invert(1);
-        }
-
-        .fab::after {
-            content: attr(data-label);
+        .transition-circle {
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--bg-dark);
             position: absolute;
-            right: 70px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            white-space: nowrap;
+            transform: translate(-50%, -50%);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .transition-circle.expanding {
+            width: 300vmax;
+            height: 300vmax;
+        }
+
+        /* Loading Indicator */
+        .loading-indicator {
+            position: absolute;
+            z-index: 10001;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            text-shadow: 0 0 20px rgba(175, 64, 255, 0.5);
+            pointer-events: none;
+        }
+
+        .loading-indicator.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .loading-indicator::after {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background: linear-gradient(180deg, var(--accent), var(--accent-tertiary));
+            margin-left: 0.5rem;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            border-radius: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .old-content {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .old-content.fading {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        /* New Page Container - For fetched content */
+        .new-page-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            background: var(--bg-dark);
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s;
-            color: white;
+            transition: opacity 0.4s ease 0.4s;
+            overflow: auto;
         }
 
-        .fab:hover::after {
+        .new-page-container.visible {
             opacity: 1;
+            pointer-events: all;
         }
-
-        /* Specific FAB colors matching Media page theme */
-        .fab-media { background: linear-gradient(135deg, #ff4040, #ff7823); }
-        .fab-games { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .fab-mc { background: linear-gradient(135deg, #22c55e, #16a34a); }
-        .fab-chat { background: linear-gradient(135deg, #3b82f6, #2563eb); }
 
         /* Responsive */
         @media (max-width: 600px) {
             .header-content {
                 flex-direction: column;
                 text-align: center;
+            }
+            
+            .nav-pills {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-pill {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.8rem;
             }
             
             .button-grid {
@@ -285,10 +393,15 @@
         <div class="header-content">
             <div class="brand">
                 <h1>AI</h1>
-                <span class="version">v1.0.1 (Δ)</span>
-            </div>
-            <div style="flex: 1; text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
-                Available Pages: media, games, mc, ai
+                <span class="version">v1.0.2 (Δ)</span>
+                <nav class="nav-pills">
+                    <button class="nav-pill media-pill" onclick="navigateToPage('media', event)">
+                        Media
+                    </button>
+                    <button class="nav-pill games-pill" onclick="navigateToPage('games', event)">
+                        Games
+                    </button>
+                </nav>
             </div>
             <div style="width: 100px;"></div>
         </div>
@@ -297,81 +410,66 @@
         </div>
     </header>
 
-    <div class="container">
-        
-        <!-- AI Search Engines -->
-        <section class="card">
-            <h2>Copilot Alternatives (will show up on GoGuardian)</h2>
-            <div class="button-grid">
-                <button onclick="qwen()">Qwen</button>
-                <button onclick="duck()">DuckAI</button>
-                <button onclick="zai()">Z.ai</button>
-            </div>
-        </section>
+    <div id="mainWrapper">
+        <div class="old-content" id="pageContent">
+            <div class="container">
+                
+                <!-- AI Search Engines -->
+                <section class="card">
+                    <h2>Copilot Alternatives (will show up on GoGuardian)</h2>
+                    <div class="button-grid">
+                        <button onclick="qwen()">Qwen</button>
+                        <button onclick="duck()">DuckAI</button>
+                        <button onclick="zai()">Z.ai</button>
+                    </div>
+                </section>
 
 
-        <!-- Other AI -->
-        <section class="card">
-            <h2>Other AI</h2>
-            <div class="button-grid">
-                <button onclick="together()">Together.ai</button>
-                <button onclick="long()">LongCat</button>
-                <button onclick="solar()">Solar</button>
-                <button onclick="reka()">Reka</button>
-                <button onclick="olmo()">Olmo</button>
-                <button onclick="kimi()">Kimi</button>
-            </div>
-        </section>
-        
-        <!-- ChatGPT 5 -->
-        <section class="card">
-            <h2>Free ChatGPT</h2>
-            <div class="button-grid">
-                <button onclick="heck()">HeckAI</button>
-                <button onclick="ish()">ISH</button>
-                <button onclick="freegpt()">FreeGPT</button>
-                <button onclick="lite()">Lite-GPT</button>
-            </div>
-        </section>
+                <!-- Other AI -->
+                <section class="card">
+                    <h2>Other AI</h2>
+                    <div class="button-grid">
+                        <button onclick="together()">Together.ai</button>
+                        <button onclick="long()">LongCat</button>
+                        <button onclick="solar()">Solar</button>
+                        <button onclick="reka()">Reka</button>
+                        <button onclick="olmo()">Olmo</button>
+                        <button onclick="kimi()">Kimi</button>
+                    </div>
+                </section>
+                
+                <!-- ChatGPT 5 -->
+                <section class="card">
+                    <h2>Free ChatGPT</h2>
+                    <div class="button-grid">
+                        <button onclick="heck()">HeckAI</button>
+                        <button onclick="ish()">ISH</button>
+                        <button onclick="freegpt()">FreeGPT</button>
+                        <button onclick="lite()">Lite-GPT</button>
+                    </div>
+                </section>
 
-        <!-- Images 
-        <section class="card">
-            <h2>Images</h2>
-            <div class="button-grid">
-                <button onclick="dezgo()">Dezgo</button>
-                <button onclick="flux()">Flux</button>
-                <button onclick="prodia()">Prodia</button>
-                <button onclick="aigallery()">AI Gallery</button>
-            </div>
-        </section>
--->
+                <!-- API -->
+                <section class="card">
+                    <h2>Need your own API</h2>
+                    <button onclick="libre()" class="single-button">LibreChat</button>
+                    <div class="card-note">
+                        Use AI with free API keys
+                    </div>
+                </section>
 
-        <!-- API -->
-        <section class="card">
-            <h2>Need your own API</h2>
-            <button onclick="libre()" class="single-button">LibreChat</button>
-            <div class="card-note">
-                Use AI with free API keys
             </div>
-        </section>
-
+        </div>
     </div>
 
-    <!-- Floating Navigation Buttons (Matching Media Page) -->
-    <div class="fab-container">
-        <button class="fab fab-media" onclick="mediaPage()" data-label="Media">
-            <img src="https://cdn-icons-png.flaticon.com/512/565/565290.png" alt="Media">
-        </button>
-        <button class="fab fab-games" onclick="gamesPage()" data-label="Games">
-            <img src="https://www.svgrepo.com/show/326649/game-controller-outline.svg" alt="Games">
-        </button>
-        <button class="fab fab-mc" onclick="mcPage()" data-label="Minecraft">
-            <img src="https://icons.veryicon.com/png/o/object/material-design-icons-1/minecraft-8.png" alt="MC">
-        </button>
-        <button class="fab fab-chat" onclick="chat()" data-label="Chat">
-            <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="Chat">
-        </button>
+    <!-- Transition Overlay -->
+    <div class="page-transition" id="transitionOverlay" style="display: none;">
+        <div class="transition-circle" id="transitionCircle"></div>
+        <div class="loading-indicator" id="loadingIndicator">Loading...</div>
     </div>
+
+    <!-- New Page Container (for fetched content) -->
+    <div class="new-page-container" id="newPageContainer"></div>
 
     <script>
         // optimized iframe
@@ -444,6 +542,102 @@
         function gamesPage() { openGithubPage('games'); }
         function mcPage() { openGithubPage('mc'); }
         function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
+
+        // Helper function to execute scripts in the injected HTML
+        function executeScripts(container) {
+            const scripts = container.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => {
+                    newScript.setAttribute(attr.name, attr.value);
+                });
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        }
+
+        // Navigation function for pill buttons with circular reveal animation
+        function navigateToPage(pageName, event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const transitionOverlay = document.getElementById('transitionOverlay');
+            const transitionCircle = document.getElementById('transitionCircle');
+            const oldContent = document.getElementById('pageContent');
+            const newPageContainer = document.getElementById('newPageContainer');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            if (!transitionOverlay || !transitionCircle || !oldContent || !newPageContainer) {
+                console.error('Transition elements not found');
+                return;
+            }
+            
+            // Get click position from the button (currentTarget ensures we get the button, not child elements)
+            const button = event.currentTarget;
+            const rect = button.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            // Reset circle state
+            transitionCircle.style.left = x + 'px';
+            transitionCircle.style.top = y + 'px';
+            transitionCircle.classList.remove('expanding');
+            
+            // Show overlay
+            transitionOverlay.style.display = 'flex';
+            
+            // Start fade out of old content
+            oldContent.classList.add('fading');
+            
+            // Show loading indicator
+            loadingIndicator.classList.add('visible');
+            
+            // Trigger circle expansion after a brief delay
+            requestAnimationFrame(() => {
+                transitionCircle.classList.add('expanding');
+            });
+            
+            const targetUrl = `https://hungryhippo99999.github.io/${pageName}.html`;
+            
+            // Fetch the content
+            fetch(targetUrl)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
+                    return res.text();
+                })
+                .then(html => {
+                    // Wait for transition animation
+                    setTimeout(() => {
+                        // Clear previous content
+                        newPageContainer.innerHTML = '';
+                        
+                        // Set new HTML content
+                        newPageContainer.innerHTML = html;
+                        
+                        // Execute any scripts in the loaded content
+                        executeScripts(newPageContainer);
+                        
+                        // Show new content
+                        newPageContainer.classList.add('visible');
+                        
+                        // Hide loading indicator
+                        loadingIndicator.classList.remove('visible');
+                    }, 400);
+                })
+                .catch(err => {
+                    setTimeout(() => {
+                        newPageContainer.innerHTML = `
+                            <div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;color:#ff4040;padding:2rem;">
+                                <h2>Error loading ${pageName}</h2>
+                                <p>${err.message}</p>
+                                <button onclick="location.reload()" style="margin-top:1rem;padding:0.6rem 1.2rem;background:rgba(255,64,64,0.2);border:1px solid rgba(255,64,64,0.3);border-radius:50px;color:white;cursor:pointer;font-family:inherit;">Go Back</button>
+                            </div>
+                        `;
+                        newPageContainer.classList.add('visible');
+                        loadingIndicator.classList.remove('visible');
+                    }, 400);
+                });
+        }
     </script>
 </body>
 </html>
