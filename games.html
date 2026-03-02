@@ -466,7 +466,7 @@
         <div class="header-content">
             <div class="brand">
                 <h1>Games</h1>
-                <span class="version">v2.0.1 (Δ)</span>
+                <span class="version">v2.0.2 (Δ)</span>
                 <nav class="nav-pills">
                     <button class="nav-pill media-pill" onclick="navigateToPage('media', event)">
                         Media
@@ -703,34 +703,34 @@
         function mcPage() { openGithubPage('mc'); }
         function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
 
-        // Helper function to execute scripts in the injected HTML
-        function executeScripts(container) {
-            const scripts = container.querySelectorAll('script');
-            scripts.forEach(oldScript => {
-                const newScript = document.createElement('script');
-                Array.from(oldScript.attributes).forEach(attr => {
-                    newScript.setAttribute(attr.name, attr.value);
-                });
-                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                oldScript.parentNode.replaceChild(newScript, oldScript);
-            });
-        }
+        // Global transition state to prevent multiple simultaneous transitions
+        let isTransitioning = false;
 
         // Navigation function for pill buttons with circular reveal animation
         function navigateToPage(pageName, event) {
             event.preventDefault();
             event.stopPropagation();
             
+            // Prevent multiple clicks during transition
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            // Get the transition elements from the TOP LEVEL document only
             const transitionOverlay = document.getElementById('transitionOverlay');
             const transitionCircle = document.getElementById('transitionCircle');
-            const oldContent = document.getElementById('pageContent');
-            const newPageContainer = document.getElementById('newPageContainer');
             const loadingIndicator = document.getElementById('loadingIndicator');
+            const newPageContainer = document.getElementById('newPageContainer');
+            const originalPageContent = document.getElementById('pageContent');
             
-            if (!transitionOverlay || !transitionCircle || !oldContent || !newPageContainer) {
+            if (!transitionOverlay || !transitionCircle || !newPageContainer) {
                 console.error('Transition elements not found');
+                isTransitioning = false;
                 return;
             }
+            
+            // Find the currently visible content to fade out
+            const isNewPageVisible = newPageContainer.classList.contains('visible');
+            let currentContent = isNewPageVisible ? newPageContainer : originalPageContent;
             
             // Get click position from the button
             const button = event.currentTarget;
@@ -746,8 +746,10 @@
             // Show overlay
             transitionOverlay.style.display = 'flex';
             
-            // Start fade out of old content
-            oldContent.classList.add('fading');
+            // Start fade out of current content
+            if (currentContent) {
+                currentContent.classList.add('fading');
+            }
             
             // Show loading indicator
             loadingIndicator.classList.add('visible');
@@ -767,11 +769,43 @@
                 })
                 .then(html => {
                     setTimeout(() => {
+                        // Clear previous content in newPageContainer
                         newPageContainer.innerHTML = '';
-                        newPageContainer.innerHTML = html;
-                        executeScripts(newPageContainer);
+                        
+                        // Create an iframe to isolate the injected content completely
+                        // This preserves all styles and prevents ID conflicts
+                        const iframe = document.createElement('iframe');
+                        iframe.style.width = '100%';
+                        iframe.style.height = '100%';
+                        iframe.style.border = 'none';
+                        iframe.style.background = 'var(--bg-dark)';
+                        iframe.id = 'pageFrame';
+                        
+                        newPageContainer.appendChild(iframe);
+                        
+                        // Write the HTML to the iframe
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        iframeDoc.open();
+                        iframeDoc.write(html);
+                        iframeDoc.close();
+                        
+                        // Hide the original page content completely
+                        if (originalPageContent) {
+                            originalPageContent.style.display = 'none';
+                            originalPageContent.classList.remove('fading');
+                        }
+                        
+                        // Remove fading class from new container and show it
+                        newPageContainer.classList.remove('fading');
                         newPageContainer.classList.add('visible');
+                        
+                        // Hide loading indicator
                         loadingIndicator.classList.remove('visible');
+                        
+                        // Reset transition state after animation completes
+                        setTimeout(() => {
+                            isTransitioning = false;
+                        }, 800);
                     }, 400);
                 })
                 .catch(err => {
@@ -783,8 +817,13 @@
                                 <button onclick="location.reload()" style="margin-top:1rem;padding:0.6rem 1.2rem;background:rgba(255,64,64,0.2);border:1px solid rgba(255,64,64,0.3);border-radius:50px;color:white;cursor:pointer;font-family:inherit;">Go Back</button>
                             </div>
                         `;
+                        
+                        if (originalPageContent) {
+                            originalPageContent.style.display = 'none';
+                        }
                         newPageContainer.classList.add('visible');
                         loadingIndicator.classList.remove('visible');
+                        isTransitioning = false;
                     }, 400);
                 });
         }
