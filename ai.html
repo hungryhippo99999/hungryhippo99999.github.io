@@ -435,6 +435,7 @@
                         <button onclick="reka()">Reka</button>
                         <button onclick="olmo()">Olmo</button>
                         <button onclick="kimi()">Kimi</button>
+                        <button onclick="indi()">Indic</button>
                     </div>
                 </section>
                 
@@ -452,7 +453,10 @@
                 <!-- API -->
                 <section class="card">
                     <h2>Need your own API</h2>
-                    <button onclick="libre()" class="single-button">LibreChat</button>
+                    <div class="button-grid">
+                        <button onclick="gemini()" class="single-button">GeminiChat</button>
+                        <button onclick="libre()" class="single-button">LibreChat</button>
+                    </div>
                     <div class="card-note">
                         Use AI with free API keys
                     </div>
@@ -503,6 +507,7 @@
         function reka() {oframe("https://app.reka.ai/chat");}
         function olmo() {oframe("https://playground.allenai.org/");}
         function kimi() {oframe("https://www.kimi.com/");}
+        function indi() {oframe("https://arena.ai4bharat.org/#/chat/");}
         
         // multi chatbots
         function heck() {oframe("https://heck.ai/");}
@@ -538,10 +543,7 @@
                 });
         }
 
-        function mediaPage() { openGithubPage('media'); }
-        function gamesPage() { openGithubPage('games'); }
-        function mcPage() { openGithubPage('mc'); }
-        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
+        function gemini() { openGithubPage('geminichat'); }
 
         // Global transition state to prevent multiple simultaneous transitions
         let isTransitioning = false;
