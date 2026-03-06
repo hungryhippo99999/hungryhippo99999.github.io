@@ -444,7 +444,7 @@
         <div class="header-content">
             <div class="brand">
                 <h1>Δ</h1>
-                <span class="version">v2.0.1</span>
+                <span class="version">v2.0.2</span>
                 <nav class="nav-pills">
                     <button class="nav-pill" onclick="navigateToPage('media', event)">
                         Media
@@ -455,7 +455,10 @@
                     <button class="nav-pill" onclick="navigateToPage('games', event)">
                         Games
                     </button>
-                    <button class="nav-pill" onclick="navigateToPage('htmltester', event)">
+                    <button class="nav-pill" onclick="openGithubPage('rftube', event)">
+                        YouTube
+                    </button>
+                    <button class="nav-pill" onclick="openGithubPage('htmltester', event)">
                         HTML
                     </button>
                 </nav>
@@ -484,10 +487,12 @@
                     <h2>AI</h2>
                     <div class="button-grid">
                         <button onclick="kimi()">Kimi</button>
-                        <button onclick="toge()">Together</button>
+                        <button onclick="indi()">Indic</button>
+                        <button onclick="gemini()">Gemini</button>
                         <button onclick="long()">LongCat</button>
                         <button onclick="reka()">Reka</button>
                         <button onclick="olmo()">OLMo</button>
+                        <button onclick="toge()">Together</button>
                         <button onclick="tymi()">TypingMind</button>
                         <button onclick="libre()">LibreChat</button>
                     </div>
@@ -571,6 +576,24 @@
             win.document.body.appendChild(iframe);
         }
 
+        // Navigation to other pages
+        function openGithubPage(pageName) {
+            const newWin = window.open('about:blank');
+            fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
+                    return res.text();
+                })
+                .then(html => {
+                    newWin.document.open();
+                    newWin.document.write(html);
+                    newWin.document.close();
+                })
+                .catch(err => {
+                    newWin.document.body.innerHTML = `<pre style="color:red;">Error loading ${pageName}: ${err.message}</pre>`;
+                });
+        }
+
         function getInputUrl() {
             var url = document.getElementById('urlInput').value;
             oframe(url);
@@ -603,10 +626,12 @@
 
         // ai
         function kimi() {oframe("https://www.kimi.com/");}
-        function toge() {oframe("https://chat.together.ai/");}
+        function indi() {oframe("https://arena.ai4bharat.org/#/chat/");}
+        function gemini() { openGithubPage('geminichat'); }
         function long() {oframe("https://longcat.chat/");}
         function reka() {oframe("https://app.reka.ai/chat");}
         function olmo() {oframe("https://playground.allenai.org/");}
+        function toge() {oframe("https://chat.together.ai/");}
         function tymi() {oframe("https://www.typingmind.com/");}
         function libre() {oframe("https://librechat-librechat.hf.space/c/");}
 
