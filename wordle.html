@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle Patterns</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+            background: #121213;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .target-section {
+            max-width: 400px;
+            margin: 0 auto 30px auto;
+            background: #1a1a1b;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #3a3a3c;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .section {
+            background: #1a1a1b;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #3a3a3c;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #538d4e;
+            border-radius: 2px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0b0b0;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            background: #121213;
+            border: 2px solid #3a3a3c;
+            color: #ffffff;
+            border-radius: 6px;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #538d4e;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            border: 2px solid #3a3a3c;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #3a3a3c;
+            color: #ffffff;
+            user-select: none;
+        }
+
+        .cell:hover {
+            transform: scale(1.05);
+            border-color: #565758;
+        }
+
+        .cell.absent {
+            background: #3a3a3c;
+            border-color: #3a3a3c;
+        }
+
+        .cell.present {
+            background: #b59f3b;
+            border-color: #b59f3b;
+            color: #ffffff;
+        }
+
+        .cell.correct {
+            background: #538d4e;
+            border-color: #538d4e;
+            color: #ffffff;
+        }
+
+        .cell.empty {
+            background: #121213;
+            border-color: #3a3a3c;
+        }
+
+        .cell.either {
+            background: linear-gradient(135deg, #538d4e 50%, #b59f3b 50%);
+            border-color: #538d4e;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .cell.active-input {
+            border-color: #565758;
+            animation: pulse-border 1s infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: #565758; }
+            50% { border-color: #818384; }
+        }
+
+        .cell.filled {
+            border-color: #565758;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            font-size: 0.85em;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-green {
+            background: #3a3a3c;
+            color: white;
+            border: 2px solid transparent;
+        }
+
+        .btn-green.active {
+            background: #538d4e;
+            box-shadow: 0 0 0 3px #538d4e, 0 0 0 5px #ffffff;
+        }
+
+        .btn-yellow {
+            background: #3a3a3c;
+            color: white;
+            border: 2px solid transparent;
+        }
+
+        .btn-yellow.active {
+            background: #b59f3b;
+            box-shadow: 0 0 0 3px #b59f3b, 0 0 0 5px #ffffff;
+        }
+
+        .btn-gray {
+            background: #3a3a3c;
+            color: white;
+            border: 2px solid transparent;
+        }
+
+        .btn-gray.active {
+            background: #565758;
+            box-shadow: 0 0 0 3px #565758, 0 0 0 5px #ffffff;
+        }
+
+        .btn-clear {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .btn-dual {
+            background: #3a3a3c;
+            color: white;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .btn-dual.active {
+            background: linear-gradient(135deg, #538d4e 50%, #b59f3b 50%);
+            box-shadow: 0 0 0 3px #ffffff;
+            border-color: #ffffff;
+        }
+
+        .btn-auto {
+            background: #6aaa64;
+            color: white;
+            font-size: 1em;
+            padding: 15px 30px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-row {
+            background: #2a2a2b;
+            color: white;
+            border: 2px solid #3a3a3c;
+        }
+
+        .btn-row.active {
+            background: #538d4e;
+            border-color: #538d4e;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            font-size: 0.8em;
+            color: #818384;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        .word-list {
+            max-height: 500px;
+            overflow-y: auto;
+            background: #121213;
+            border-radius: 6px;
+            padding: 10px;
+        }
+
+        .word-item {
+            padding: 10px;
+            margin: 6px 0;
+            background: #2a2a2b;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: monospace;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .word-item:hover {
+            background: #3a3a3c;
+            transform: translateX(5px);
+        }
+
+        .word-item .preview {
+            display: flex;
+            gap: 4px;
+        }
+
+        .mini-cell {
+            width: 24px;
+            height: 24px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #538d4e;
+            color: white;
+        }
+
+        .status.error {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .row-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #818384;
+            font-size: 0.8em;
+            font-weight: bold;
+            padding-right: 10px;
+            min-width: 30px;
+        }
+
+        .pattern-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .pattern-row .grid {
+            margin: 0;
+            flex: 1;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #3a3a3c;
+            border-top-color: #538d4e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .tester-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .tester-row .grid {
+            margin: 0;
+            flex: 1;
+        }
+
+        .tester-row.current-row .row-label {
+            color: #538d4e;
+        }
+
+        .tester-row.completed {
+            opacity: 1;
+        }
+
+        .tester-row.completed .row-label {
+            color: #818384;
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 5px;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .tester-row:hover .row-actions {
+            opacity: 1;
+        }
+
+        .row-btn {
+            padding: 5px 10px;
+            font-size: 0.7em;
+            border-radius: 4px;
+        }
+
+        .row-btn.delete {
+            background: #ff4d4d;
+        }
+
+        .row-btn.edit {
+            background: #b59f3b;
+        }
+
+        .row-btn.find {
+            background: #538d4e;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .finder-modes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .finder-mode {
+            background: #2a2a2b;
+            padding: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .finder-mode:hover {
+            border-color: #538d4e;
+        }
+
+        .finder-mode.selected {
+            border-color: #538d4e;
+            background: #1a3a1a;
+        }
+
+        .finder-mode h4 {
+            margin-bottom: 8px;
+            color: #538d4e;
+            font-size: 1.1em;
+        }
+
+        .finder-mode p {
+            font-size: 0.85em;
+            color: #818384;
+            line-height: 1.4;
+        }
+
+        .sequence-result {
+            background: #1a1a1b;
+            border: 2px solid #3a3a3c;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .sequence-result h4 {
+            color: #538d4e;
+            margin-bottom: 10px;
+        }
+
+        .sequence-row {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-family: monospace;
+        }
+
+        .sequence-num {
+            width: 30px;
+            color: #818384;
+        }
+
+        .sequence-word {
+            flex: 1;
+            font-size: 1.2em;
+            letter-spacing: 2px;
+        }
+
+        .sequence-pattern {
+            display: flex;
+            gap: 4px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: #2a2a2b;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #538d4e;
+        }
+
+        .stat-label {
+            font-size: 0.75em;
+            color: #818384;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .row-actions {
+                opacity: 1;
+            }
+            .finder-modes {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="target-section">
+        <label>Target Word</label>
+        <input type="text" id="targetWord" maxlength="5" placeholder="CRANE">
+    </div>
+
+    <div class="container">
+        <!-- Left: Manual Tester -->
+        <div class="section">
+            <div class="section-title">Manual Tester</div>
+            <div id="testerContainer"></div>
+            <div class="action-buttons">
+                <button class="btn-green" onclick="submitTesterRow()">Enter</button>
+                <button class="btn-clear" onclick="clearTesterRow()">Clear Row</button>
+                <button class="btn-gray" onclick="resetTester()">Reset All</button>
+            </div>
+            <div id="testerResult"></div>
+        </div>
+
+        <!-- Right: Pattern Designer -->
+        <div class="section">
+            <div class="section-title">Design Pattern</div>
+            <div id="patternContainer"></div>
+            
+            <div class="controls">
+                <button class="btn-green" id="btnGreen" onclick="setBrush('correct')">Green</button>
+                <button class="btn-yellow" id="btnYellow" onclick="setBrush('present')">Yellow</button>
+                <button class="btn-dual" id="btnDual" onclick="setBrush('either')">Green/Yellow</button>
+                <button class="btn-gray" id="btnGray" onclick="setBrush('absent')">Gray</button>
+                <button class="btn-clear" onclick="clearPattern()">Clear All</button>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #538d4e;"></div>
+                    <span>Correct</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #b59f3b;"></div>
+                    <span>Present</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: linear-gradient(135deg, #538d4e 50%, #b59f3b 50%);"></div>
+                    <span>Either</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #3a3a3c;"></div>
+                    <span>Absent</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Left: Word Finder -->
+        <div class="section">
+            <div class="section-title">Word Finder</div>
+            
+            <div class="finder-modes">
+                <div class="finder-mode selected" onclick="selectMode('single')" id="modeSingle">
+                    <h4>By Row</h4>
+                    <p>Find words for one specific row</p>
+                </div>
+                <div class="finder-mode" onclick="selectMode('full')" id="modeFull">
+                    <h4>Full Sequence</h4>
+                    <p>Find 6 words for all rows</p>
+                </div>
+            </div>
+
+            <div id="rowSelector" style="margin-bottom: 15px;">
+                <label>Row:</label>
+                <div class="controls" style="justify-content: flex-start;">
+                    <button class="btn-row active" onclick="setTargetRow(0)" id="rowBtn0">1</button>
+                    <button class="btn-row" onclick="setTargetRow(1)" id="rowBtn1">2</button>
+                    <button class="btn-row" onclick="setTargetRow(2)" id="rowBtn2">3</button>
+                    <button class="btn-row" onclick="setTargetRow(3)" id="rowBtn3">4</button>
+                    <button class="btn-row" onclick="setTargetRow(4)" id="rowBtn4">5</button>
+                    <button class="btn-row" onclick="setTargetRow(5)" id="rowBtn5">6</button>
+                </div>
+            </div>
+
+            <button class="btn-auto" onclick="executeFinder()" id="findWordsBtn" disabled>
+                🔍 Find Words
+            </button>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="wordCount">0</div>
+                    <div class="stat-label">Matches</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="totalWords">0</div>
+                    <div class="stat-label">Loaded</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Results -->
+        <div class="section">
+            <div class="section-title">Results</div>
+            <div class="word-list" id="wordList">
+                <div style="color: #818384; text-align: center; padding: 40px;">
+                    Enter target word, design pattern, then click Find Words
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentBrush = 'correct';
+        let pattern = Array(30).fill('absent');
+        let targetWord = '';
+        let wordList = [];
+        let finderMode = 'single';
+        let targetFinderRow = 0;
+        let wordListLoaded = false;
+        
+        let testerRows = Array(6).fill(null).map(() => Array(5).fill(''));
+        let testerEvaluated = Array(6).fill(false);
+        let testerPatterns = Array(6).fill(null);
+        let currentTesterRow = 0;
+        let currentTesterCol = 0;
+
+        const WORDLE_LIST_URL = 'https://raw.githubusercontent.com/tabatkins/wordle-list/main/words';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createPatternGrid();
+            createTesterGrid();
+            updateBrushButtons();
+            
+            document.getElementById('targetWord').addEventListener('input', (e) => {
+                targetWord = e.target.value.toUpperCase().slice(0, 5);
+                if (targetWord.length === 5 && wordListLoaded) {
+                    document.getElementById('findWordsBtn').disabled = false;
+                }
+            });
+
+            document.addEventListener('keydown', handleGlobalKeyDown);
+            loadWordList();
+        });
+
+        async function loadWordList() {
+            try {
+                const response = await fetch(WORDLE_LIST_URL);
+                const text = await response.text();
+                wordList = text.toUpperCase().split(/\s+/).filter(w => w.length === 5 && /^[A-Z]+$/.test(w));
+                wordList = [...new Set(wordList)].sort();
+                wordListLoaded = true;
+                document.getElementById('totalWords').textContent = wordList.length;
+                if (targetWord && targetWord.length === 5) {
+                    document.getElementById('findWordsBtn').disabled = false;
+                }
+            } catch (e) {
+                console.error('Failed to load word list:', e);
+            }
+        }
+
+        function createPatternGrid() {
+            const container = document.getElementById('patternContainer');
+            for (let row = 0; row < 6; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'pattern-row';
+                
+                const label = document.createElement('div');
+                label.className = 'row-label';
+                label.textContent = `R${row + 1}`;
+                rowDiv.appendChild(label);
+                
+                const grid = document.createElement('div');
+                grid.className = 'grid';
+                
+                for (let col = 0; col < 5; col++) {
+                    const index = row * 5 + col;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell absent';
+                    cell.addEventListener('click', () => toggleCell(index));
+                    grid.appendChild(cell);
+                }
+                
+                rowDiv.appendChild(grid);
+                container.appendChild(rowDiv);
+            }
+        }
+
+        function createTesterGrid() {
+            const container = document.getElementById('testerContainer');
+            for (let row = 0; row < 6; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'tester-row';
+                
+                const label = document.createElement('div');
+                label.className = 'row-label';
+                label.textContent = `${row + 1}`;
+                rowDiv.appendChild(label);
+                
+                const grid = document.createElement('div');
+                grid.className = 'grid';
+                
+                for (let col = 0; col < 5; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell empty';
+                    cell.addEventListener('click', () => {
+                        if (!testerEvaluated[row]) {
+                            currentTesterRow = row;
+                            currentTesterCol = col;
+                            updateTesterGrid();
+                        }
+                    });
+                    grid.appendChild(cell);
+                }
+                
+                rowDiv.appendChild(grid);
+                
+                const actions = document.createElement('div');
+                actions.className = 'row-actions';
+                actions.innerHTML = `
+                    <button class="row-btn find" onclick="findForRow(${row})">Find</button>
+                    <button class="row-btn edit" onclick="editRow(${row})">Edit</button>
+                    <button class="row-btn delete" onclick="deleteRow(${row})">Del</button>
+                `;
+                rowDiv.appendChild(actions);
+                container.appendChild(rowDiv);
+            }
+            updateTesterGrid();
+        }
+
+        function handleGlobalKeyDown(e) {
+            if (e.target.id === 'targetWord') return;
+            
+            const key = e.key;
+            
+            if (key === 'Enter') {
+                e.preventDefault();
+                submitTesterRow();
+            } else if (key === 'Backspace') {
+                e.preventDefault();
+                if (testerRows[currentTesterRow][currentTesterCol]) {
+                    testerRows[currentTesterRow][currentTesterCol] = '';
+                } else if (currentTesterCol > 0) {
+                    currentTesterCol--;
+                    testerRows[currentTesterRow][currentTesterCol] = '';
+                }
+                updateTesterGrid();
+            } else if (key === 'ArrowLeft' && currentTesterCol > 0) {
+                e.preventDefault();
+                currentTesterCol--;
+                updateTesterGrid();
+            } else if (key === 'ArrowRight' && currentTesterCol < 4) {
+                e.preventDefault();
+                currentTesterCol++;
+                updateTesterGrid();
+            } else if (key === 'ArrowUp' && currentTesterRow > 0) {
+                e.preventDefault();
+                currentTesterRow--;
+                currentTesterCol = 0;
+                updateTesterGrid();
+            } else if (key === 'ArrowDown' && currentTesterRow < 5) {
+                e.preventDefault();
+                currentTesterRow++;
+                currentTesterCol = 0;
+                updateTesterGrid();
+            } else if (/^[a-zA-Z]$/.test(key)) {
+                e.preventDefault();
+                if (!testerEvaluated[currentTesterRow] && currentTesterCol < 5) {
+                    testerRows[currentTesterRow][currentTesterCol] = key.toUpperCase();
+                    if (currentTesterCol < 4) currentTesterCol++;
+                    updateTesterGrid();
+                }
+            }
+        }
+
+        function toggleCell(index) {
+            const cells = document.querySelectorAll('#patternContainer .cell');
+            const cell = cells[index];
+            const currentState = pattern[index];
+            let nextState = currentBrush === 'either' 
+                ? (currentState === 'either' ? 'absent' : 'either')
+                : (currentState === currentBrush ? 'absent' : currentBrush);
+
+            pattern[index] = nextState;
+            cell.className = `cell ${nextState}`;
+            cell.style.transform = 'scale(1.1)';
+            setTimeout(() => cell.style.transform = 'scale(1)', 200);
+        }
+
+        function setBrush(type) {
+            currentBrush = type;
+            updateBrushButtons();
+        }
+
+        function updateBrushButtons() {
+            ['btnGreen', 'btnYellow', 'btnGray', 'btnDual'].forEach(id => {
+                document.getElementById(id).classList.remove('active');
+            });
+            if (currentBrush === 'correct') document.getElementById('btnGreen').classList.add('active');
+            else if (currentBrush === 'present') document.getElementById('btnYellow').classList.add('active');
+            else if (currentBrush === 'absent') document.getElementById('btnGray').classList.add('active');
+            else if (currentBrush === 'either') document.getElementById('btnDual').classList.add('active');
+        }
+
+        function clearPattern() {
+            pattern = Array(30).fill('absent');
+            document.querySelectorAll('#patternContainer .cell').forEach(cell => {
+                cell.className = 'cell absent';
+            });
+        }
+
+        function selectMode(mode) {
+            finderMode = mode;
+            document.querySelectorAll('.finder-mode').forEach(m => m.classList.remove('selected'));
+            document.getElementById('mode' + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.add('selected');
+            document.getElementById('rowSelector').style.display = mode === 'single' ? 'block' : 'none';
+        }
+
+        function setTargetRow(row) {
+            targetFinderRow = row;
+            for (let i = 0; i < 6; i++) {
+                document.getElementById(`rowBtn${i}`).classList.toggle('active', i === row);
+            }
+        }
+
+        function executeFinder() {
+            if (!targetWord || targetWord.length !== 5) {
+                alert('Enter target word first');
+                return;
+            }
+            if (wordList.length === 0) {
+                alert('Word list loading...');
+                return;
+            }
+
+            const btn = document.getElementById('findWordsBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Finding...';
+
+            setTimeout(() => {
+                if (finderMode === 'single') {
+                    findForSingleRow();
+                } else {
+                    findFullSequence();
+                }
+                btn.disabled = false;
+                btn.innerHTML = '🔍 Find Words';
+            }, 100);
+        }
+
+        function findForSingleRow() {
+            const rowStart = targetFinderRow * 5;
+            const rowPattern = pattern.slice(rowStart, rowStart + 5);
+            const matches = [];
+            
+            for (const word of wordList) {
+                if (word === targetWord) continue;
+                
+                const result = calculatePattern(word, targetWord);
+                let exactMatch = true;
+                
+                for (let i = 0; i < 5; i++) {
+                    const designed = rowPattern[i];
+                    const actual = result.pattern[i];
+                    
+                    if (designed === 'absent') {
+                        if (actual !== 'absent') { exactMatch = false; break; }
+                    } else if (designed === 'either') {
+                        if (actual !== 'correct' && actual !== 'present') { exactMatch = false; break; }
+                    } else if (designed !== actual) {
+                        exactMatch = false;
+                        break;
+                    }
+                }
+                
+                if (exactMatch) matches.push({ word, pattern: result.pattern });
+            }
+            
+            showResults(`Found ${matches.length} words for Row ${targetFinderRow + 1}:`, matches);
+        }
+
+        function findFullSequence() {
+            const sequence = [];
+            const allMatches = [];
+            
+            for (let row = 0; row < 6; row++) {
+                const rowStart = row * 5;
+                const rowPattern = pattern.slice(rowStart, rowStart + 5);
+                const matches = [];
+                
+                for (const word of wordList) {
+                    if (word === targetWord) continue;
+                    
+                    const result = calculatePattern(word, targetWord);
+                    let exactMatch = true;
+                    
+                    for (let i = 0; i < 5; i++) {
+                        const designed = rowPattern[i];
+                        const actual = result.pattern[i];
+                        
+                        if (designed === 'absent') {
+                            if (actual !== 'absent') { exactMatch = false; break; }
+                        } else if (designed === 'either') {
+                            if (actual !== 'correct' && actual !== 'present') { exactMatch = false; break; }
+                        } else if (designed !== actual) {
+                            exactMatch = false;
+                            break;
+                        }
+                    }
+                    
+                    if (exactMatch) matches.push({ word, pattern: result.pattern });
+                }
+                
+                if (matches.length > 0) {
+                    matches.sort((a, b) => {
+                        const aGreens = a.pattern.filter(p => p === 'correct').length;
+                        const bGreens = b.pattern.filter(p => p === 'correct').length;
+                        return bGreens - aGreens;
+                    });
+                    sequence.push({ row: row + 1, word: matches[0].word, pattern: matches[0].pattern, alternatives: matches.length - 1 });
+                    allMatches.push(...matches);
+                } else {
+                    sequence.push({ row: row + 1, word: '-----', pattern: Array(5).fill('absent'), note: 'No match' });
+                }
+            }
+            
+            showSequenceResults(sequence, allMatches);
+        }
+
+        function calculatePattern(guess, target) {
+            const pattern = Array(5).fill('absent');
+            const targetLetters = target.split('');
+            const guessLetters = guess.split('');
+            const used = Array(5).fill(false);
+            
+            for (let i = 0; i < 5; i++) {
+                if (guessLetters[i] === targetLetters[i]) {
+                    pattern[i] = 'correct';
+                    used[i] = true;
+                }
+            }
+            
+            for (let i = 0; i < 5; i++) {
+                if (pattern[i] === 'correct') continue;
+                const idx = targetLetters.findIndex((l, j) => l === guessLetters[i] && !used[j]);
+                if (idx !== -1) {
+                    pattern[i] = 'present';
+                    used[idx] = true;
+                }
+            }
+            
+            return { pattern, word: guess };
+        }
+
+        function showResults(message, matches) {
+            const list = document.getElementById('wordList');
+            document.getElementById('wordCount').textContent = matches.length;
+            
+            if (matches.length === 0) {
+                list.innerHTML = `<div style="color: #ff4d4d; text-align: center; padding: 40px;">No words found.</div>`;
+                return;
+            }
+            
+            list.innerHTML = `
+                <div style="color: #538d4e; margin-bottom: 10px;">${message}</div>
+                ${matches.map(item => `
+                    <div class="word-item" onclick="testWord('${item.word}')">
+                        <span>${item.word}</span>
+                        <div class="preview">
+                            ${item.pattern.map(p => `<div class="mini-cell ${p}"></div>`).join('')}
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function showSequenceResults(sequence, allMatches) {
+            const list = document.getElementById('wordList');
+            const uniqueWords = [...new Set(allMatches.map(m => m.word))];
+            document.getElementById('wordCount').textContent = uniqueWords.length;
+            
+            let sequenceHtml = sequence.map(s => {
+                const cells = s.pattern.map(p => `<div class="mini-cell ${p}"></div>`).join('');
+                const altText = s.alternatives > 0 ? ` <span style="color: #b59f3b; font-size: 0.8em;">(+${s.alternatives})</span>` : '';
+                const noteText = s.note ? ` <span style="color: #818384; font-size: 0.8em;">(${s.note})</span>` : '';
+                return `
+                    <div class="sequence-row">
+                        <div class="sequence-num">${s.row}.</div>
+                        <div class="sequence-word">${s.word}${altText}${noteText}</div>
+                        <div class="sequence-pattern">${cells}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            list.innerHTML = `
+                <div class="sequence-result">
+                    <h4>Sequence:</h4>
+                    ${sequenceHtml}
+                </div>
+                <div style="color: #538d4e; margin: 15px 0 10px;">All words:</div>
+                ${uniqueWords.slice(0, 100).map(word => {
+                    const item = allMatches.find(m => m.word === word);
+                    return `
+                        <div class="word-item" onclick="testWord('${word}')">
+                            <span>${word}</span>
+                            <div class="preview">
+                                ${item.pattern.map(p => `<div class="mini-cell ${p}"></div>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+        }
+
+        function updateTesterGrid() {
+            const rows = document.querySelectorAll('.tester-row');
+            rows.forEach((rowDiv, rowIdx) => {
+                const cells = rowDiv.querySelectorAll('.cell');
+                rowDiv.classList.remove('current-row', 'completed');
+                
+                if (testerEvaluated[rowIdx]) {
+                    rowDiv.classList.add('completed');
+                } else if (rowIdx === currentTesterRow) {
+                    rowDiv.classList.add('current-row');
+                }
+                
+                cells.forEach((cell, colIdx) => {
+                    const letter = testerRows[rowIdx][colIdx];
+                    cell.textContent = letter;
+                    cell.className = 'cell';
+                    
+                    if (testerEvaluated[rowIdx]) {
+                        cell.classList.add(testerPatterns[rowIdx][colIdx] || 'absent');
+                    } else if (rowIdx === currentTesterRow && colIdx === currentTesterCol) {
+                        cell.classList.add('active-input');
+                    } else if (letter) {
+                        cell.classList.add('filled');
+                    } else {
+                        cell.classList.add('empty');
+                    }
+                });
+            });
+        }
+
+        function submitTesterRow() {
+            const row = testerRows[currentTesterRow];
+            if (row.some(cell => cell === '') || !targetWord) return;
+            
+            const word = row.join('');
+            const result = calculatePattern(word, targetWord);
+            testerPatterns[currentTesterRow] = result.pattern;
+            testerEvaluated[currentTesterRow] = true;
+            updateTesterGrid();
+            
+            if (currentTesterRow < 5) {
+                currentTesterRow++;
+                currentTesterCol = 0;
+                updateTesterGrid();
+            }
+        }
+
+        function clearTesterRow() {
+            if (testerEvaluated[currentTesterRow]) {
+                testerEvaluated[currentTesterRow] = false;
+                testerPatterns[currentTesterRow] = null;
+            }
+            testerRows[currentTesterRow] = Array(5).fill('');
+            currentTesterCol = 0;
+            updateTesterGrid();
+        }
+
+        function deleteRow(rowIdx) {
+            for (let i = rowIdx; i < 5; i++) {
+                testerRows[i] = [...testerRows[i + 1]];
+                testerEvaluated[i] = testerEvaluated[i + 1];
+                testerPatterns[i] = testerPatterns[i + 1] ? [...testerPatterns[i + 1]] : null;
+            }
+            testerRows[5] = Array(5).fill('');
+            testerEvaluated[5] = false;
+            testerPatterns[5] = null;
+            
+            for (let i = 0; i < 6; i++) {
+                if (testerRows[i].every(c => c !== '') && targetWord && testerEvaluated[i]) {
+                    testerPatterns[i] = calculatePattern(testerRows[i].join(''), targetWord).pattern;
+                }
+            }
+            
+            if (currentTesterRow > rowIdx) currentTesterRow--;
+            currentTesterCol = 0;
+            updateTesterGrid();
+        }
+
+        function editRow(rowIdx) {
+            if (testerEvaluated[rowIdx]) {
+                testerEvaluated[rowIdx] = false;
+                testerPatterns[rowIdx] = null;
+            }
+            currentTesterRow = rowIdx;
+            currentTesterCol = 0;
+            updateTesterGrid();
+        }
+
+        function resetTester() {
+            testerRows = Array(6).fill(null).map(() => Array(5).fill(''));
+            testerEvaluated = Array(6).fill(false);
+            testerPatterns = Array(6).fill(null);
+            currentTesterRow = 0;
+            currentTesterCol = 0;
+            updateTesterGrid();
+            document.getElementById('testerResult').innerHTML = '';
+        }
+
+        function testWord(word) {
+            let row = testerEvaluated.findIndex(e => !e);
+            if (row === -1) row = currentTesterRow;
+            
+            currentTesterRow = row;
+            testerRows[row] = word.split('');
+            currentTesterCol = 4;
+            updateTesterGrid();
+            setTimeout(() => submitTesterRow(), 100);
+        }
+
+        function findForRow(row) {
+            selectMode('single');
+            setTargetRow(row);
+            executeFinder();
+        }
+
+        function showStatus(msg, success) {
+            document.getElementById('testerResult').innerHTML = `<div class="status ${success ? 'success' : 'error'}">${msg}</div>`;
+        }
+    </script>
+</body>
+</html>
