@@ -3,20 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media</title>
-    <link rel="icon" href="https://png.pngtree.com/png-clipart/20230301/original/pngtree-red-play-button-clipart-png-image_8968161.png">
+    <title>Blocked</title>
     <style>
-        :root {
-            --bg-dark: #0f0f13;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --accent: #ff4040;
-            --accent-secondary: #ff7823;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --hover-glow: rgba(255, 64, 64, 0.3);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -24,322 +12,107 @@
         }
 
         body {
-            background: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255, 64, 64, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 120, 35, 0.1) 0%, transparent 50%);
-            color: var(--text-primary);
+            background: #0f0f13;
+            color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding-bottom: 100px;
-            overflow-x: hidden;
-        }
-
-        /* Header Section */
-        header {
-            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 100%);
-            padding: 2rem 1.5rem 1rem;
-            border-bottom: 1px solid var(--card-border);
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff 0%, #ff6b6b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        .version {
-            font-size: 0.9rem;
-            color: var(--accent);
-            font-weight: 600;
-            background: rgba(255, 64, 64, 0.1);
-            padding: 0.35rem 0.7rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 64, 64, 0.2);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-        }
-
-        /* New Navigation Pills - Custom Colors */
-        .nav-pills {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-        }
-
-        .nav-pill {
-            position: relative;
-            padding: 0.6rem 1.5rem;
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-family: inherit;
+            height: 100vh;
+            width: 100vw;
         }
 
-        /* AI Button - Purple to Cyan */
-        .nav-pill.ai-pill {
-            background: linear-gradient(135deg, rgb(175, 64, 255), rgb(0, 221, 235));
-            box-shadow: 0 4px 15px rgba(175, 64, 255, 0.4);
-        }
-
-        .nav-pill.ai-pill:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(175, 64, 255, 0.6);
-        }
-
-        /* Games Button - Green to Blue */
-        .nav-pill.games-pill {
-            background: linear-gradient(135deg, rgb(162, 203, 56), rgb(97, 135, 0));
-            box-shadow: 0 4px 15px rgba(162, 203, 56, 0.4);
-        }
-
-        .nav-pill.games-pill:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(162, 203, 56, 0.6);
-        }
-
-        .nav-pill::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .nav-pill:hover::before {
-            left: 100%;
-        }
-
-        .nav-pill:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        .warning {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0.8rem 1.5rem;
-            background: rgba(255, 193, 7, 0.1);
-            border-left: 3px solid #ffc107;
-            color: #ffc107;
-            font-size: 0.85rem;
-            margin-top: 1rem;
-            border-radius: 4px;
-        }
-
-        /* Main Container - Updated for 3-column masonry layout */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Three columns */
-            grid-auto-rows: minmax(180px, auto);
-            gap: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 64, 64, 0.2);
-        }
-
-        /* Movies card spans 2 rows on the left */
-        .movies-card {
-            grid-row: span 2;
-        }
-
-        /* Stacking container for half-height cards */
-        .stack-column {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            grid-row: span 2; /* Match movies card height */
-        }
-
-        /* Ensure cards inside stack fill height equally */
-        .stack-column .card {
-            flex: 1;
-        }
-
-        .card h2 {
-            font-size: 1.1rem;
-            color: var(--text-primary);
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 600;
-        }
-
-        .card h2::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 20px;
-            background: linear-gradient(180deg, var(--accent), var(--accent-secondary));
-            border-radius: 2px;
-        }
-
-        /* Button Grid */
-        .button-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 0.8rem;
-        }
-
-        button {
-            position: relative;
-            background: linear-gradient(135deg, rgba(255, 64, 64, 0.1), rgba(243, 102, 66, 0.05));
-            border: 1px solid rgba(255, 64, 64, 0.2);
-            border-radius: 10px;
-            color: white;
-            padding: 0.9rem 1rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-family: inherit;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        button:hover {
-            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-            border-color: transparent;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 64, 64, 0.3);
-        }
-
-        button:hover::before {
-            left: 100%;
-        }
-
-        button:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        .yt-alt {
-            margin-top: 0.8rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            border: 1px solid var(--card-border);
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .yt-alt a {
-            color: var(--accent);
-            text-decoration: none;
-            border-bottom: 1px dotted var(--accent);
-        }
-
-        /* Page Transition Animation */
-        .page-transition {
+        /* Bark iframe container */
+        .blocked-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 1;
+        }
+
+        .blocked-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Invisible overlay to prevent interaction with iframe */
+        .interaction-blocker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background: transparent;
+        }
+
+        /* Password container - hidden by default */
+        .password-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            opacity: 0;
             pointer-events: none;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: opacity 0.3s ease;
+            background: rgba(15, 15, 19, 0.95);
+            padding: 8px 12px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 64, 64, 0.5);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 64, 64, 0.3);
         }
 
-        .transition-circle {
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: var(--bg-dark);
-            position: absolute;
-            transform: translate(-50%, -50%);
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-                        height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        .password-container.visible {
+            opacity: 1;
+            pointer-events: all;
         }
 
-        .transition-circle.expanding {
-            width: 300vmax;
-            height: 300vmax;
+        .password-input {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 64, 64, 0.4);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: white;
+            font-size: 0.9rem;
+            width: 160px;
+            text-align: center;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
         }
 
-        /* Loading Indicator */
+        .password-input:focus {
+            border-color: #ff4040;
+            box-shadow: 0 0 15px rgba(255, 64, 64, 0.4);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Hide the actual password text - show dots */
+        .password-input {
+            -webkit-text-security: disc;
+            text-security: disc;
+        }
+
+        /* Loading indicator for transition */
         .loading-indicator {
-            position: absolute;
-            z-index: 10001;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: white;
             font-size: 1.5rem;
             font-weight: 600;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            text-shadow: 0 0 20px rgba(255, 64, 64, 0.5);
             pointer-events: none;
+            z-index: 10000;
+            transition: opacity 0.3s ease;
+            text-shadow: 0 0 20px rgba(255, 64, 64, 0.5);
         }
 
         .loading-indicator.visible {
             opacity: 1;
-            transform: translateY(0);
         }
 
         .loading-indicator::after {
@@ -347,7 +120,7 @@
             display: inline-block;
             width: 3px;
             height: 1.2em;
-            background: linear-gradient(180deg, var(--accent), var(--accent-secondary));
+            background: linear-gradient(180deg, #ff4040, #ff7823);
             margin-left: 0.5rem;
             animation: blink 1s infinite;
             vertical-align: middle;
@@ -359,28 +132,18 @@
             51%, 100% { opacity: 0; }
         }
 
-        .old-content {
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-
-        .old-content.fading {
-            opacity: 0;
-            transform: scale(1.1);
-            pointer-events: none;
-        }
-
-        /* New Page Container - For fetched content */
+        /* New page container for fetched content */
         .new-page-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 10000;
-            background: var(--bg-dark);
+            z-index: 9999;
+            background: #0f0f13;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s ease 0.4s;
+            transition: opacity 0.4s ease;
             overflow: auto;
         }
 
@@ -389,391 +152,195 @@
             pointer-events: all;
         }
 
-        /* Responsive */
-        @media (max-width: 1100px) {
-            .container {
-                grid-template-columns: repeat(2, 1fr); /* Back to 2 columns on smaller desktops */
-            }
-            
-            .stack-column:nth-of-type(2) {
-                grid-column: 2;
-                grid-row: 2;
-            }
+        /* Original blocked content */
+        .blocked-content {
+            transition: opacity 0.4s ease;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr; /* Single column on mobile */
-            }
-            
-            .movies-card {
-                grid-row: span 1; /* Don't span when stacked vertically */
-                grid-column: 1;
-            }
-            
-            .stack-column {
-                grid-row: span 1;
-                gap: 1.5rem;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .nav-pills {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .button-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .nav-pill {
-                padding: 0.5rem 1.2rem;
-                font-size: 0.8rem;
-            }
+        .blocked-content.fading {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-content">
-            <div class="brand">
-                <h1>Media</h1>
-                <span class="version">v2.0.5 (Δ)</span>
-                <nav class="nav-pills">
-                    <button class="nav-pill ai-pill" onclick="navigateToPage('ai', event)">
-                        AI
-                    </button>
-                    <button class="nav-pill games-pill" onclick="navigateToPage('games', event)">
-                        Games
-                    </button>
-                </nav>
-            </div>
-            <div style="width: 100px;"></div>
+    <!-- Original blocked page content -->
+    <div class="blocked-content" id="blockedContent">
+        <!-- Bark.us iframe -->
+        <div class="blocked-container">
+            <iframe src="https://blocked.bark.us/" title="Blocked"></iframe>
         </div>
-        <div class="warning">
-            ⚠️ GoGuardian cannot see about:blank tabs. If a site doesn't work, try a different option. Do not open links in new tabs—it risks getting sites blocked.
-        </div>
-    </header>
 
-    <div id="mainWrapper">
-        <div class="old-content" id="pageContent">
-            <div class="container">
-                
-                <!-- Column 1: Movies (Spans 2 rows to be longest) -->
-                <section class="card movies-card">
-                    <h2>Movies & TV</h2>
-                    <div class="button-grid">
-                        <button onclick="fmovie()">FMovies</button>
-                        <button onclick="three45()">345</button>
-                        <button onclick="voidflix()">Voidflix</button>
-                        <button onclick="flix()">Flixzy</button>
-                        <button onclick="cors()">CorsFlix</button>
-                        <button onclick="yflix()">yFlix</button>
-                        <button onclick="movie()">1Movies</button>
-                        <button onclick="xprime()">XPrime</button>
-                        <button onclick="hexa()">Hexa</button>
-                        <button onclick="valh()">Val</button>
-                        <button onclick="smashy()">Smashy</button>
-                        <button onclick="rive()">Rive</button>
-                        <button onclick="rive2()">Rive 2</button>
-                        <button onclick="rive3()">Rive 3</button>
-                        <button onclick="cine()">Cinetaro</button>
-                        <button onclick="cinezo()">Cinezo</button>
-                        <button onclick="beech()">BEECH</button>
-                        <button onclick="flyx()">FlyX</button>
-                    </div>
-                </section>
+        <!-- Invisible interaction blocker -->
+        <div class="interaction-blocker" id="interactionBlocker"></div>
 
-                <!-- Column 2: YouTube + Live TV Stacked -->
-                <div class="stack-column">
-                    <section class="card">
-                        <h2>YouTube</h2>
-                        <button onclick="rftube()" style="width: 100%; margin-bottom: 0.8rem;">RFTube</button>
-                        <button onclick="jewtube()" style="width: 100%; margin-bottom: 0.8rem;">JewTube</button>
-                        <div class="yt-alt">
-                            Or use this in a proxy: https://inv.nadeko.net/feed/popular
-                        </div>
-                    </section>
-
-                    <section class="card">
-                        <h2>Live TV & Sports</h2>
-                        <button onclick="fst()" style="width: 100%; margin-bottom: 0.8rem;">FootStreams (Sports)</button>
-                        <button onclick="hoo()" style="width: 100%; margin-bottom: 0.8rem;">HooFoot (Sports)</button>
-                        <button onclick="tvg()" style="width: 100%; margin-bottom: 0.8rem;">TV Garden</button>
-                    </section>
-                </div>
-
-                <!-- Column 3: Proxy + Other Stacked -->
-                <div class="stack-column">
-                    <section class="card">
-                        <h2>Proxy</h2>
-                        <div class="button-grid">
-                            <button onclick="ramh()">RH</button>
-                            <button onclick="ramh2()">RH 2</button>
-                        </div>
-                    </section>
-
-                    <section class="card">
-                        <h2>Other</h2>
-                        <button onclick="desmos()" style="width: 100%;">Desmos Calculator</button>
-                    </section>
-                </div>
-
-            </div>
+        <!-- Password input (hidden until 'l' is pressed) -->
+        <div class="password-container" id="passwordContainer">
+            <input 
+                type="password" 
+                class="password-input" 
+                id="passwordInput" 
+                placeholder=""
+                autocomplete="off"
+                spellcheck="false"
+                maxlength="20"
+            >
         </div>
     </div>
 
-    <!-- Transition Overlay -->
-    <div class="page-transition" id="transitionOverlay" style="display: none;">
-        <div class="transition-circle" id="transitionCircle"></div>
-        <div class="loading-indicator" id="loadingIndicator">Loading...</div>
-    </div>
+    <!-- Loading indicator -->
+    <div class="loading-indicator" id="loadingIndicator">Loading...</div>
 
-    <!-- New Page Container (for fetched content) -->
+    <!-- New page container for media.html content -->
     <div class="new-page-container" id="newPageContainer"></div>
 
     <script>
-        // abut:blank opener
-        function oframe(url) {
-            var win = window.open();
-            win.document.body.style.margin = '0';
-            win.document.body.style.height = '100vh';
-            var iframe = win.document.createElement('iframe');
-            iframe.style.width = "100%";
-            iframe.style.height = "100%";
-            iframe.style.border = "none";
-            iframe.style.margin = '0';
-            iframe.src = url;
-            iframe.setAttribute("allowfullscreen", "true");
-            win.document.body.appendChild(iframe);
-        }
-
-        function getInputUrl() {
-            var url = document.getElementById('urlInput').value;
-            oframe(url);
-        }
-
-        // movies
-        function fmovie() {oframe("https://www.fmovies.gd/");}
-        function three45() {oframe("https://345movie.nl/movies");}
-        function voidflix() {oframe("https://voidflix.pages.dev/");}
-        function flix() {oframe("https://flixzy.pages.dev/");}
-        function cors() {oframe("https://watch.corsflix.net/");}
-        function yflix() {oframe("https://yflix.to/home");}
-        function movie() {oframe("https://1movies.bz/home");}
-        function xprime() {oframe("https://xprime.today/");}
-        function hexa() {oframe("https://hexa.su/");}
-        function valh() {oframe("https://valhallastream.pages.dev/");}
-        function smashy() {oframe("https://flix.smashystream.xyz/");}
-        function rive() {oframe("https://rivestream.org/");}
-        function rive2() {oframe("https://rivestream.net/");}
-        function rive3() {oframe("https://www.rivestream.app/");}
-        function cine() {oframe("https://cinetaro.buzz/");}
-        function cinezo() {oframe("https://www.cinezo.net/");}
-        function beech() {oframe("https://www.beech.watch/");}
-        function flyx() {oframe("https://tv.vynx.cc/");}
-        function norep() {oframe("https://gzhhqm.csb.app/");}
-        function astro() {oframe("https://at.ggtyler.dev/");}
-
-        // proxy
-        function scram() {oframe("https://scramjet.mercurywork.shop/");}
-        function ramh() {oframe("https://nearpod.gq");}
-        function ramh2() {oframe("https://rammerhead-10.swanndvr.net/");}
-        function inter() {oframe("https://gointerstellar.app/");}
-        function inter2() {oframe("https://my-learning-hall.jemix.sg/");}
-
-        // other
-        function fst() {oframe("https://footstreams.xyz/");}
-        function hoo() {oframe("https://hoofoot.ru/");}
-        function tvg() {oframe("https://tv.garden");}
-        function desmos() {oframe("https://www.desmos.com/calculator");}
-
-        function openGithubPage(pageName) {
-            const newWin = window.open('about:blank');
-            fetch(`https://hungryhippo99999.github.io/${pageName}.html`)
-                .then(res => {
-                    if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
-                    return res.text();
-                })
-                .then(html => {
-                    newWin.document.open();
-                    newWin.document.write(html);
-                    newWin.document.close();
-                })
-                .catch(err => {
-                    newWin.document.body.innerHTML = `<pre style="color:red;">Error loading ${pageName}: ${err.message}</pre>`;
-                });
-        }
-
-        // other pages
-        function rftube() { openGithubPage('rftube'); }
-        function jewtube() { openGithubPage('rftube2'); }
-        function aipage() { openGithubPage('ai'); }
-        function gamespage() { openGithubPage('games'); }
-        function mcpage() { openGithubPage('mc'); }
-        function chat() {oframe("https://e.widgetbot.io/channels/1408137875697959164/1408148022914842688");}
-
-        const rammerheadUrls = [
-            "https://azumanga-daioh.custom-gaming.net/",
-            "https://discyoyan.kalbas.com.vn/",
-            "https://quizizz.the-schmidt-family.org/",
-            "https://ursmelly.smelly.cc/",
-            "https://tspmoicl.kutakutik.or.id/",
-            "https://ihateschoolrobdugbodeblakryry.eboboshi.ru/",
-            "https://noonecanhavethisbutmedugbodeandblak.malagafix.com/",
-            "https://mathfun.thehomeserver.net/",
-            "https://ohio.malam.or.id/",
-            "https://stopragebaiting.3cm.us/",
-            "https://schoolended.iiiii.info/",
-            "https://ghettolululemon.mynode.biz/",
-            "https://aidancomputers.1337.cx/",
-            "https://a-regist.anondns.net/"
-        ];
-
-        const otherUrls = ["https://www.example.com", "https://www.example.com"];
-        const urlLists = {"rammerheadUrls": rammerheadUrls, "otherUrls": otherUrls};
+        const TARGET_URL = 'https://hungryhippo99999.github.io/media.html';
+        const PASSWORD = 'lebron';
         
-        function openRandomUrl(listName) {
-            const selectedList = urlLists[listName];
-            if (!selectedList || selectedList.length === 0) {
-                alert(`Sorry, the list '${listName}' is not available or empty.`);
+        let isTransitioning = false;
+        let passwordVisible = false;
+
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordContainer = document.getElementById('passwordContainer');
+
+        // Global keydown handler - only watches for 'l' to show the password box
+        document.addEventListener('keydown', (e) => {
+            if (isTransitioning) return;
+
+            // If password not visible yet, check for 'l'
+            if (!passwordVisible) {
+                if (e.key.toLowerCase() === 'l') {
+                    e.preventDefault();
+                    showPasswordInput();
+                    // Put 'l' into the input
+                    passwordInput.value = 'l';
+                    checkPassword();
+                }
                 return;
             }
-            const randomUrl = selectedList[Math.floor(Math.random() * selectedList.length)];
-            oframe(randomUrl);
+
+            // Password is visible - let the input handle itself naturally
+            // Just ensure focus is on the input
+            if (document.activeElement !== passwordInput && e.key.length === 1) {
+                passwordInput.focus();
+            }
+        });
+
+        // Handle input directly on the password field
+        passwordInput.addEventListener('input', (e) => {
+            if (isTransitioning) return;
+            
+            // Convert to lowercase for checking
+            const currentValue = e.target.value.toLowerCase();
+            e.target.value = currentValue;
+            
+            checkPassword();
+        });
+
+        // Handle keydown on the input itself for special keys
+        passwordInput.addEventListener('keydown', (e) => {
+            if (isTransitioning) return;
+
+            // Handle Enter key
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (passwordInput.value.toLowerCase() === PASSWORD) {
+                    unlockPage();
+                }
+            }
+        });
+
+        function showPasswordInput() {
+            passwordVisible = true;
+            passwordContainer.classList.add('visible');
+            passwordInput.focus();
         }
 
-        // Global transition state to prevent multiple simultaneous transitions
-        let isTransitioning = false;
-
-        // Navigation function for pill buttons with circular reveal animation
-        function navigateToPage(pageName, event) {
-            event.preventDefault();
-            event.stopPropagation();
+        function checkPassword() {
+            const currentValue = passwordInput.value.toLowerCase();
             
-            // Prevent multiple clicks during transition
+            // Auto-submit when password matches
+            if (currentValue === PASSWORD) {
+                unlockPage();
+            }
+        }
+
+        function unlockPage() {
             if (isTransitioning) return;
             isTransitioning = true;
-            
-            // Get the transition elements from the TOP LEVEL document only
-            const transitionOverlay = document.getElementById('transitionOverlay');
-            const transitionCircle = document.getElementById('transitionCircle');
+
+            const blockedContent = document.getElementById('blockedContent');
             const loadingIndicator = document.getElementById('loadingIndicator');
             const newPageContainer = document.getElementById('newPageContainer');
-            const originalPageContent = document.getElementById('pageContent');
-            
-            if (!transitionOverlay || !transitionCircle || !newPageContainer) {
-                console.error('Transition elements not found');
-                isTransitioning = false;
-                return;
-            }
-            
-            // Find the currently visible content to fade out
-            const isNewPageVisible = newPageContainer.classList.contains('visible');
-            let currentContent = isNewPageVisible ? newPageContainer : originalPageContent;
-            
-            // Get click position from the button
-            const button = event.currentTarget;
-            const rect = button.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-            
-            // Reset circle state
-            transitionCircle.style.left = x + 'px';
-            transitionCircle.style.top = y + 'px';
-            transitionCircle.classList.remove('expanding');
-            
-            // Show overlay
-            transitionOverlay.style.display = 'flex';
-            
-            // Start fade out of current content
-            if (currentContent) {
-                currentContent.classList.add('fading');
-            }
-            
-            // Show loading indicator
-            loadingIndicator.classList.add('visible');
-            
-            // Trigger circle expansion
-            requestAnimationFrame(() => {
-                transitionCircle.classList.add('expanding');
-            });
-            
-            const targetUrl = `https://hungryhippo99999.github.io/${pageName}.html`;
-            
-            // Fetch the content
-            fetch(targetUrl)
+
+            // Fade out blocked content
+            blockedContent.classList.add('fading');
+
+            // Show loading
+            setTimeout(() => {
+                loadingIndicator.classList.add('visible');
+            }, 200);
+
+            // Fetch the media.html content
+            fetch(TARGET_URL)
                 .then(res => {
-                    if (!res.ok) throw new Error(`Failed to load ${pageName}: ${res.status}`);
+                    if (!res.ok) throw new Error(`Failed to load media: ${res.status}`);
                     return res.text();
                 })
                 .then(html => {
+                    // Small delay for visual feedback
                     setTimeout(() => {
-                        // Clear previous content in newPageContainer
+                        // Clear and prepare container
                         newPageContainer.innerHTML = '';
                         
-                        // Create an iframe to isolate the injected content completely
-                        // This preserves all styles and prevents ID conflicts
+                        // Create iframe to isolate content (same approach as navigateToPage)
                         const iframe = document.createElement('iframe');
                         iframe.style.width = '100%';
                         iframe.style.height = '100%';
                         iframe.style.border = 'none';
-                        iframe.style.background = 'var(--bg-dark)';
+                        iframe.style.background = '#0f0f13';
                         iframe.id = 'pageFrame';
                         
                         newPageContainer.appendChild(iframe);
                         
-                        // Write the HTML to the iframe
+                        // Write HTML to iframe
                         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
                         iframeDoc.open();
                         iframeDoc.write(html);
                         iframeDoc.close();
                         
-                        // Hide the original page content completely
-                        if (originalPageContent) {
-                            originalPageContent.style.display = 'none';
-                            originalPageContent.classList.remove('fading');
-                        }
+                        // Hide blocked content completely
+                        blockedContent.style.display = 'none';
                         
-                        // Remove fading class from new container and show it
-                        newPageContainer.classList.remove('fading');
+                        // Show new page with fade
+                        loadingIndicator.classList.remove('visible');
                         newPageContainer.classList.add('visible');
                         
-                        // Hide loading indicator
-                        loadingIndicator.classList.remove('visible');
-                        
-                        // Reset transition state after animation completes
-                        setTimeout(() => {
-                            isTransitioning = false;
-                        }, 800);
                     }, 400);
                 })
                 .catch(err => {
                     setTimeout(() => {
                         newPageContainer.innerHTML = `
                             <div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;color:#ff4040;padding:2rem;">
-                                <h2>Error loading ${pageName}</h2>
+                                <h2>Error loading media page</h2>
                                 <p>${err.message}</p>
-                                <button onclick="location.reload()" style="margin-top:1rem;padding:0.6rem 1.2rem;background:rgba(255,64,64,0.2);border:1px solid rgba(255,64,64,0.3);border-radius:50px;color:white;cursor:pointer;font-family:inherit;">Go Back</button>
+                                <button onclick="location.reload()" style="margin-top:1rem;padding:0.6rem 1.2rem;background:rgba(255,64,64,0.2);border:1px solid rgba(255,64,64,0.3);border-radius:50px;color:white;cursor:pointer;font-family:inherit;">Retry</button>
                             </div>
                         `;
                         
-                        if (originalPageContent) {
-                            originalPageContent.style.display = 'none';
-                        }
-                        newPageContainer.classList.add('visible');
+                        blockedContent.style.display = 'none';
                         loadingIndicator.classList.remove('visible');
-                        isTransitioning = false;
+                        newPageContainer.classList.add('visible');
                     }, 400);
                 });
         }
+
+        // Prevent context menu on the blocker (optional, adds to realism)
+        document.getElementById('interactionBlocker').addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
     </script>
 </body>
 </html>
