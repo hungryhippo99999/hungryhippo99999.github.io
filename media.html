@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocked</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0f0f13;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Bark iframe container */
+        .blocked-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .blocked-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Invisible overlay to prevent interaction with iframe */
+        .interaction-blocker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background: transparent;
+        }
+
+        /* Password container - hidden by default */
+        .password-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            background: rgba(15, 15, 19, 0.95);
+            padding: 8px 12px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 64, 64, 0.5);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 64, 64, 0.3);
+        }
+
+        .password-container.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .password-input {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 64, 64, 0.4);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: white;
+            font-size: 0.9rem;
+            width: 160px;
+            text-align: center;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .password-input:focus {
+            border-color: #ff4040;
+            box-shadow: 0 0 15px rgba(255, 64, 64, 0.4);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Hide the actual password text - show dots */
+        .password-input {
+            -webkit-text-security: disc;
+            text-security: disc;
+        }
+
+        /* Loading indicator for transition */
+        .loading-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10000;
+            transition: opacity 0.3s ease;
+            text-shadow: 0 0 20px rgba(255, 64, 64, 0.5);
+        }
+
+        .loading-indicator.visible {
+            opacity: 1;
+        }
+
+        .loading-indicator::after {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background: linear-gradient(180deg, #ff4040, #ff7823);
+            margin-left: 0.5rem;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            border-radius: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* New page container for fetched content */
+        .new-page-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: #0f0f13;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            overflow: auto;
+        }
+
+        .new-page-container.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Original blocked content */
+        .blocked-content {
+            transition: opacity 0.4s ease;
+        }
+
+        .blocked-content.fading {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Original blocked page content -->
+    <div class="blocked-content" id="blockedContent">
+        <!-- Bark.us iframe -->
+        <div class="blocked-container">
+            <iframe src="https://blocked.bark.us/" title="Blocked"></iframe>
+        </div>
+
+        <!-- Invisible interaction blocker -->
+        <div class="interaction-blocker" id="interactionBlocker"></div>
+
+        <!-- Password input (hidden until 'l' is pressed) -->
+        <div class="password-container" id="passwordContainer">
+            <input 
+                type="password" 
+                class="password-input" 
+                id="passwordInput" 
+                placeholder=""
+                autocomplete="off"
+                spellcheck="false"
+                maxlength="20"
+            >
+        </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="loading-indicator" id="loadingIndicator">Loading...</div>
+
+    <!-- New page container for media.html content -->
+    <div class="new-page-container" id="newPageContainer"></div>
+
+    <script>
+        const TARGET_URL = 'https://hungryhippo99999.github.io/media2.html';
+        const PASSWORD = 'lebron';
+        
+        let isTransitioning = false;
+        let passwordVisible = false;
+
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordContainer = document.getElementById('passwordContainer');
+
+        // Global keydown handler - only watches for 'l' to show the password box
+        document.addEventListener('keydown', (e) => {
+            if (isTransitioning) return;
+
+            // If password not visible yet, check for 'l'
+            if (!passwordVisible) {
+                if (e.key.toLowerCase() === 'l') {
+                    e.preventDefault();
+                    showPasswordInput();
+                    // Put 'l' into the input
+                    passwordInput.value = 'l';
+                    checkPassword();
+                }
+                return;
+            }
+
+            // Password is visible - let the input handle itself naturally
+            // Just ensure focus is on the input
+            if (document.activeElement !== passwordInput && e.key.length === 1) {
+                passwordInput.focus();
+            }
+        });
+
+        // Handle input directly on the password field
+        passwordInput.addEventListener('input', (e) => {
+            if (isTransitioning) return;
+            
+            // Convert to lowercase for checking
+            const currentValue = e.target.value.toLowerCase();
+            e.target.value = currentValue;
+            
+            checkPassword();
+        });
+
+        // Handle keydown on the input itself for special keys
+        passwordInput.addEventListener('keydown', (e) => {
+            if (isTransitioning) return;
+
+            // Handle Enter key
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (passwordInput.value.toLowerCase() === PASSWORD) {
+                    unlockPage();
+                }
+            }
+        });
+
+        function showPasswordInput() {
+            passwordVisible = true;
+            passwordContainer.classList.add('visible');
+            passwordInput.focus();
+        }
+
+        function checkPassword() {
+            const currentValue = passwordInput.value.toLowerCase();
+            
+            // Auto-submit when password matches
+            if (currentValue === PASSWORD) {
+                unlockPage();
+            }
+        }
+
+        function unlockPage() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            const blockedContent = document.getElementById('blockedContent');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const newPageContainer = document.getElementById('newPageContainer');
+
+            // Fade out blocked content
+            blockedContent.classList.add('fading');
+
+            // Show loading
+            setTimeout(() => {
+                loadingIndicator.classList.add('visible');
+            }, 200);
+
+            // Fetch the media.html content
+            fetch(TARGET_URL)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Failed to load media: ${res.status}`);
+                    return res.text();
+                })
+                .then(html => {
+                    // Small delay for visual feedback
+                    setTimeout(() => {
+                        // Clear and prepare container
+                        newPageContainer.innerHTML = '';
+                        
+                        // Create iframe to isolate content (same approach as navigateToPage)
+                        const iframe = document.createElement('iframe');
+                        iframe.style.width = '100%';
+                        iframe.style.height = '100%';
+                        iframe.style.border = 'none';
+                        iframe.style.background = '#0f0f13';
+                        iframe.id = 'pageFrame';
+                        
+                        newPageContainer.appendChild(iframe);
+                        
+                        // Write HTML to iframe
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        iframeDoc.open();
+                        iframeDoc.write(html);
+                        iframeDoc.close();
+                        
+                        // Hide blocked content completely
+                        blockedContent.style.display = 'none';
+                        
+                        // Show new page with fade
+                        loadingIndicator.classList.remove('visible');
+                        newPageContainer.classList.add('visible');
+                        
+                    }, 400);
+                })
+                .catch(err => {
+                    setTimeout(() => {
+                        newPageContainer.innerHTML = `
+                            <div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;color:#ff4040;padding:2rem;">
+                                <h2>Error loading media page</h2>
+                                <p>${err.message}</p>
+                                <button onclick="location.reload()" style="margin-top:1rem;padding:0.6rem 1.2rem;background:rgba(255,64,64,0.2);border:1px solid rgba(255,64,64,0.3);border-radius:50px;color:white;cursor:pointer;font-family:inherit;">Retry</button>
+                            </div>
+                        `;
+                        
+                        blockedContent.style.display = 'none';
+                        loadingIndicator.classList.remove('visible');
+                        newPageContainer.classList.add('visible');
+                    }, 400);
+                });
+        }
+
+        // Prevent context menu on the blocker (optional, adds to realism)
+        document.getElementById('interactionBlocker').addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
